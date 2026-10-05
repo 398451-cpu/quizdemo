@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title>Express + PostgreSQL Starter</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Node.js 24 · Express 5 · PostgreSQL</p>
+        <h1>Your server is ready.</h1>
+        <p class="intro">A plain HTML, CSS, and JavaScript starter connected to Replit PostgreSQL.</p>
+      </header>
+
+      <section class="panel" aria-labelledby="status-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Runtime checks</p>
+            <h2 id="status-heading">Connection status</h2>
+          </div>
+          <button id="refresh-status" class="button button-secondary" type="button">Refresh</button>
+        </div>
+        <ul class="status-list">
+          <li>
+            <span>Express server</span>
+            <span id="server-status" class="status" role="status">Checking…</span>
+          </li>
+          <li>
+            <span>PostgreSQL</span>
+            <span id="database-status" class="status" role="status">Checking…</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="panel" aria-labelledby="query-heading">
+        <p class="eyebrow">Parameterized SQL example</p>
+        <h2 id="query-heading">Test a safe query</h2>
+        <p class="help">Your text is sent as a bound value, not joined into the SQL statement.</p>
+        <form id="echo-form">
+          <label for="message">Message</label>
+          <div class="form-row">
+            <input id="message" name="message" type="text" maxlength="500" required placeholder="Type a message">
+            <button class="button" type="submit">Send to PostgreSQL</button>
+          </div>
+        </form>
+        <p id="query-result" class="result" role="status" aria-live="polite"></p>
+      </section>
+
+      <footer>Static files are served from <code>public/</code>. API routes use the same origin.</footer>
+    </main>
+  </body>
+</html>
