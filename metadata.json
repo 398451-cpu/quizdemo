@@ -1,6 +1,6 @@
 {
-  "name": "Express + PostgreSQL Starter",
-  "description": "Express and PostgreSQL starter application with runtime health checks and safe parameterized SQL query testing.",
+  "name": "Mason's Quiz App",
+  "description": "Mason's Quiz App starter application with runtime health checks, quiz branding, and PostgreSQL connection testing.",
   "permissions": [],
   "capabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

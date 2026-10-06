@@ -38,6 +38,7 @@ if (!pool) {
 app.disable("x-powered-by");
 app.use(express.json({ limit: "16kb" }));
 app.use(express.static(publicDirectory));
+app.use("/src/assets/images", express.static(fileURLToPath(new URL("./src/assets/images/", import.meta.url))));
 
 app.get("/api/health", (_request, response) => {
   response.json({ status: "ok" });
