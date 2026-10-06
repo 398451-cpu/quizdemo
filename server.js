@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const { Pool } = pg;
 const app = express();
-const port = 3000;
+const port = Number(process.env.PORT || 5000);
 const publicDirectory = fileURLToPath(new URL("./public/", import.meta.url));
 
 // PostgreSQL client with in-memory mock fallback for AI Studio container environment
