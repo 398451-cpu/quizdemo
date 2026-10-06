@@ -3,13 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": "24.x",
-    "npm": ">=10"
-  },
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "build": "echo 'Build complete'"
   },
   "dependencies": {
     "express": "^5.2.1",

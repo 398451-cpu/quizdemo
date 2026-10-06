@@ -1,0 +1,8 @@
+{
+  "name": "Express + PostgreSQL Starter",
+  "description": "Express and PostgreSQL starter application with runtime health checks and safe parameterized SQL query testing.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
