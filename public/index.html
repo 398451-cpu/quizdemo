@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f7fb">
     <title>Mason's Quiz App</title>
-    <meta name="description" content="Mason's Quiz App starter application with runtime health checks, quiz branding, and PostgreSQL connection testing.">
+    <meta name="description" content="Mason's Quiz App featuring category selection dropdown (R6 Maps, R6 Ops, R6 Sounds, R6 Pro), interactive audio cues, score review, runtime health checks, and PostgreSQL database testing.">
     <meta property="og:title" content="Mason's Quiz App">
-    <meta property="og:description" content="Mason's Quiz App starter application with runtime health checks, quiz branding, and PostgreSQL connection testing.">
+    <meta property="og:description" content="Mason's Quiz App featuring category selection dropdown (R6 Maps, R6 Ops, R6 Sounds, R6 Pro), interactive audio cues, score review, runtime health checks, and PostgreSQL database testing.">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/styles.css">
     <script src="/app.js" defer></script>
@@ -22,6 +22,119 @@
         <h1>Mason's Quiz App</h1>
         <p class="intro">Welcome to Mason's Quiz App — powered by Node.js, Express, and PostgreSQL.</p>
       </header>
+
+      <section class="panel quiz-panel" aria-labelledby="quiz-section-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Tactical Assessment</p>
+            <h2 id="quiz-section-heading">Rainbow Six Siege Quiz</h2>
+          </div>
+          <span id="quiz-badge" class="quiz-status-pill">Ready to Test</span>
+        </div>
+
+        <!-- Quiz Category Setup View -->
+        <div id="quiz-setup-view">
+          <p class="help">Select a category from the dropdown menu to test your tactical R6 knowledge before starting the test.</p>
+          
+          <div class="category-control-group">
+            <label for="quiz-category">Quiz Category</label>
+            <div class="select-container">
+              <select id="quiz-category" name="quiz-category" class="category-dropdown" aria-describedby="category-hint">
+                <option value="r6 maps" selected>r6 maps (Callouts, Bomb Sites &amp; Layouts)</option>
+                <option value="r6 ops">r6 ops (Operators, Gadgets &amp; Abilities)</option>
+                <option value="r6 sounds">r6 sounds (Audio Cues &amp; Sound Identification)</option>
+                <option value="r6 pro">r6 pro (Esports, Six Invitational &amp; Clutches)</option>
+              </select>
+            </div>
+            <p id="category-hint" class="field-hint">Switch categories at any time before starting.</p>
+          </div>
+
+          <div id="category-brief" class="category-brief">
+            <div class="brief-title-row">
+              <span id="category-icon" class="category-icon">🗺️</span>
+              <div>
+                <h3 id="category-title" class="brief-title">R6 Maps</h3>
+                <p id="category-desc" class="brief-desc">Clubhouse, Oregon, Chalet, Kafe, and competitive site callouts.</p>
+              </div>
+            </div>
+            <div class="brief-meta-row">
+              <span>5 Tactical Questions</span>
+              <span>·</span>
+              <span>4 Multiple Choice Options</span>
+              <span>·</span>
+              <span>Instant Score Feedback</span>
+            </div>
+          </div>
+
+          <div class="quiz-action-bar">
+            <button id="start-test-btn" class="button" type="button">Start Test</button>
+          </div>
+        </div>
+
+        <!-- Active Quiz Test View -->
+        <div id="quiz-test-view" class="quiz-test-view" hidden>
+          <div class="test-topbar">
+            <div class="test-meta-info">
+              <span id="active-category-display" class="active-category-text">R6 Maps</span>
+              <span id="question-counter" class="question-counter-text">Question 1 of 5</span>
+            </div>
+            <div class="test-progress-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
+              <div id="test-progress-fill" class="test-progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3 id="question-text" class="question-text">Question prompt here</h3>
+
+            <!-- Audio cue player for r6 sounds category -->
+            <div id="audio-cue-player" class="audio-cue-player" hidden>
+              <div class="audio-controls">
+                <button id="play-cue-btn" class="button button-secondary sound-btn" type="button">
+                  <span class="sound-icon">🔊</span> Play Sound Cue
+                </button>
+                <span id="cue-playback-info" class="cue-playback-info">Synthesized in-browser tactical sound</span>
+              </div>
+            </div>
+
+            <div id="answers-container" class="answers-container" role="radiogroup" aria-labelledby="question-text">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div id="question-feedback" class="question-feedback" hidden>
+              <p id="feedback-badge" class="feedback-badge"></p>
+              <p id="feedback-text" class="feedback-text"></p>
+            </div>
+          </div>
+
+          <div class="test-bottom-actions">
+            <button id="change-category-btn" class="button button-secondary" type="button">Change Category</button>
+            <button id="next-question-btn" class="button" type="button" disabled>Next Question</button>
+          </div>
+        </div>
+
+        <!-- Quiz Test Completed Results View -->
+        <div id="quiz-results-view" class="quiz-results-view" hidden>
+          <div class="results-header">
+            <span id="results-rank-symbol" class="results-rank-symbol">🎖️</span>
+            <h3 id="results-title" class="results-title">Test Completed</h3>
+            <p id="results-score" class="results-score">You scored 5 out of 5</p>
+            <p id="results-grade-message" class="results-grade-message">Champion Tier: Flawless map awareness!</p>
+          </div>
+
+          <div id="results-db-badge" class="results-db-badge">
+            Connecting score to database…
+          </div>
+
+          <div id="results-summary-list" class="results-summary-list">
+            <!-- Review answers list -->
+          </div>
+
+          <div class="results-actions">
+            <button id="retake-test-btn" class="button" type="button">Retake Test</button>
+            <button id="pick-another-category-btn" class="button button-secondary" type="button">Select Different Category</button>
+          </div>
+        </div>
+      </section>
 
       <section class="panel" aria-labelledby="status-heading">
         <div class="section-heading">

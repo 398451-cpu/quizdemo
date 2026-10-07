@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "build": "echo 'Build complete'"
+    "build": "echo 'Build complete'",
+    "lint": "node --check server.js && node --check public/app.js"
   },
   "dependencies": {
     "express": "^5.2.1",

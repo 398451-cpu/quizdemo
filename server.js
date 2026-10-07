@@ -29,6 +29,18 @@ if (!pool) {
       if (text.includes("SELECT $1::text AS message")) {
         return { rows: [{ message: params[0] ?? "" }] };
       }
+      if (text.includes("SELECT $1::text AS category")) {
+        return {
+          rows: [
+            {
+              category: params[0] ?? "r6 maps",
+              score: params[1] ?? 0,
+              total: params[2] ?? 5,
+              recorded_at: new Date().toISOString(),
+            },
+          ],
+        };
+      }
       return { rows: [] };
     },
     end: async () => {},
@@ -61,6 +73,18 @@ app.get("/api/db/health", async (_request, response) => {
           if (text.includes("SELECT $1::text AS message")) {
             return { rows: [{ message: params[0] ?? "" }] };
           }
+          if (text.includes("SELECT $1::text AS category")) {
+            return {
+              rows: [
+                {
+                  category: params[0] ?? "r6 maps",
+                  score: params[1] ?? 0,
+                  total: params[2] ?? 5,
+                  recorded_at: new Date().toISOString(),
+                },
+              ],
+            };
+          }
           return { rows: [] };
         },
         end: async () => {},
@@ -92,6 +116,65 @@ app.post("/api/db/echo", async (request, response) => {
   } catch (error) {
     console.warn("Parameterized PostgreSQL query failed:", error.message);
     return response.json({ message: message.trim() });
+  }
+});
+
+app.get("/api/quiz/categories", (_request, response) => {
+  response.json([
+    {
+      id: "r6 maps",
+      name: "R6 Maps",
+      badge: "🗺️",
+      description: "Test your callouts, site setups, soft walls, and competitive map knowledge.",
+      questionsCount: 5,
+    },
+    {
+      id: "r6 ops",
+      name: "R6 Ops",
+      badge: "🛡️",
+      description: "Operator gadgets, armor/speed ratings, primary abilities, and counters.",
+      questionsCount: 5,
+    },
+    {
+      id: "r6 sounds",
+      name: "R6 Sounds",
+      badge: "🎧",
+      description: "Identify audio cues: defuser plants, C4 velcro, Fuze pucks, and audio propagation.",
+      questionsCount: 5,
+    },
+    {
+      id: "r6 pro",
+      name: "R6 Pro",
+      badge: "🏆",
+      description: "Esports history, Six Invitational champions, historic clutches, and pro meta.",
+      questionsCount: 5,
+    },
+  ]);
+});
+
+app.post("/api/quiz/record", async (request, response) => {
+  const { category, score, total } = request.body ?? {};
+  const cat = String(category || "r6 maps").slice(0, 50);
+  const sc = Math.max(0, Number.parseInt(score ?? 0, 10));
+  const tot = Math.max(1, Number.parseInt(total ?? 5, 10));
+
+  try {
+    const result = await pool.query(
+      "SELECT $1::text AS category, $2::int AS score, $3::int AS total, NOW() AS recorded_at",
+      [cat, sc, tot],
+    );
+    return response.json({
+      status: "ok",
+      record: result.rows[0],
+      source: isMockDb ? "in-memory-mock" : "postgresql",
+    });
+  } catch (error) {
+    console.warn("Failed to record quiz score via query:", error.message);
+    return response.json({
+      status: "ok",
+      record: { category: cat, score: sc, total: tot, recorded_at: new Date().toISOString() },
+      source: "fallback",
+    });
   }
 });
 
