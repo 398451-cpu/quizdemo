@@ -3,174 +3,752 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f5f7fb">
+    <meta name="theme-color" content="#0e1117">
     <title>Mason's Quiz App</title>
-    <meta name="description" content="Mason's Quiz App featuring category selection dropdown (R6 Maps, R6 Ops, R6 Sounds, R6 Pro), interactive audio cues, score review, runtime health checks, and PostgreSQL database testing.">
-    <meta property="og:title" content="Mason's Quiz App">
-    <meta property="og:description" content="Mason's Quiz App featuring category selection dropdown (R6 Maps, R6 Ops, R6 Sounds, R6 Pro), interactive audio cues, score review, runtime health checks, and PostgreSQL database testing.">
+    <meta name="description" content="Tactical Trivia — Rainbow Six Siege Quiz App featuring 5 full quizzes, Skill Rank progression, Operation Pass & Renown Shop, Teacher Question Editor, and CSV bulk import.">
+    <meta property="og:title" content="Tactical Trivia — R6 Siege Quiz App">
+    <meta property="og:description" content="Rainbow Six Siege tactical trivia platform with Skill Rank system, Operation Pass, and teacher command center.">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/styles.css">
     <script src="/app.js" defer></script>
   </head>
-  <body>
-    <main class="page">
-      <header class="hero">
-        <div class="logo-wrapper">
-          <img src="/src/assets/images/masons_quiz_logo_1791309177604.jpg" alt="Mason's Quiz App Logo" class="app-logo" referrerpolicy="no-referrer">
+  <body class="theme-default">
+    <div id="app" class="app-container">
+      
+      <!-- Tactical Top Navigation Header -->
+      <header class="tactical-navbar">
+        <div class="nav-brand">
+          <div class="brand-emblem">
+            <span class="emblem-six">6</span>
+          </div>
+          <div class="brand-titles">
+            <span class="brand-eyebrow">Tactical Trivia</span>
+            <h1 class="brand-name">R6 SIEGE QUIZ PLATFORM</h1>
+          </div>
         </div>
-        <p class="eyebrow">Quiz Platform</p>
-        <h1>Mason's Quiz App</h1>
-        <p class="intro">Welcome to Mason's Quiz App — powered by Node.js, Express, and PostgreSQL.</p>
+
+        <nav class="nav-links">
+          <button id="nav-btn-home" class="nav-tab active" data-view="home">
+            <span class="nav-icon">🎯</span> Deployments
+          </button>
+          <button id="nav-btn-leaderboard" class="nav-tab" data-view="leaderboard">
+            <span class="nav-icon">🏆</span> Leaderboards
+          </button>
+          <button id="nav-btn-shop" class="nav-tab" data-view="shop">
+            <span class="nav-icon">🎖️</span> Pass &amp; Shop
+          </button>
+          <button id="nav-btn-history" class="nav-tab" data-view="history">
+            <span class="nav-icon">📜</span> History
+          </button>
+          <button id="nav-btn-profile" class="nav-tab" data-view="profile">
+            <span class="nav-icon">👤</span> Operator Card
+          </button>
+          <button id="nav-btn-teacher" class="nav-tab teacher-only" data-view="teacher" hidden>
+            <span class="nav-icon">⚙️</span> Teacher HQ
+          </button>
+        </nav>
+
+        <div class="nav-user-status">
+          <div id="user-pill" class="user-pill" hidden>
+            <span id="nav-user-avatar" class="user-avatar-badge" title="Operator Avatar">🛡️</span>
+            <span id="nav-rank-badge" class="rank-badge rank-unranked">UNRANKED</span>
+            <div class="user-info-text">
+              <span id="nav-username" class="user-callsign">Recruit</span>
+              <span id="nav-renown-display" class="user-renown">
+                <span class="currency-symbol">⚡</span> 0 Renown
+              </span>
+            </div>
+            <button id="logout-btn" class="btn-tactical-sm btn-ghost" title="Log Out">Log Out</button>
+          </div>
+          <button id="quick-play-nav-btn" class="btn-tactical-sm btn-accent">⚡ Quick Play</button>
+          <button id="login-open-btn" class="btn-tactical-sm btn-secondary">Login</button>
+        </div>
       </header>
 
-      <section class="panel quiz-panel" aria-labelledby="quiz-section-heading">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Tactical Assessment</p>
-            <h2 id="quiz-section-heading">Rainbow Six Siege Quiz</h2>
-          </div>
-          <span id="quiz-badge" class="quiz-status-pill">Ready to Test</span>
-        </div>
+      <!-- Global Banner for Alerts / Notices -->
+      <div id="tactical-notification" class="tactical-notification" hidden>
+        <span id="notif-icon" class="notif-icon">ℹ️</span>
+        <span id="notif-message" class="notif-message">Notification</span>
+        <button id="notif-close-btn" class="notif-close">✕</button>
+      </div>
 
-        <!-- Quiz Category Setup View -->
-        <div id="quiz-setup-view">
-          <p class="help">Select a category from the dropdown menu to test your tactical R6 knowledge before starting the test.</p>
-          
-          <div class="category-control-group">
-            <label for="quiz-category">Quiz Category</label>
-            <div class="select-container">
-              <select id="quiz-category" name="quiz-category" class="category-dropdown" aria-describedby="category-hint">
-                <option value="r6 maps" selected>r6 maps (Callouts, Bomb Sites &amp; Layouts)</option>
-                <option value="r6 ops">r6 ops (Operators, Gadgets &amp; Abilities)</option>
-                <option value="r6 sounds">r6 sounds (Audio Cues &amp; Sound Identification)</option>
-                <option value="r6 pro">r6 pro (Esports, Six Invitational &amp; Clutches)</option>
-              </select>
+      <!-- MAIN CONTENT VIEWPORTS -->
+      <main class="tactical-main">
+
+        <!-- ========================================================= -->
+        <!-- VIEW 1: HOME / QUIZ SELECTION                             -->
+        <!-- ========================================================= -->
+        <section id="view-home" class="view-panel active">
+          <div class="view-header">
+            <div>
+              <p class="section-tag">SIMULATION OPS</p>
+              <h2 class="view-title">Active Assessment Modules</h2>
+              <p class="view-subtitle">Select a tactical domain to test your Rainbow Six Siege knowledge. Scores count toward your official Skill Rank.</p>
             </div>
-            <p id="category-hint" class="field-hint">Switch categories at any time before starting.</p>
+            <div class="quick-stats-strip">
+              <div class="strip-item">
+                <span class="strip-label">MODULES</span>
+                <span class="strip-val">5 Quizzes</span>
+              </div>
+              <div class="strip-item">
+                <span class="strip-label">ASSESSMENT</span>
+                <span class="strip-val">10+ Qs Each</span>
+              </div>
+              <div class="strip-item">
+                <span class="strip-label">RANK SYSTEM</span>
+                <span class="strip-val">Copper → Champ</span>
+              </div>
+            </div>
           </div>
 
-          <div id="category-brief" class="category-brief">
-            <div class="brief-title-row">
-              <span id="category-icon" class="category-icon">🗺️</span>
+          <!-- Instant Guest Quick Play Banner (shows when unauthenticated) -->
+          <div id="guest-quick-play-banner" class="guest-quick-play-banner">
+            <div class="guest-banner-info">
+              <span class="guest-banner-tag">⚡ INSTANT DEPLOYMENT</span>
+              <h3 class="guest-banner-title">Play Instantly as Guest — No Email or Password Required</h3>
+              <p class="guest-banner-desc">Pick your Callsign and tactical Operator PFP to test your R6 knowledge immediately.</p>
+            </div>
+            <div class="guest-quick-controls">
+              <div class="guest-input-wrap">
+                <input type="text" id="quick-guest-username" class="tactical-input" placeholder="Callsign (e.g. Ash_Main)" maxlength="24">
+                <button type="button" id="quick-guest-random-btn" class="btn-tactical-xs btn-outline" title="Generate Random Callsign">🎲 Random</button>
+              </div>
+              <div class="guest-pfp-picker-inline" id="quick-guest-pfp-picker">
+                <!-- Avatars rendered via JS -->
+              </div>
+              <button type="button" id="quick-guest-submit-btn" class="btn-tactical btn-accent">DEPLOY GUEST →</button>
+            </div>
+          </div>
+
+          <div id="quizzes-grid" class="quizzes-grid">
+            <div class="loading-state">
+              <div class="tactical-spinner"></div>
+              <p>Scanning tactical database…</p>
+            </div>
+          </div>
+
+          <!-- Bottom quick tips and diagnostic card -->
+          <div class="home-bottom-cards">
+            <div class="tactical-card info-card">
+              <h3 class="card-heading">🎖️ Skill Rank Progression</h3>
+              <p class="card-body-text">
+                Your rank reflects your average score percentage across all completed attempts. Retries count toward your permanent average.
+              </p>
+              <div class="rank-ladder-mini">
+                <span class="ladder-pill rank-copper">Copper (0–39%)</span>
+                <span class="ladder-pill rank-bronze">Bronze (40–54%)</span>
+                <span class="ladder-pill rank-silver">Silver (55–69%)</span>
+                <span class="ladder-pill rank-gold">Gold (70–79%)</span>
+                <span class="ladder-pill rank-platinum">Plat (80–89%)</span>
+                <span class="ladder-pill rank-diamond">Diamond (90–97%)</span>
+                <span class="ladder-pill rank-champion">Champ (98–100%)</span>
+              </div>
+            </div>
+
+            <div class="tactical-card info-card">
+              <h3 class="card-heading">⚡ Renown &amp; Daily Streaks</h3>
+              <p class="card-body-text">
+                Earn <strong>+10 Renown</strong> per finished quiz, <strong>+5 bonus</strong> for beating your personal best, and <strong>+3 bonus</strong> for maintaining your daily streak. Use Renown in the Shop or to unlock the Premium Operation Pass.
+              </p>
+              <div class="demo-logins-row">
+                <span class="demo-tag">Quick Logins:</span>
+                <button id="quick-login-student" class="btn-tactical-xs btn-outline">Student: recruit_mason</button>
+                <button id="quick-login-teacher" class="btn-tactical-xs btn-outline">Teacher: benrud</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 2: QUIZ RUNNER / PLAYER                              -->
+        <!-- ========================================================= -->
+        <section id="view-quiz-runner" class="view-panel" hidden>
+          <div class="quiz-runner-header">
+            <button id="quit-quiz-btn" class="btn-tactical-sm btn-ghost">← Abort Assessment</button>
+            <div class="runner-meta">
+              <span id="runner-quiz-title" class="runner-quiz-title">Operators &amp; Gadgets</span>
+              <span id="runner-counter" class="runner-counter">Question 1 of 10</span>
+            </div>
+            <div class="runner-progress-bar">
+              <div id="runner-progress-fill" class="runner-progress-fill" style="width: 10%;"></div>
+            </div>
+          </div>
+
+          <div class="quiz-runner-body">
+            <div class="question-dossier-card">
+              <div class="dossier-header">
+                <span class="dossier-tag">TACTICAL INTEL ITEM</span>
+                <span id="dossier-qnum" class="dossier-number">ITEM #01</span>
+              </div>
+              <h3 id="runner-question-text" class="runner-question-text">Loading question prompt…</h3>
+              
+              <div id="runner-choices-list" class="runner-choices-list">
+                <!-- Rendered dynamically -->
+              </div>
+
+              <div class="runner-nav-row">
+                <button id="runner-prev-btn" class="btn-tactical btn-secondary" disabled>← Previous</button>
+                <div class="runner-jump-indicators" id="runner-jump-indicators">
+                  <!-- Dots for all questions -->
+                </div>
+                <button id="runner-next-btn" class="btn-tactical btn-accent">Next →</button>
+                <button id="runner-submit-btn" class="btn-tactical btn-success" hidden>Submit Final Assessment</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 3: RESULTS (END-OF-ROUND SCOREBOARD)                 -->
+        <!-- ========================================================= -->
+        <section id="view-results" class="view-panel" hidden>
+          <div class="scoreboard-hero">
+            <div class="scoreboard-status-stamp">
+              <span id="scoreboard-status-text" class="status-stamp-text">MATCH WON</span>
+            </div>
+            <h2 id="scoreboard-title" class="scoreboard-title">Tactical Assessment Complete</h2>
+            <div class="scoreboard-score-badge">
+              <span id="scoreboard-score-numbers" class="score-numbers">10 / 11</span>
+              <span id="scoreboard-score-pct" class="score-pct">(91%)</span>
+            </div>
+
+            <!-- Rank & Renown Earned Strip -->
+            <div class="scoreboard-rewards-grid">
+              <div class="reward-box">
+                <span class="reward-box-label">SKILL RANK</span>
+                <div class="reward-box-val-row">
+                  <span id="scoreboard-rank-badge" class="rank-badge rank-platinum">PLATINUM</span>
+                  <span id="scoreboard-rank-change-note" class="rank-change-note"></span>
+                </div>
+              </div>
+              <div class="reward-box">
+                <span class="reward-box-label">RENOWN EARNED</span>
+                <span id="scoreboard-renown-earned" class="reward-box-val highlight-renown">+18 Renown</span>
+                <span id="scoreboard-renown-breakdown" class="sub-breakdown">+10 Complete · +5 PB · +3 Streak</span>
+              </div>
+              <div class="reward-box">
+                <span class="reward-box-label">DAILY STREAK</span>
+                <span id="scoreboard-streak-display" class="reward-box-val">🔥 3 Days</span>
+              </div>
+            </div>
+
+            <div class="scoreboard-actions">
+              <button id="scoreboard-retry-btn" class="btn-tactical btn-accent">Deploy Again (Retry)</button>
+              <button id="scoreboard-back-btn" class="btn-tactical btn-secondary">Return to Operations</button>
+            </div>
+          </div>
+
+          <!-- Elimination Cam Review Section -->
+          <div class="elimination-cam-section">
+            <div class="section-header-compact">
+              <h3 class="section-title-sm">🎯 Elimination Cam Review</h3>
+              <p class="section-desc-sm">Detailed debrief of all tactical assessment queries, your selections, and verified answers.</p>
+            </div>
+
+            <div id="elimination-cam-list" class="elimination-cam-list">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 4: LEADERBOARDS (OPERATOR SELECTION SCREEN STYLING)  -->
+        <!-- ========================================================= -->
+        <section id="view-leaderboard" class="view-panel" hidden>
+          <div class="view-header">
+            <div>
+              <p class="section-tag">COMPETITIVE STANDINGS</p>
+              <h2 class="view-title">Tactical Leaderboards</h2>
+              <p class="view-subtitle">Operator selection roster rankings. Leaderboards display usernames and verified Skill Ranks (emails kept strictly confidential).</p>
+            </div>
+            <div class="leaderboard-tabs-wrapper">
+              <div class="leaderboard-tabs" id="leaderboard-tabs">
+                <button class="lb-tab active" data-tab="overall">Overall (Attempts)</button>
+                <button class="lb-tab" data-tab="quiz-1">Operators &amp; Gadgets</button>
+                <button class="lb-tab" data-tab="quiz-2">Maps &amp; Callouts</button>
+                <button class="lb-tab" data-tab="quiz-3">Weapons &amp; Attachments</button>
+                <button class="lb-tab" data-tab="quiz-4">Game Mechanics</button>
+                <button class="lb-tab" data-tab="quiz-5">History &amp; Esports</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="leaderboard-container">
+            <div class="leaderboard-meta-strip" id="lb-meta-strip">
+              <span>Ranking by: Total completed quiz deployments (Tie-breaker: earliest completion date)</span>
+            </div>
+
+            <div class="operator-roster-table-wrap">
+              <table class="operator-roster-table">
+                <thead>
+                  <tr>
+                    <th style="width: 80px;">RANK</th>
+                    <th>OPERATOR / CALLSIGN</th>
+                    <th style="width: 160px;">SKILL TIER</th>
+                    <th id="lb-col-stat1" style="width: 140px;">COMPLETIONS</th>
+                    <th id="lb-col-stat2" style="width: 160px;">AVG ACCURACY</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboard-table-body">
+                  <tr>
+                    <td colspan="5" class="empty-cell">Retrieving operator rankings…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 5: OPERATION PASS & RENOWN SHOP                      -->
+        <!-- ========================================================= -->
+        <section id="view-shop" class="view-panel" hidden>
+          <div class="view-header">
+            <div>
+              <p class="section-tag">QUARTERMASTER &amp; BATTLE PASS</p>
+              <h2 class="view-title">Operation Pass &amp; Renown Depot</h2>
+              <p class="view-subtitle">Unlock tactical emblems, profile callsign titles, and UI themes with your earned Renown.</p>
+            </div>
+            <div class="renown-balance-card">
+              <span class="balance-tag">OPERATOR RENOWN</span>
+              <div class="balance-amount-row">
+                <span class="currency-glyph">⚡</span>
+                <span id="shop-user-renown" class="balance-val">0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Operation Pass Tracks -->
+          <div class="operation-pass-container">
+            <div class="pass-header-row">
               <div>
-                <h3 id="category-title" class="brief-title">R6 Maps</h3>
-                <p id="category-desc" class="brief-desc">Clubhouse, Oregon, Chalet, Kafe, and competitive site callouts.</p>
+                <h3 class="pass-title">🎖️ Operation Tactical Pass</h3>
+                <p class="pass-subtitle">Complete tactical goals in deployments to claim exclusive cosmetics automatically.</p>
               </div>
-            </div>
-            <div class="brief-meta-row">
-              <span>5 Tactical Questions</span>
-              <span>·</span>
-              <span>4 Multiple Choice Options</span>
-              <span>·</span>
-              <span>Instant Score Feedback</span>
-            </div>
-          </div>
-
-          <div class="quiz-action-bar">
-            <button id="start-test-btn" class="button" type="button">Start Test</button>
-          </div>
-        </div>
-
-        <!-- Active Quiz Test View -->
-        <div id="quiz-test-view" class="quiz-test-view" hidden>
-          <div class="test-topbar">
-            <div class="test-meta-info">
-              <span id="active-category-display" class="active-category-text">R6 Maps</span>
-              <span id="question-counter" class="question-counter-text">Question 1 of 5</span>
-            </div>
-            <div class="test-progress-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
-              <div id="test-progress-fill" class="test-progress-fill"></div>
-            </div>
-          </div>
-
-          <div class="question-card">
-            <h3 id="question-text" class="question-text">Question prompt here</h3>
-
-            <!-- Audio cue player for r6 sounds category -->
-            <div id="audio-cue-player" class="audio-cue-player" hidden>
-              <div class="audio-controls">
-                <button id="play-cue-btn" class="button button-secondary sound-btn" type="button">
-                  <span class="sound-icon">🔊</span> Play Sound Cue
-                </button>
-                <span id="cue-playback-info" class="cue-playback-info">Synthesized in-browser tactical sound</span>
+              <div id="premium-pass-banner" class="premium-pass-status-card">
+                <span id="premium-pass-status-text" class="pass-badge">PREMIUM LOCKED</span>
+                <button id="unlock-premium-pass-btn" class="btn-tactical-sm btn-accent">Unlock Premium Track (1,000 Renown)</button>
               </div>
             </div>
 
-            <div id="answers-container" class="answers-container" role="radiogroup" aria-labelledby="question-text">
+            <div class="pass-tracks-grid">
+              <!-- Free Track -->
+              <div class="pass-track-column free-track">
+                <div class="track-header">
+                  <span class="track-badge">FREE TRACK</span>
+                  <h4>Standard Deployment Goals</h4>
+                </div>
+                <div id="free-goals-list" class="goals-list">
+                  <!-- Rendered via JS -->
+                </div>
+              </div>
+
+              <!-- Premium Track -->
+              <div class="pass-track-column premium-track">
+                <div class="track-header">
+                  <span class="track-badge premium-badge">PREMIUM TRACK</span>
+                  <h4>Elite Operations Goals</h4>
+                </div>
+                <div id="premium-goals-list" class="goals-list">
+                  <!-- Rendered via JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Renown Shop Catalog -->
+          <div class="shop-catalog-section">
+            <div class="catalog-filters">
+              <h3 class="catalog-title">Cosmetics Depot</h3>
+              <div class="filter-pill-group">
+                <button class="filter-pill active" data-filter="all">All Items</button>
+                <button class="filter-pill" data-filter="badge">Badges</button>
+                <button class="filter-pill" data-filter="title">Titles</button>
+                <button class="filter-pill" data-filter="theme">Themes</button>
+              </div>
+            </div>
+
+            <div id="shop-items-grid" class="shop-items-grid">
               <!-- Rendered via JS -->
             </div>
+          </div>
+        </section>
 
-            <div id="question-feedback" class="question-feedback" hidden>
-              <p id="feedback-badge" class="feedback-badge"></p>
-              <p id="feedback-text" class="feedback-text"></p>
+        <!-- ========================================================= -->
+        <!-- VIEW 6: MY ATTEMPT HISTORY                                -->
+        <!-- ========================================================= -->
+        <section id="view-history" class="view-panel" hidden>
+          <div class="view-header">
+            <div>
+              <p class="section-tag">LOGGED SESSIONS</p>
+              <h2 class="view-title">My Tactical History</h2>
+              <p class="view-subtitle">Record of all completed quiz deployments. Unfinished attempts are excluded per tactical guidelines.</p>
+            </div>
+            <button id="refresh-history-btn" class="btn-tactical-sm btn-secondary">Refresh History</button>
+          </div>
+
+          <div class="history-table-wrapper">
+            <table class="operator-roster-table">
+              <thead>
+                <tr>
+                  <th>DATE &amp; TIME</th>
+                  <th>TACTICAL MODULE</th>
+                  <th>SCORE</th>
+                  <th>ACCURACY</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body">
+                <tr>
+                  <td colspan="5" class="empty-cell">No completed attempts recorded yet. Deploy to your first quiz!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 7: OPERATOR CARD (PROFILE)                           -->
+        <!-- ========================================================= -->
+        <section id="view-profile" class="view-panel" hidden>
+          <div class="profile-layout">
+            <!-- Operator Profile Dossier Card -->
+            <div class="operator-dossier-card">
+              <div class="dossier-id-strip">
+                <span class="dossier-org">RAINBOW SIX TACTICAL DIVISION</span>
+                <span id="profile-role-badge" class="role-badge role-player">PLAYER CLEARANCE</span>
+              </div>
+              <div class="dossier-hero">
+                <div class="dossier-avatar-box">
+                  <span id="profile-avatar-icon" class="avatar-large">🛡️</span>
+                </div>
+                <div class="dossier-names">
+                  <h2 id="profile-username" class="dossier-callsign">Recruit Mason</h2>
+                  <p id="profile-email" class="dossier-email">recruit@r6tactical.edu</p>
+                  <div class="equipped-badge-row">
+                    <span id="profile-equipped-title" class="title-pill">Title: Recruit</span>
+                    <span id="profile-equipped-badge" class="badge-pill">Badge: Tactical Breacher</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dossier-stats-grid">
+                <div class="dossier-stat">
+                  <span class="stat-name">SKILL RANK</span>
+                  <span id="profile-rank-display" class="stat-val rank-badge rank-unranked">UNRANKED</span>
+                </div>
+                <div class="dossier-stat">
+                  <span class="stat-name">RENOWN RESERVES</span>
+                  <span id="profile-renown-display" class="stat-val">⚡ 0</span>
+                </div>
+                <div class="dossier-stat">
+                  <span class="stat-name">DAILY STREAK</span>
+                  <span id="profile-streak-display" class="stat-val">🔥 0 Days</span>
+                </div>
+                <div class="dossier-stat">
+                  <span class="stat-name">COMPLETED OPS</span>
+                  <span id="profile-attempts-count" class="stat-val">0</span>
+                </div>
+              </div>
+
+              <!-- Equipped Cosmetic Loadout Controls -->
+              <div class="equipped-loadout-panel">
+                <h4 class="loadout-title">Equipped Cosmetics Loadout</h4>
+                <div class="loadout-controls">
+                  <div class="loadout-control-group">
+                    <label for="equip-avatar-select">Operator Avatar (PFP):</label>
+                    <select id="equip-avatar-select" class="tactical-select">
+                      <option value="🛡️">🛡️ Recruit Shield</option>
+                      <option value="🪖">🪖 Tactical Helmet</option>
+                      <option value="🎯">🎯 Deadeye Sniper</option>
+                      <option value="💣">💣 Hard Breacher</option>
+                      <option value="⚡">⚡ Volt Specialist</option>
+                      <option value="🕶️">🕶️ Night Ops</option>
+                      <option value="🦅">🦅 Spec Ops Falcon</option>
+                      <option value="🐺">🐺 Lone Wolf</option>
+                    </select>
+                  </div>
+                  <div class="loadout-control-group">
+                    <label for="equip-title-select">Equipped Title:</label>
+                    <select id="equip-title-select" class="tactical-select"></select>
+                  </div>
+                  <div class="loadout-control-group">
+                    <label for="equip-badge-select">Equipped Badge:</label>
+                    <select id="equip-badge-select" class="tactical-select"></select>
+                  </div>
+                  <div class="loadout-control-group">
+                    <label for="equip-theme-select">Equipped Theme:</label>
+                    <select id="equip-theme-select" class="tactical-select"></select>
+                  </div>
+                </div>
+                <button id="save-loadout-btn" class="btn-tactical btn-accent">Save &amp; Equip Loadout</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 8: TEACHER HQ (QUESTION EDITOR & CSV UPLOAD)         -->
+        <!-- ========================================================= -->
+        <section id="view-teacher" class="view-panel" hidden>
+          <div class="view-header">
+            <div>
+              <p class="section-tag">FACULTY COMMAND CENTER</p>
+              <h2 class="view-title">Teacher Question Management &amp; CSV Bulk Import</h2>
+              <p class="view-subtitle">Add/edit tactical assessment questions, choices, correct answers, and upload questions via validated standard CSV.</p>
             </div>
           </div>
 
-          <div class="test-bottom-actions">
-            <button id="change-category-btn" class="button button-secondary" type="button">Change Category</button>
-            <button id="next-question-btn" class="button" type="button" disabled>Next Question</button>
+          <div class="teacher-tabs">
+            <button id="teacher-tab-editor" class="sub-tab active" data-sub="editor">Question Editor</button>
+            <button id="teacher-tab-csv" class="sub-tab" data-sub="csv">CSV Template &amp; Import</button>
           </div>
+
+          <!-- Sub-view A: Question Editor -->
+          <div id="teacher-sub-editor" class="teacher-sub-view">
+            <div class="editor-top-controls">
+              <div class="form-group-inline">
+                <label for="teacher-quiz-filter">Select Quiz Module:</label>
+                <select id="teacher-quiz-filter" class="tactical-select">
+                  <option value="1">Operators &amp; Gadgets</option>
+                  <option value="2">Maps &amp; Callouts</option>
+                  <option value="3">Weapons &amp; Attachments</option>
+                  <option value="4">Game Mechanics</option>
+                  <option value="5">History &amp; Esports</option>
+                </select>
+              </div>
+              <button id="teacher-new-q-btn" class="btn-tactical btn-accent">+ Create New Question</button>
+            </div>
+
+            <!-- New / Edit Question Modal/Form Container -->
+            <div id="teacher-q-form-card" class="tactical-card form-card" hidden>
+              <h3 id="teacher-form-title" class="card-heading">Add Question</h3>
+              <form id="teacher-question-form">
+                <input type="hidden" id="teacher-q-id" value="">
+                
+                <div class="form-group">
+                  <label for="teacher-q-text">Question Prompt</label>
+                  <textarea id="teacher-q-text" class="tactical-input textarea" rows="2" required placeholder="e.g. Which defender deploys the Mag-NET system?"></textarea>
+                </div>
+
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="teacher-q-quiz">Target Quiz</label>
+                    <select id="teacher-q-quiz" class="tactical-select">
+                      <option value="1">Operators &amp; Gadgets</option>
+                      <option value="2">Maps &amp; Callouts</option>
+                      <option value="3">Weapons &amp; Attachments</option>
+                      <option value="4">Game Mechanics</option>
+                      <option value="5">History &amp; Esports</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="teacher-q-pos">Position Order</label>
+                    <input type="number" id="teacher-q-pos" class="tactical-input" min="1" value="1">
+                  </div>
+                </div>
+
+                <div class="choices-editor-block">
+                  <label>Four Answer Choices (Select the radio of the EXACTLY 1 correct answer):</label>
+                  
+                  <div class="choice-input-row">
+                    <input type="radio" name="correct_choice_radio" value="0" id="radio-choice-0" required checked>
+                    <input type="text" id="choice-text-0" class="tactical-input" placeholder="Choice A" required>
+                    <span class="choice-tag">Choice A</span>
+                  </div>
+
+                  <div class="choice-input-row">
+                    <input type="radio" name="correct_choice_radio" value="1" id="radio-choice-1">
+                    <input type="text" id="choice-text-1" class="tactical-input" placeholder="Choice B" required>
+                    <span class="choice-tag">Choice B</span>
+                  </div>
+
+                  <div class="choice-input-row">
+                    <input type="radio" name="correct_choice_radio" value="2" id="radio-choice-2">
+                    <input type="text" id="choice-text-2" class="tactical-input" placeholder="Choice C" required>
+                    <span class="choice-tag">Choice C</span>
+                  </div>
+
+                  <div class="choice-input-row">
+                    <input type="radio" name="correct_choice_radio" value="3" id="radio-choice-3">
+                    <input type="text" id="choice-text-3" class="tactical-input" placeholder="Choice D" required>
+                    <span class="choice-tag">Choice D</span>
+                  </div>
+                </div>
+
+                <div class="form-actions-row">
+                  <button type="submit" class="btn-tactical btn-accent">Save Question to Database</button>
+                  <button type="button" id="teacher-cancel-form-btn" class="btn-tactical btn-ghost">Cancel</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Existing Questions List -->
+            <div id="teacher-questions-list" class="teacher-questions-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Sub-view B: CSV Template & Import -->
+          <div id="teacher-sub-csv" class="teacher-sub-view" hidden>
+            <div class="tactical-card">
+              <div class="csv-header-row">
+                <div>
+                  <h3 class="card-heading">Standard CSV Question Template</h3>
+                  <p class="card-body-text">
+                    Format: <code>quiz_title,question_text,choice_a,choice_b,choice_c,choice_d,correct_choice</code><br>
+                    Rules: Exactly 7 columns; no empty fields; <code>correct_choice</code> must be A, B, C, or D; quiz title must match an existing quiz.
+                  </p>
+                </div>
+                <button id="download-csv-sample-btn" class="btn-tactical-sm btn-outline">📥 Download Sample CSV</button>
+              </div>
+
+              <div class="form-group" style="margin-top: 14px;">
+                <label for="csv-input-text">Paste CSV Text or Upload File:</label>
+                <div class="csv-upload-toolbar">
+                  <input type="file" id="csv-file-picker" accept=".csv,text/csv,text/plain" class="tactical-file-input">
+                  <button id="load-sample-csv-btn" class="btn-tactical-xs btn-ghost">Load Sample Rows</button>
+                </div>
+                <textarea id="csv-input-text" class="tactical-input textarea font-mono" rows="8" placeholder="quiz_title,question_text,choice_a,choice_b,choice_c,choice_d,correct_choice&#10;Operators &amp; Gadgets,Which operator has the drone swarm?,Ash,Mute,Iana,Thatcher,C"></textarea>
+              </div>
+
+              <div class="csv-actions-row">
+                <button id="preview-csv-btn" class="btn-tactical btn-accent">🔍 Preview &amp; Validate CSV</button>
+              </div>
+            </div>
+
+            <!-- CSV Validation Preview Area -->
+            <div id="csv-preview-container" class="csv-preview-container" hidden>
+              <div class="preview-summary-card">
+                <div class="summary-counts">
+                  <span id="preview-total-count" class="summary-badge">Total Rows: 0</span>
+                  <span id="preview-valid-count" class="summary-badge badge-valid">Valid: 0</span>
+                  <span id="preview-invalid-count" class="summary-badge badge-invalid">Invalid: 0</span>
+                </div>
+                <button id="commit-csv-import-btn" class="btn-tactical btn-success" disabled>Commit Valid Rows to Database</button>
+              </div>
+
+              <div class="preview-table-wrapper">
+                <table class="operator-roster-table preview-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 60px;">ROW</th>
+                      <th style="width: 100px;">STATUS</th>
+                      <th>QUIZ TITLE</th>
+                      <th>QUESTION PROMPT</th>
+                      <th>CHOICES (A / B / C / D)</th>
+                      <th style="width: 70px;">ANS</th>
+                      <th>VALIDATION FEEDBACK</th>
+                    </tr>
+                  </thead>
+                  <tbody id="csv-preview-table-body">
+                    <!-- Rendered via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- ========================================================= -->
+      <!-- AUTHENTICATION MODAL (LOGIN / REGISTER)                   -->
+      <!-- ========================================================= -->
+      <div id="auth-modal" class="auth-modal-backdrop" hidden>
+        <div class="auth-modal-dossier">
+          <div class="modal-dossier-header">
+            <span class="dossier-classified">TACTICAL CLEARANCE REQUIRED</span>
+            <button id="auth-modal-close" class="modal-close-btn">✕</button>
+          </div>
+
+          <div class="auth-tabs">
+            <button id="tab-guest" class="auth-tab-btn active">⚡ Guest Quick Play</button>
+            <button id="tab-login" class="auth-tab-btn">Operator Login</button>
+            <button id="tab-register" class="auth-tab-btn">Register Callsign</button>
+          </div>
+
+          <!-- Guest Quick Play Form (No password or email needed!) -->
+          <form id="guest-form" class="auth-form">
+            <div class="form-group">
+              <label for="modal-guest-username">Choose Callsign / Username (No password or email needed)</label>
+              <div class="input-with-action">
+                <input type="text" id="modal-guest-username" class="tactical-input" required placeholder="e.g. Ash_Main or Maverick99" minlength="2" maxlength="24">
+                <button type="button" id="modal-guest-random-btn" class="btn-tactical-xs btn-outline" title="Generate Random Callsign">🎲 Random</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Select Tactical Operator PFP (Profile Picture):</label>
+              <div id="modal-guest-pfp-grid" class="guest-pfp-grid">
+                <!-- Avatars rendered via JS -->
+              </div>
+            </div>
+
+            <p class="field-hint">✓ Instant access: Earn Renown, level up your Skill Rank (Copper → Champion), and climb the leaderboard immediately!</p>
+            <p id="guest-error-msg" class="auth-error-msg" hidden></p>
+            <button type="submit" class="btn-tactical btn-accent btn-block">DEPLOY INSTANTLY AS GUEST →</button>
+          </form>
+
+          <!-- Quick Test Credentials Banner -->
+          <div class="quick-credentials-banner" id="quick-credentials-banner" hidden>
+            <div class="cred-item">
+              <span class="cred-role">Teacher:</span>
+              <code>benrud</code> / <code>TeacherSiege2026!</code>
+            </div>
+            <div class="cred-item">
+              <span class="cred-role">Student:</span>
+              <code>recruit_mason</code> / <code>Recruit2026!</code>
+            </div>
+          </div>
+
+          <!-- Login Form -->
+          <form id="login-form" class="auth-form">
+            <div class="form-group">
+              <label for="login-identifier">Callsign or Email</label>
+              <input type="text" id="login-identifier" class="tactical-input" required placeholder="benrud or recruit_mason" autocomplete="username">
+            </div>
+            <div class="form-group">
+              <label for="login-password">Tactical Passphrase</label>
+              <input type="password" id="login-password" class="tactical-input" required placeholder="Enter passphrase" autocomplete="current-password">
+            </div>
+            <p id="login-error-msg" class="auth-error-msg" hidden></p>
+            <button type="submit" class="btn-tactical btn-accent btn-block">Authenticate Operator</button>
+          </form>
+
+          <!-- Register Form -->
+          <form id="register-form" class="auth-form" hidden>
+            <div class="form-group">
+              <label for="reg-username">Operator Callsign (Username)</label>
+              <input type="text" id="reg-username" class="tactical-input" required placeholder="e.g. FrostBite_99" minlength="3">
+            </div>
+            <div class="form-group">
+              <label for="reg-email">Secure Email</label>
+              <input type="email" id="reg-email" class="tactical-input" required placeholder="operator@school.edu">
+            </div>
+            <div class="form-group">
+              <label for="reg-password">Passphrase (min 6 chars)</label>
+              <input type="password" id="reg-password" class="tactical-input" required minlength="6" placeholder="Choose secure passphrase">
+            </div>
+            <p class="field-hint">Note: Registration always assigns standard Player clearance per security protocol. Passwords securely hashed with bcrypt.</p>
+            <p id="reg-error-msg" class="auth-error-msg" hidden></p>
+            <button type="submit" class="btn-tactical btn-accent btn-block">Register Operator Callsign</button>
+          </form>
         </div>
+      </div>
 
-        <!-- Quiz Test Completed Results View -->
-        <div id="quiz-results-view" class="quiz-results-view" hidden>
-          <div class="results-header">
-            <span id="results-rank-symbol" class="results-rank-symbol">🎖️</span>
-            <h3 id="results-title" class="results-title">Test Completed</h3>
-            <p id="results-score" class="results-score">You scored 5 out of 5</p>
-            <p id="results-grade-message" class="results-grade-message">Champion Tier: Flawless map awareness!</p>
-          </div>
-
-          <div id="results-db-badge" class="results-db-badge">
-            Connecting score to database…
-          </div>
-
-          <div id="results-summary-list" class="results-summary-list">
-            <!-- Review answers list -->
-          </div>
-
-          <div class="results-actions">
-            <button id="retake-test-btn" class="button" type="button">Retake Test</button>
-            <button id="pick-another-category-btn" class="button button-secondary" type="button">Select Different Category</button>
-          </div>
+      <!-- Tactical Footer -->
+      <footer class="tactical-footer">
+        <div class="footer-left">
+          <span>Mason's Quiz App · Rainbow Six Siege Tactical Trivia</span>
+          <span class="footer-dot">·</span>
+          <span>Student: Rhiz Fam · High School Tech Class</span>
         </div>
-      </section>
-
-      <section class="panel" aria-labelledby="status-heading">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Runtime checks</p>
-            <h2 id="status-heading">Connection status</h2>
-          </div>
-          <button id="refresh-status" class="button button-secondary" type="button">Refresh</button>
+        <div class="footer-right">
+          <span id="system-status-indicator" class="status-indicator">● System Online</span>
         </div>
-        <ul class="status-list">
-          <li>
-            <span>Express server</span>
-            <span id="server-status" class="status" role="status">Checking…</span>
-          </li>
-          <li>
-            <span>PostgreSQL</span>
-            <span id="database-status" class="status" role="status">Checking…</span>
-          </li>
-        </ul>
-      </section>
+      </footer>
 
-      <section class="panel" aria-labelledby="query-heading">
-        <p class="eyebrow">Parameterized SQL example</p>
-        <h2 id="query-heading">Test a safe query</h2>
-        <p class="help">Your text is sent as a bound value, not joined into the SQL statement.</p>
-        <form id="echo-form">
-          <label for="message">Message</label>
-          <div class="form-row">
-            <input id="message" name="message" type="text" maxlength="500" required placeholder="Type a message">
-            <button class="button" type="submit">Send to PostgreSQL</button>
-          </div>
-        </form>
-        <p id="query-result" class="result" role="status" aria-live="polite"></p>
-      </section>
-
-      <footer>Static files are served from <code>public/</code>. API routes use the same origin.</footer>
-    </main>
+    </div>
   </body>
 </html>

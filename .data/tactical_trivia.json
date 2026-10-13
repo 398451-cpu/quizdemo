@@ -1,0 +1,1988 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "benrud",
+      "email": "benrud@r6tactical.edu",
+      "password_hash": "$2b$10$kEjZrTWD3VjCe.Rokhc6wuZQ1OoPVGPTs1u5c.xr/sZkX1.LqgPzW",
+      "role": "teacher",
+      "renown": 1500,
+      "rank": "Champion",
+      "created_at": "2026-10-13T17:39:40.996Z",
+      "streak_count": 5,
+      "streak_last_date": "2026-10-13",
+      "equipped_title": "Six Champion",
+      "equipped_badge": "Six Invitational Star",
+      "equipped_theme": "Midnight Siege"
+    },
+    {
+      "id": 2,
+      "username": "recruit_mason",
+      "email": "recruit@r6tactical.edu",
+      "password_hash": "$2b$10$da1xAvrMe2SzumebknZ5COGkzE0JabQhgv.l0QtnHgKcHfHxTPMkW",
+      "role": "player",
+      "renown": 260,
+      "rank": "Platinum",
+      "created_at": "2026-10-10T17:39:41.096Z",
+      "streak_count": 2,
+      "streak_last_date": "2026-10-13",
+      "equipped_title": "Recruit",
+      "equipped_badge": "Tactical Breacher",
+      "equipped_theme": null
+    },
+    {
+      "id": 3,
+      "username": "MASE",
+      "email": "rhizfam@gmail.com",
+      "password_hash": "$2b$10$SGvf4AXlvo7Yb.zOUwn5JukLenG.BEfhaTgz.nbZ./BGkLiaYOm56",
+      "role": "player",
+      "renown": 0,
+      "rank": "Unranked",
+      "created_at": "2026-10-13T17:46:02.600Z",
+      "streak_count": 0,
+      "streak_last_date": null,
+      "equipped_title": null,
+      "equipped_badge": null,
+      "equipped_theme": null
+    },
+    {
+      "id": 4,
+      "username": "Lion_Scan_52",
+      "email": "guest_1791914080132_750@guest.r6tactical.edu",
+      "password_hash": "$2b$08$7qQUk98gYeC2rUhISKyXWeYnIzRgcsFYcQVuOW99JIdknpMDwsSe6",
+      "role": "player",
+      "renown": 0,
+      "rank": "Unranked",
+      "created_at": "2026-10-13T17:54:40.161Z",
+      "streak_count": 0,
+      "streak_last_date": null,
+      "equipped_title": null,
+      "equipped_badge": null,
+      "equipped_theme": null,
+      "avatar": "🪖",
+      "is_guest": true
+    },
+    {
+      "id": 5,
+      "username": "Blitz_Rush_32",
+      "email": "guest_1791914088038_194@guest.r6tactical.edu",
+      "password_hash": "$2b$08$OEGqdRYikceSCDNqO9IWreCFJuX1nbUod4XARDIA1uRPvLKwkf2CG",
+      "role": "player",
+      "renown": 0,
+      "rank": "Unranked",
+      "created_at": "2026-10-13T17:54:48.063Z",
+      "streak_count": 0,
+      "streak_last_date": null,
+      "equipped_title": null,
+      "equipped_badge": null,
+      "equipped_theme": null,
+      "avatar": "💣",
+      "is_guest": true
+    },
+    {
+      "id": 6,
+      "username": "Viper_Ghost",
+      "email": "guest_1791914187637_767@guest.r6tactical.edu",
+      "password_hash": "$2b$08$gg1/38gVaiMBtD3tLz1eSuNGlhDgV4F12GetaS0pHOPacuohAA9H.",
+      "role": "player",
+      "renown": 0,
+      "rank": "Unranked",
+      "created_at": "2026-10-13T17:56:27.690Z",
+      "streak_count": 0,
+      "streak_last_date": null,
+      "equipped_title": null,
+      "equipped_badge": null,
+      "equipped_theme": null,
+      "avatar": "🐺",
+      "is_guest": true
+    }
+  ],
+  "quizzes": [
+    {
+      "id": 1,
+      "title": "Operators & Gadgets",
+      "description": "Who has what ability: defensive denial, intel gadgets, hard breaching, and electronic warfare."
+    },
+    {
+      "id": 2,
+      "title": "Maps & Callouts",
+      "description": "Name competitive bomb sites, key rooms, vertical soft spots, and iconic tactical angles."
+    },
+    {
+      "id": 3,
+      "title": "Weapons & Attachments",
+      "description": "Recoil mitigation, barrel attachments, ADS speeds, optics, and signature operator loadouts."
+    },
+    {
+      "id": 4,
+      "title": "Game Mechanics",
+      "description": "Drone phase timings, team reinforcement pool, defuser mechanics, audio propagation, and health/armor."
+    },
+    {
+      "id": 5,
+      "title": "History & Esports",
+      "description": "Six Invitational champions, legendary pro clutch moments, major DLC operations, and competitive meta."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "quiz_id": 1,
+      "text": "Which defender deploys the 'Mag-NET' system to capture and detonate incoming attacker projectiles?",
+      "position": 1
+    },
+    {
+      "id": 2,
+      "quiz_id": 1,
+      "text": "What is the name of Hibana's signature remote-detonated hard breaching launcher?",
+      "position": 2
+    },
+    {
+      "id": 3,
+      "quiz_id": 1,
+      "text": "Which attacker uses the 'EE-ONE-D' global surveillance drone to detect moving defenders across the map?",
+      "position": 3
+    },
+    {
+      "id": 4,
+      "quiz_id": 1,
+      "text": "What tactical device does Mozzie launch to hack and commandeer enemy observation drones?",
+      "position": 4
+    },
+    {
+      "id": 5,
+      "quiz_id": 1,
+      "text": "Which defender places bulletproof 'Evil Eye' cameras capable of rotating and firing high-energy laser darts?",
+      "position": 5
+    },
+    {
+      "id": 6,
+      "quiz_id": 1,
+      "text": "Which attacker uses the 'Kawan Hive Launcher' to deploy swarms of tracking nanobots in doorways and choke points?",
+      "position": 6
+    },
+    {
+      "id": 7,
+      "quiz_id": 1,
+      "text": "Which defender places acoustic Banshee Sonic Defense devices that emit a disorienting hum and slow attackers?",
+      "position": 7
+    },
+    {
+      "id": 8,
+      "quiz_id": 1,
+      "text": "What is the name of Solis's tactical visor capable of detecting attacker electronic gadgets through surfaces?",
+      "position": 8
+    },
+    {
+      "id": 9,
+      "quiz_id": 1,
+      "text": "Which hard breacher throws hydraulic 'S.E.L.M.A.' sequential explosive cylinders?",
+      "position": 9
+    },
+    {
+      "id": 10,
+      "quiz_id": 1,
+      "text": "Which defender drops an armor pack that grants damage resistance and guaranteed DBNO state to teammates?",
+      "position": 10
+    },
+    {
+      "id": 11,
+      "quiz_id": 1,
+      "text": "Which attacker operates the automated BU-GI auto-breacher tank that chews through soft floors and barricades?",
+      "position": 11
+    },
+    {
+      "id": 12,
+      "quiz_id": 2,
+      "text": "On Clubhouse, what are the two primary bomb sites located in the basement?",
+      "position": 12
+    },
+    {
+      "id": 13,
+      "quiz_id": 2,
+      "text": "On Oregon, which exterior structure callout contains a high-level ladder sniper vantage point over Meeting Hall?",
+      "position": 13
+    },
+    {
+      "id": 14,
+      "quiz_id": 2,
+      "text": "On Kafe Dostoyevsky, what is the competitive top-floor (3F) bomb site?",
+      "position": 14
+    },
+    {
+      "id": 15,
+      "quiz_id": 2,
+      "text": "On Bank, what is the common callout for the large multi-story glass-ceiling atrium on the ground floor?",
+      "position": 15
+    },
+    {
+      "id": 16,
+      "quiz_id": 2,
+      "text": "On Chalet, which basement exterior garage door is the primary target for attackers executing a snow-side breach?",
+      "position": 16
+    },
+    {
+      "id": 17,
+      "quiz_id": 2,
+      "text": "On Coastline, what is the central open-air rooftop/courtyard callout surrounded by 1F and 2F interior hallways?",
+      "position": 17
+    },
+    {
+      "id": 18,
+      "quiz_id": 2,
+      "text": "On Border, what is the 2F room directly above the 1F Workshop bomb site commonly called?",
+      "position": 18
+    },
+    {
+      "id": 19,
+      "quiz_id": 2,
+      "text": "On Villa, what universally recognized callout refers to the 90-degree corner hallway connecting Trophy and Aviator?",
+      "position": 19
+    },
+    {
+      "id": 20,
+      "quiz_id": 2,
+      "text": "On Theme Park, which bomb site was previously known as 'Haunted Dining' before the competitive rework?",
+      "position": 20
+    },
+    {
+      "id": 21,
+      "quiz_id": 2,
+      "text": "On Clubhouse, what is the narrow dirt tunnel in the basement called that attackers push from Construction?",
+      "position": 21
+    },
+    {
+      "id": 22,
+      "quiz_id": 2,
+      "text": "On Oregon, what is the basement hallway callout leading into Laundry from Construction called?",
+      "position": 22
+    },
+    {
+      "id": 23,
+      "quiz_id": 3,
+      "text": "Which defender is famous for wielding the blisteringly fast 1200 RPM Vector .45 ACP submachine gun?",
+      "position": 23
+    },
+    {
+      "id": 24,
+      "quiz_id": 3,
+      "text": "What specific recoil benefit does the 'Flash Hider' muzzle attachment provide in Rainbow Six Siege?",
+      "position": 24
+    },
+    {
+      "id": 25,
+      "quiz_id": 3,
+      "text": "What primary benefit does the 'Laser' attachment grant after the Year 9 weapon mechanics overhaul?",
+      "position": 25
+    },
+    {
+      "id": 26,
+      "quiz_id": 3,
+      "text": "What unique stat boost does the 'Extended Barrel' attachment provide to compatible weapons?",
+      "position": 26
+    },
+    {
+      "id": 27,
+      "quiz_id": 3,
+      "text": "Which heavy sniper rifle belongs to Kali and penetrates multiple soft walls and bodies with intense velocity?",
+      "position": 27
+    },
+    {
+      "id": 28,
+      "quiz_id": 3,
+      "text": "What is the standard magazine capacity of Ash's signature R4-C assault rifle?",
+      "position": 28
+    },
+    {
+      "id": 29,
+      "quiz_id": 3,
+      "text": "Which British pump-action shotgun is regarded as the competitive gold standard for soft wall site preparation?",
+      "position": 29
+    },
+    {
+      "id": 30,
+      "quiz_id": 3,
+      "text": "What recoil characteristic does the 'Compensator' attachment specifically target during sustained fire?",
+      "position": 30
+    },
+    {
+      "id": 31,
+      "quiz_id": 3,
+      "text": "Which secondary weapon option is a single-shot explosive launcher intended to destroy bulletproof gadgets?",
+      "position": 31
+    },
+    {
+      "id": 32,
+      "quiz_id": 3,
+      "text": "Which magnification sight level was historically referred to by the community as the 'ACOG'?",
+      "position": 32
+    },
+    {
+      "id": 33,
+      "quiz_id": 3,
+      "text": "Which defender carries the high-capacity ALDA 5.56 Light Machine Gun with an 80-round drum?",
+      "position": 33
+    },
+    {
+      "id": 34,
+      "quiz_id": 4,
+      "text": "How long does the standard Preparation Phase last in competitive Ranked and Esports matches?",
+      "position": 34
+    },
+    {
+      "id": 35,
+      "quiz_id": 4,
+      "text": "How many total wall reinforcements does the defending team pool share collectively at the round start?",
+      "position": 35
+    },
+    {
+      "id": 36,
+      "quiz_id": 4,
+      "text": "Under standard competitive Bomb settings, how long does it take an attacker to plant the defuser?",
+      "position": 36
+    },
+    {
+      "id": 37,
+      "quiz_id": 4,
+      "text": "How does Thatcher's EMP Grenade interact with active electrical gadgets like Bandit batteries or Kaid claws?",
+      "position": 37
+    },
+    {
+      "id": 38,
+      "quiz_id": 4,
+      "text": "How does audio propagation work in the Rainbow Six Siege physics engine?",
+      "position": 38
+    },
+    {
+      "id": 39,
+      "quiz_id": 4,
+      "text": "What is the maximum number of observation drones available to each attacking operator across a full round?",
+      "position": 39
+    },
+    {
+      "id": 40,
+      "quiz_id": 4,
+      "text": "What damage multiplier applies to headshots with bullet weapons in Rainbow Six Siege?",
+      "position": 40
+    },
+    {
+      "id": 41,
+      "quiz_id": 4,
+      "text": "Once the defuser is planted, how long does a defender need to hold the defuse prompt to disable it?",
+      "position": 41
+    },
+    {
+      "id": 42,
+      "quiz_id": 4,
+      "text": "Which tactic allows defenders to deny an attacker defuser plant through an unreinforced soft floor from below?",
+      "position": 42
+    },
+    {
+      "id": 43,
+      "quiz_id": 4,
+      "text": "What happens if an attacker planting the defuser is struck by an Echo Yokai drone sonic burst?",
+      "position": 43
+    },
+    {
+      "id": 44,
+      "quiz_id": 4,
+      "text": "Which operator speed rating has the fastest base sprint and movement speed in the game?",
+      "position": 44
+    },
+    {
+      "id": 45,
+      "quiz_id": 5,
+      "text": "Which North American roster won the inaugural PC Six Invitational in Montreal in 2017?",
+      "position": 45
+    },
+    {
+      "id": 46,
+      "quiz_id": 5,
+      "text": "Which legendary European roster achieved back-to-back Six Invitational championship titles in 2018 and 2019?",
+      "position": 46
+    },
+    {
+      "id": 47,
+      "quiz_id": 5,
+      "text": "In what year and month did Rainbow Six Siege officially launch worldwide?",
+      "position": 47
+    },
+    {
+      "id": 48,
+      "quiz_id": 5,
+      "text": "What was the name of Siege's first post-launch seasonal DLC in Year 1, introducing Buck, Frost, and Yacht?",
+      "position": 48
+    },
+    {
+      "id": 49,
+      "quiz_id": 5,
+      "text": "Which famous Year 2 operation cancelled new operator releases to overhaul server tick rates and core engine stability?",
+      "position": 49
+    },
+    {
+      "id": 50,
+      "quiz_id": 5,
+      "text": "Which Brazilian team became the first South American squad to lift the Six Invitational Hammer in 2021?",
+      "position": 50
+    },
+    {
+      "id": 51,
+      "quiz_id": 5,
+      "text": "During the Six Invitational 2020 grand finals on Oregon, which player's clutch defense on white stairs became an esports icon?",
+      "position": 51
+    },
+    {
+      "id": 52,
+      "quiz_id": 5,
+      "text": "Which Brazilian powerhouse won the Six Invitational 2024 grand final in São Paulo after a historic 3-2 series against FaZe Clan?",
+      "position": 52
+    },
+    {
+      "id": 53,
+      "quiz_id": 5,
+      "text": "Which map from the university setting was removed from the competitive playlist due to balance issues?",
+      "position": 53
+    },
+    {
+      "id": 54,
+      "quiz_id": 5,
+      "text": "Which French entry fragger is internationally famous for extreme mechanical precision and the 'Shaiiko lean'?",
+      "position": 54
+    },
+    {
+      "id": 55,
+      "quiz_id": 5,
+      "text": "Which North American roster won the Six Invitational 2020 featuring Rampy, Bosco, ThinkingNade, Fultz, and Canadian?",
+      "position": 55
+    }
+  ],
+  "choices": [
+    {
+      "id": 1,
+      "question_id": 1,
+      "text": "Wamai",
+      "is_correct": true
+    },
+    {
+      "id": 2,
+      "question_id": 1,
+      "text": "Jäger",
+      "is_correct": false
+    },
+    {
+      "id": 3,
+      "question_id": 1,
+      "text": "Aruni",
+      "is_correct": false
+    },
+    {
+      "id": 4,
+      "question_id": 1,
+      "text": "Bandit",
+      "is_correct": false
+    },
+    {
+      "id": 5,
+      "question_id": 2,
+      "text": "X-KAIROS",
+      "is_correct": true
+    },
+    {
+      "id": 6,
+      "question_id": 2,
+      "text": "S.E.L.M.A. Aqua Breacher",
+      "is_correct": false
+    },
+    {
+      "id": 7,
+      "question_id": 2,
+      "text": "Exothermic Charge",
+      "is_correct": false
+    },
+    {
+      "id": 8,
+      "question_id": 2,
+      "text": "Breaching Torch",
+      "is_correct": false
+    },
+    {
+      "id": 9,
+      "question_id": 3,
+      "text": "Lion",
+      "is_correct": true
+    },
+    {
+      "id": 10,
+      "question_id": 3,
+      "text": "Dokkaebi",
+      "is_correct": false
+    },
+    {
+      "id": 11,
+      "question_id": 3,
+      "text": "Jackal",
+      "is_correct": false
+    },
+    {
+      "id": 12,
+      "question_id": 3,
+      "text": "Deimos",
+      "is_correct": false
+    },
+    {
+      "id": 13,
+      "question_id": 4,
+      "text": "Pest Launcher",
+      "is_correct": true
+    },
+    {
+      "id": 14,
+      "question_id": 4,
+      "text": "Gu Mine",
+      "is_correct": false
+    },
+    {
+      "id": 15,
+      "question_id": 4,
+      "text": "Kludge Drone",
+      "is_correct": false
+    },
+    {
+      "id": 16,
+      "question_id": 4,
+      "text": "Yokai Drone",
+      "is_correct": false
+    },
+    {
+      "id": 17,
+      "question_id": 5,
+      "text": "Maestro",
+      "is_correct": true
+    },
+    {
+      "id": 18,
+      "question_id": 5,
+      "text": "Valkyrie",
+      "is_correct": false
+    },
+    {
+      "id": 19,
+      "question_id": 5,
+      "text": "Echo",
+      "is_correct": false
+    },
+    {
+      "id": 20,
+      "question_id": 5,
+      "text": "Melusi",
+      "is_correct": false
+    },
+    {
+      "id": 21,
+      "question_id": 6,
+      "text": "Grim",
+      "is_correct": true
+    },
+    {
+      "id": 22,
+      "question_id": 6,
+      "text": "Nomad",
+      "is_correct": false
+    },
+    {
+      "id": 23,
+      "question_id": 6,
+      "text": "Gridlock",
+      "is_correct": false
+    },
+    {
+      "id": 24,
+      "question_id": 6,
+      "text": "Capitão",
+      "is_correct": false
+    },
+    {
+      "id": 25,
+      "question_id": 7,
+      "text": "Melusi",
+      "is_correct": true
+    },
+    {
+      "id": 26,
+      "question_id": 7,
+      "text": "Clash",
+      "is_correct": false
+    },
+    {
+      "id": 27,
+      "question_id": 7,
+      "text": "Ela",
+      "is_correct": false
+    },
+    {
+      "id": 28,
+      "question_id": 7,
+      "text": "Thorn",
+      "is_correct": false
+    },
+    {
+      "id": 29,
+      "question_id": 8,
+      "text": "SPEC-IO Electro-Sensor",
+      "is_correct": true
+    },
+    {
+      "id": 30,
+      "question_id": 8,
+      "text": "Eyenox Model III",
+      "is_correct": false
+    },
+    {
+      "id": 31,
+      "question_id": 8,
+      "text": "RED MK IV Sensor",
+      "is_correct": false
+    },
+    {
+      "id": 32,
+      "question_id": 8,
+      "text": "Surtr Electro-Sight",
+      "is_correct": false
+    },
+    {
+      "id": 33,
+      "question_id": 9,
+      "text": "Ace",
+      "is_correct": true
+    },
+    {
+      "id": 34,
+      "question_id": 9,
+      "text": "Thermite",
+      "is_correct": false
+    },
+    {
+      "id": 35,
+      "question_id": 9,
+      "text": "Maverick",
+      "is_correct": false
+    },
+    {
+      "id": 36,
+      "question_id": 9,
+      "text": "Ram",
+      "is_correct": false
+    },
+    {
+      "id": 37,
+      "question_id": 10,
+      "text": "Rook",
+      "is_correct": true
+    },
+    {
+      "id": 38,
+      "question_id": 10,
+      "text": "Doc",
+      "is_correct": false
+    },
+    {
+      "id": 39,
+      "question_id": 10,
+      "text": "Thunderbird",
+      "is_correct": false
+    },
+    {
+      "id": 40,
+      "question_id": 10,
+      "text": "Castle",
+      "is_correct": false
+    },
+    {
+      "id": 41,
+      "question_id": 11,
+      "text": "Ram",
+      "is_correct": true
+    },
+    {
+      "id": 42,
+      "question_id": 11,
+      "text": "Sledge",
+      "is_correct": false
+    },
+    {
+      "id": 43,
+      "question_id": 11,
+      "text": "Buck",
+      "is_correct": false
+    },
+    {
+      "id": 44,
+      "question_id": 11,
+      "text": "Flores",
+      "is_correct": false
+    },
+    {
+      "id": 45,
+      "question_id": 12,
+      "text": "Church & Arsenal Room",
+      "is_correct": true
+    },
+    {
+      "id": 46,
+      "question_id": 12,
+      "text": "Bar & Stock Room",
+      "is_correct": false
+    },
+    {
+      "id": 47,
+      "question_id": 12,
+      "text": "Gym & Bedroom",
+      "is_correct": false
+    },
+    {
+      "id": 48,
+      "question_id": 12,
+      "text": "Cash Room & CCTV",
+      "is_correct": false
+    },
+    {
+      "id": 49,
+      "question_id": 13,
+      "text": "Big Tower",
+      "is_correct": true
+    },
+    {
+      "id": 50,
+      "question_id": 13,
+      "text": "Small Tower",
+      "is_correct": false
+    },
+    {
+      "id": 51,
+      "question_id": 13,
+      "text": "Junkyard Crane",
+      "is_correct": false
+    },
+    {
+      "id": 52,
+      "question_id": 13,
+      "text": "Dorm Balcony",
+      "is_correct": false
+    },
+    {
+      "id": 53,
+      "question_id": 14,
+      "text": "Bar & Cocktail Lounge",
+      "is_correct": true
+    },
+    {
+      "id": 54,
+      "question_id": 14,
+      "text": "Reading Room & Dining",
+      "is_correct": false
+    },
+    {
+      "id": 55,
+      "question_id": 14,
+      "text": "Kitchen Prep & Service",
+      "is_correct": false
+    },
+    {
+      "id": 56,
+      "question_id": 14,
+      "text": "Bakery & Kitchen",
+      "is_correct": false
+    },
+    {
+      "id": 57,
+      "question_id": 15,
+      "text": "Lobby",
+      "is_correct": true
+    },
+    {
+      "id": 58,
+      "question_id": 15,
+      "text": "Square",
+      "is_correct": false
+    },
+    {
+      "id": 59,
+      "question_id": 15,
+      "text": "Skylight Stairwell",
+      "is_correct": false
+    },
+    {
+      "id": 60,
+      "question_id": 15,
+      "text": "Blue Stairs",
+      "is_correct": false
+    },
+    {
+      "id": 61,
+      "question_id": 16,
+      "text": "Snowmobile Garage",
+      "is_correct": true
+    },
+    {
+      "id": 62,
+      "question_id": 16,
+      "text": "Wine Cellar",
+      "is_correct": false
+    },
+    {
+      "id": 63,
+      "question_id": 16,
+      "text": "Trophy Door",
+      "is_correct": false
+    },
+    {
+      "id": 64,
+      "question_id": 16,
+      "text": "Great Room Entrance",
+      "is_correct": false
+    },
+    {
+      "id": 65,
+      "question_id": 17,
+      "text": "Courtyard",
+      "is_correct": true
+    },
+    {
+      "id": 66,
+      "question_id": 17,
+      "text": "Ruins",
+      "is_correct": false
+    },
+    {
+      "id": 67,
+      "question_id": 17,
+      "text": "Pool Table",
+      "is_correct": false
+    },
+    {
+      "id": 68,
+      "question_id": 17,
+      "text": "Penthouse Balcony",
+      "is_correct": false
+    },
+    {
+      "id": 69,
+      "question_id": 18,
+      "text": "Armory Lockers",
+      "is_correct": true
+    },
+    {
+      "id": 70,
+      "question_id": 18,
+      "text": "Archives",
+      "is_correct": false
+    },
+    {
+      "id": 71,
+      "question_id": 18,
+      "text": "Security Room",
+      "is_correct": false
+    },
+    {
+      "id": 72,
+      "question_id": 18,
+      "text": "Ventilation",
+      "is_correct": false
+    },
+    {
+      "id": 73,
+      "question_id": 19,
+      "text": "90 (Ninety)",
+      "is_correct": true
+    },
+    {
+      "id": 74,
+      "question_id": 19,
+      "text": "Red Stairs",
+      "is_correct": false
+    },
+    {
+      "id": 75,
+      "question_id": 19,
+      "text": "Astro Hall",
+      "is_correct": false
+    },
+    {
+      "id": 76,
+      "question_id": 19,
+      "text": "Vault Connector",
+      "is_correct": false
+    },
+    {
+      "id": 77,
+      "question_id": 20,
+      "text": "Throne Room & Armory",
+      "is_correct": true
+    },
+    {
+      "id": 78,
+      "question_id": 20,
+      "text": "Lab & Storage",
+      "is_correct": false
+    },
+    {
+      "id": 79,
+      "question_id": 20,
+      "text": "Bunk & Day Care",
+      "is_correct": false
+    },
+    {
+      "id": 80,
+      "question_id": 20,
+      "text": "Dragon & Arcade",
+      "is_correct": false
+    },
+    {
+      "id": 81,
+      "question_id": 21,
+      "text": "Dirt (Tunnel)",
+      "is_correct": true
+    },
+    {
+      "id": 82,
+      "question_id": 21,
+      "text": "Blue Stairs",
+      "is_correct": false
+    },
+    {
+      "id": 83,
+      "question_id": 21,
+      "text": "Oil Pit",
+      "is_correct": false
+    },
+    {
+      "id": 84,
+      "question_id": 21,
+      "text": "Secret Room",
+      "is_correct": false
+    },
+    {
+      "id": 85,
+      "question_id": 22,
+      "text": "Blue Bunker / Blue Hall",
+      "is_correct": true
+    },
+    {
+      "id": 86,
+      "question_id": 22,
+      "text": "White Stairs",
+      "is_correct": false
+    },
+    {
+      "id": 87,
+      "question_id": 22,
+      "text": "Freezer Corridor",
+      "is_correct": false
+    },
+    {
+      "id": 88,
+      "question_id": 22,
+      "text": "Meeting Hatch",
+      "is_correct": false
+    },
+    {
+      "id": 89,
+      "question_id": 23,
+      "text": "Mira",
+      "is_correct": true
+    },
+    {
+      "id": 90,
+      "question_id": 23,
+      "text": "Smoke",
+      "is_correct": false
+    },
+    {
+      "id": 91,
+      "question_id": 23,
+      "text": "Bandit",
+      "is_correct": false
+    },
+    {
+      "id": 92,
+      "question_id": 23,
+      "text": "Echo",
+      "is_correct": false
+    },
+    {
+      "id": 93,
+      "question_id": 24,
+      "text": "Significantly reduces vertical recoil kick",
+      "is_correct": true
+    },
+    {
+      "id": 94,
+      "question_id": 24,
+      "text": "Eliminates horizontal diamond spread",
+      "is_correct": false
+    },
+    {
+      "id": 95,
+      "question_id": 24,
+      "text": "Increases rate of fire",
+      "is_correct": false
+    },
+    {
+      "id": 96,
+      "question_id": 24,
+      "text": "Speeds up reload animation",
+      "is_correct": false
+    },
+    {
+      "id": 97,
+      "question_id": 25,
+      "text": "Increases weapon Aim-Down-Sights (ADS) speed",
+      "is_correct": true
+    },
+    {
+      "id": 98,
+      "question_id": 25,
+      "text": "Blinds enemies in close quarters",
+      "is_correct": false
+    },
+    {
+      "id": 99,
+      "question_id": 25,
+      "text": "Increases bullet penetration damage",
+      "is_correct": false
+    },
+    {
+      "id": 100,
+      "question_id": 25,
+      "text": "Automatically tags target pings",
+      "is_correct": false
+    },
+    {
+      "id": 101,
+      "question_id": 26,
+      "text": "Increases base bullet damage by approximately 12-15%",
+      "is_correct": true
+    },
+    {
+      "id": 102,
+      "question_id": 26,
+      "text": "Increases magazine capacity by 10 rounds",
+      "is_correct": false
+    },
+    {
+      "id": 103,
+      "question_id": 26,
+      "text": "Completely removes bullet drop",
+      "is_correct": false
+    },
+    {
+      "id": 104,
+      "question_id": 26,
+      "text": "Silences weapon sound completely",
+      "is_correct": false
+    },
+    {
+      "id": 105,
+      "question_id": 27,
+      "text": "CSRX 300",
+      "is_correct": true
+    },
+    {
+      "id": 106,
+      "question_id": 27,
+      "text": "CAMRS",
+      "is_correct": false
+    },
+    {
+      "id": 107,
+      "question_id": 27,
+      "text": "417 DMR",
+      "is_correct": false
+    },
+    {
+      "id": 108,
+      "question_id": 27,
+      "text": "OTs-03",
+      "is_correct": false
+    },
+    {
+      "id": 109,
+      "question_id": 28,
+      "text": "30 + 1 rounds",
+      "is_correct": true
+    },
+    {
+      "id": 110,
+      "question_id": 28,
+      "text": "25 + 1 rounds",
+      "is_correct": false
+    },
+    {
+      "id": 111,
+      "question_id": 28,
+      "text": "20 + 1 rounds",
+      "is_correct": false
+    },
+    {
+      "id": 112,
+      "question_id": 28,
+      "text": "35 rounds",
+      "is_correct": false
+    },
+    {
+      "id": 113,
+      "question_id": 29,
+      "text": "M590A1",
+      "is_correct": true
+    },
+    {
+      "id": 114,
+      "question_id": 29,
+      "text": "SG-CQB",
+      "is_correct": false
+    },
+    {
+      "id": 115,
+      "question_id": 29,
+      "text": "Super 90",
+      "is_correct": false
+    },
+    {
+      "id": 116,
+      "question_id": 29,
+      "text": "SASG-12",
+      "is_correct": false
+    },
+    {
+      "id": 117,
+      "question_id": 30,
+      "text": "Reduces horizontal recoil drift and spread",
+      "is_correct": true
+    },
+    {
+      "id": 118,
+      "question_id": 30,
+      "text": "Reduces initial first-shot vertical kick",
+      "is_correct": false
+    },
+    {
+      "id": 119,
+      "question_id": 30,
+      "text": "Reduces muzzle flash",
+      "is_correct": false
+    },
+    {
+      "id": 120,
+      "question_id": 30,
+      "text": "Prevents barrel heating",
+      "is_correct": false
+    },
+    {
+      "id": 121,
+      "question_id": 31,
+      "text": "GONNE-6",
+      "is_correct": true
+    },
+    {
+      "id": 122,
+      "question_id": 31,
+      "text": "Bailiff 410",
+      "is_correct": false
+    },
+    {
+      "id": 123,
+      "question_id": 31,
+      "text": "Super Shorty",
+      "is_correct": false
+    },
+    {
+      "id": 124,
+      "question_id": 31,
+      "text": "Keratos .357",
+      "is_correct": false
+    },
+    {
+      "id": 125,
+      "question_id": 32,
+      "text": "2.5x Telescopic Scope",
+      "is_correct": true
+    },
+    {
+      "id": 126,
+      "question_id": 32,
+      "text": "1.5x Scope",
+      "is_correct": false
+    },
+    {
+      "id": 127,
+      "question_id": 32,
+      "text": "3.5x Scope",
+      "is_correct": false
+    },
+    {
+      "id": 128,
+      "question_id": 32,
+      "text": "1.0x Reflex Sight",
+      "is_correct": false
+    },
+    {
+      "id": 129,
+      "question_id": 33,
+      "text": "Maestro",
+      "is_correct": true
+    },
+    {
+      "id": 130,
+      "question_id": 33,
+      "text": "Tachanka",
+      "is_correct": false
+    },
+    {
+      "id": 131,
+      "question_id": 33,
+      "text": "Fenrir",
+      "is_correct": false
+    },
+    {
+      "id": 132,
+      "question_id": 33,
+      "text": "Echo",
+      "is_correct": false
+    },
+    {
+      "id": 133,
+      "question_id": 34,
+      "text": "45 seconds",
+      "is_correct": true
+    },
+    {
+      "id": 134,
+      "question_id": 34,
+      "text": "30 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 135,
+      "question_id": 34,
+      "text": "60 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 136,
+      "question_id": 34,
+      "text": "40 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 137,
+      "question_id": 35,
+      "text": "10 reinforcements",
+      "is_correct": true
+    },
+    {
+      "id": 138,
+      "question_id": 35,
+      "text": "8 reinforcements",
+      "is_correct": false
+    },
+    {
+      "id": 139,
+      "question_id": 35,
+      "text": "5 reinforcements",
+      "is_correct": false
+    },
+    {
+      "id": 140,
+      "question_id": 35,
+      "text": "12 reinforcements",
+      "is_correct": false
+    },
+    {
+      "id": 141,
+      "question_id": 36,
+      "text": "7 seconds",
+      "is_correct": true
+    },
+    {
+      "id": 142,
+      "question_id": 36,
+      "text": "5 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 143,
+      "question_id": 36,
+      "text": "4 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 144,
+      "question_id": 36,
+      "text": "10 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 145,
+      "question_id": 37,
+      "text": "Temporarily disables them for a set duration (does not destroy)",
+      "is_correct": true
+    },
+    {
+      "id": 146,
+      "question_id": 37,
+      "text": "Permanently destroys them into debris",
+      "is_correct": false
+    },
+    {
+      "id": 147,
+      "question_id": 37,
+      "text": "Causes them to detonate dealing lethal friendly fire",
+      "is_correct": false
+    },
+    {
+      "id": 148,
+      "question_id": 37,
+      "text": "Converts them into attacker-controlled electricity",
+      "is_correct": false
+    },
+    {
+      "id": 149,
+      "question_id": 38,
+      "text": "Sound travels dynamically through the shortest physical opening or bullet hole before penetrating walls",
+      "is_correct": true
+    },
+    {
+      "id": 150,
+      "question_id": 38,
+      "text": "Sound radiates in a simple unbroken spherical radius ignoring walls",
+      "is_correct": false
+    },
+    {
+      "id": 151,
+      "question_id": 38,
+      "text": "Sound only travels along metallic floor conduits",
+      "is_correct": false
+    },
+    {
+      "id": 152,
+      "question_id": 38,
+      "text": "Sound volume is identical on every floor level",
+      "is_correct": false
+    },
+    {
+      "id": 153,
+      "question_id": 39,
+      "text": "2 drones (1 prep phase, 1 in reserve)",
+      "is_correct": true
+    },
+    {
+      "id": 154,
+      "question_id": 39,
+      "text": "1 drone only",
+      "is_correct": false
+    },
+    {
+      "id": 155,
+      "question_id": 39,
+      "text": "3 drones",
+      "is_correct": false
+    },
+    {
+      "id": 156,
+      "question_id": 39,
+      "text": "4 drones",
+      "is_correct": false
+    },
+    {
+      "id": 157,
+      "question_id": 40,
+      "text": "Instant lethal 1-shot elimination (excluding shotguns)",
+      "is_correct": true
+    },
+    {
+      "id": 158,
+      "question_id": 40,
+      "text": "2.0x base weapon damage",
+      "is_correct": false
+    },
+    {
+      "id": 159,
+      "question_id": 40,
+      "text": "1.5x damage multiplier",
+      "is_correct": false
+    },
+    {
+      "id": 160,
+      "question_id": 40,
+      "text": "3.5x damage multiplier",
+      "is_correct": false
+    },
+    {
+      "id": 161,
+      "question_id": 41,
+      "text": "7 seconds",
+      "is_correct": true
+    },
+    {
+      "id": 162,
+      "question_id": 41,
+      "text": "5 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 163,
+      "question_id": 41,
+      "text": "8 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 164,
+      "question_id": 41,
+      "text": "10 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 165,
+      "question_id": 42,
+      "text": "Nitro Cell / C4 or impact detonation from underneath",
+      "is_correct": true
+    },
+    {
+      "id": 166,
+      "question_id": 42,
+      "text": "Placing a bulletproof barricade on the roof",
+      "is_correct": false
+    },
+    {
+      "id": 167,
+      "question_id": 42,
+      "text": "Throwing an impact EMP at the sky",
+      "is_correct": false
+    },
+    {
+      "id": 168,
+      "question_id": 42,
+      "text": "Throwing smoke grenades in the basement",
+      "is_correct": false
+    },
+    {
+      "id": 169,
+      "question_id": 43,
+      "text": "The defuser planting action is immediately cancelled and interrupted",
+      "is_correct": true
+    },
+    {
+      "id": 170,
+      "question_id": 43,
+      "text": "The player drops their primary weapon",
+      "is_correct": false
+    },
+    {
+      "id": 171,
+      "question_id": 43,
+      "text": "The defuser instantly detonates",
+      "is_correct": false
+    },
+    {
+      "id": 172,
+      "question_id": 43,
+      "text": "The player is permanently blinded for 10 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 173,
+      "question_id": 44,
+      "text": "3 Speed (1 Armor)",
+      "is_correct": true
+    },
+    {
+      "id": 174,
+      "question_id": 44,
+      "text": "1 Speed (3 Armor)",
+      "is_correct": false
+    },
+    {
+      "id": 175,
+      "question_id": 44,
+      "text": "2 Speed (2 Armor)",
+      "is_correct": false
+    },
+    {
+      "id": 176,
+      "question_id": 44,
+      "text": "4 Speed (Experimental)",
+      "is_correct": false
+    },
+    {
+      "id": 177,
+      "question_id": 45,
+      "text": "Continuum (later Evil Geniuses)",
+      "is_correct": true
+    },
+    {
+      "id": 178,
+      "question_id": 45,
+      "text": "Penta Sports",
+      "is_correct": false
+    },
+    {
+      "id": 179,
+      "question_id": 45,
+      "text": "Team Liquid",
+      "is_correct": false
+    },
+    {
+      "id": 180,
+      "question_id": 45,
+      "text": "G2 Esports",
+      "is_correct": false
+    },
+    {
+      "id": 181,
+      "question_id": 46,
+      "text": "PENTA Sports / G2 Esports",
+      "is_correct": true
+    },
+    {
+      "id": 182,
+      "question_id": 46,
+      "text": "Evil Geniuses",
+      "is_correct": false
+    },
+    {
+      "id": 183,
+      "question_id": 46,
+      "text": "Ninjas in Pyjamas",
+      "is_correct": false
+    },
+    {
+      "id": 184,
+      "question_id": 46,
+      "text": "Team Empire",
+      "is_correct": false
+    },
+    {
+      "id": 185,
+      "question_id": 47,
+      "text": "December 2015",
+      "is_correct": true
+    },
+    {
+      "id": 186,
+      "question_id": 47,
+      "text": "March 2016",
+      "is_correct": false
+    },
+    {
+      "id": 187,
+      "question_id": 47,
+      "text": "November 2014",
+      "is_correct": false
+    },
+    {
+      "id": 188,
+      "question_id": 47,
+      "text": "June 2017",
+      "is_correct": false
+    },
+    {
+      "id": 189,
+      "question_id": 48,
+      "text": "Operation Black Ice",
+      "is_correct": true
+    },
+    {
+      "id": 190,
+      "question_id": 48,
+      "text": "Operation Dust Line",
+      "is_correct": false
+    },
+    {
+      "id": 191,
+      "question_id": 48,
+      "text": "Operation Skull Rain",
+      "is_correct": false
+    },
+    {
+      "id": 192,
+      "question_id": 48,
+      "text": "Operation Red Crow",
+      "is_correct": false
+    },
+    {
+      "id": 193,
+      "question_id": 49,
+      "text": "Operation Health",
+      "is_correct": true
+    },
+    {
+      "id": 194,
+      "question_id": 49,
+      "text": "Operation Chimera",
+      "is_correct": false
+    },
+    {
+      "id": 195,
+      "question_id": 49,
+      "text": "Operation Blood Orchid",
+      "is_correct": false
+    },
+    {
+      "id": 196,
+      "question_id": 49,
+      "text": "Operation White Noise",
+      "is_correct": false
+    },
+    {
+      "id": 197,
+      "question_id": 50,
+      "text": "Ninjas in Pyjamas",
+      "is_correct": true
+    },
+    {
+      "id": 198,
+      "question_id": 50,
+      "text": "Team Liquid",
+      "is_correct": false
+    },
+    {
+      "id": 199,
+      "question_id": 50,
+      "text": "FaZe Clan",
+      "is_correct": false
+    },
+    {
+      "id": 200,
+      "question_id": 50,
+      "text": "w7m esports",
+      "is_correct": false
+    },
+    {
+      "id": 201,
+      "question_id": 51,
+      "text": "Canadian (Spacestation Gaming)",
+      "is_correct": true
+    },
+    {
+      "id": 202,
+      "question_id": 51,
+      "text": "Pengu (G2 Esports)",
+      "is_correct": false
+    },
+    {
+      "id": 203,
+      "question_id": 51,
+      "text": "Beaulo (TSM)",
+      "is_correct": false
+    },
+    {
+      "id": 204,
+      "question_id": 51,
+      "text": "Nesk (Team Liquid)",
+      "is_correct": false
+    },
+    {
+      "id": 205,
+      "question_id": 52,
+      "text": "w7m esports",
+      "is_correct": true
+    },
+    {
+      "id": 206,
+      "question_id": 52,
+      "text": "G2 Esports",
+      "is_correct": false
+    },
+    {
+      "id": 207,
+      "question_id": 52,
+      "text": "DarkZero Esports",
+      "is_correct": false
+    },
+    {
+      "id": 208,
+      "question_id": 52,
+      "text": "BDS Esports",
+      "is_correct": false
+    },
+    {
+      "id": 209,
+      "question_id": 53,
+      "text": "Bartlett University",
+      "is_correct": true
+    },
+    {
+      "id": 210,
+      "question_id": 53,
+      "text": "Favela",
+      "is_correct": false
+    },
+    {
+      "id": 211,
+      "question_id": 53,
+      "text": "Presidential Plane",
+      "is_correct": false
+    },
+    {
+      "id": 212,
+      "question_id": 53,
+      "text": "House",
+      "is_correct": false
+    },
+    {
+      "id": 213,
+      "question_id": 54,
+      "text": "Shaiiko",
+      "is_correct": true
+    },
+    {
+      "id": 214,
+      "question_id": 54,
+      "text": "Pengu",
+      "is_correct": false
+    },
+    {
+      "id": 215,
+      "question_id": 54,
+      "text": "Kanto",
+      "is_correct": false
+    },
+    {
+      "id": 216,
+      "question_id": 54,
+      "text": "Fabian",
+      "is_correct": false
+    },
+    {
+      "id": 217,
+      "question_id": 55,
+      "text": "Spacestation Gaming (SSG)",
+      "is_correct": true
+    },
+    {
+      "id": 218,
+      "question_id": 55,
+      "text": "TSM",
+      "is_correct": false
+    },
+    {
+      "id": 219,
+      "question_id": 55,
+      "text": "Evil Geniuses",
+      "is_correct": false
+    },
+    {
+      "id": 220,
+      "question_id": 55,
+      "text": "DarkZero Esports",
+      "is_correct": false
+    }
+  ],
+  "attempts": [
+    {
+      "id": 101,
+      "user_id": 2,
+      "quiz_id": 1,
+      "score": 9,
+      "question_count": 11,
+      "completed_at": "2026-10-11T17:39:41.096Z",
+      "is_complete": true
+    },
+    {
+      "id": 102,
+      "user_id": 2,
+      "quiz_id": 2,
+      "score": 8,
+      "question_count": 11,
+      "completed_at": "2026-10-12T17:39:41.096Z",
+      "is_complete": true
+    },
+    {
+      "id": 103,
+      "user_id": 2,
+      "quiz_id": 1,
+      "score": 11,
+      "question_count": 11,
+      "completed_at": "2026-10-13T17:44:34.732Z",
+      "is_complete": true
+    }
+  ],
+  "shop_items": [
+    {
+      "id": 1,
+      "name": "Tactical Breacher",
+      "type": "badge",
+      "cost_renown": 50,
+      "rarity": "common",
+      "description": "Reinforced steel breaching hammer insignia."
+    },
+    {
+      "id": 2,
+      "name": "Defuser Specialist",
+      "type": "badge",
+      "cost_renown": 100,
+      "rarity": "rare",
+      "description": "Electronic bomb defusal carrier insignia."
+    },
+    {
+      "id": 3,
+      "name": "Black Ice Crest",
+      "type": "badge",
+      "cost_renown": 250,
+      "rarity": "epic",
+      "description": "Shimmering glacial camouflage crest."
+    },
+    {
+      "id": 4,
+      "name": "Six Invitational Star",
+      "type": "badge",
+      "cost_renown": 500,
+      "rarity": "legendary",
+      "description": "Official Six Invitational tournament champion crest."
+    },
+    {
+      "id": 5,
+      "name": "Recruit",
+      "type": "title",
+      "cost_renown": 30,
+      "rarity": "common",
+      "description": "Standard issue operator title."
+    },
+    {
+      "id": 6,
+      "name": "Clutch Master",
+      "type": "title",
+      "cost_renown": 120,
+      "rarity": "rare",
+      "description": "Title awarded to players who clutch 1vX situations."
+    },
+    {
+      "id": 7,
+      "name": "Hard Breacher",
+      "type": "title",
+      "cost_renown": 200,
+      "rarity": "rare",
+      "description": "Master of reinforced wall entry."
+    },
+    {
+      "id": 8,
+      "name": "Six Champion",
+      "type": "title",
+      "cost_renown": 600,
+      "rarity": "legendary",
+      "description": "Elite title for top-tier tactical players."
+    },
+    {
+      "id": 9,
+      "name": "Midnight Siege",
+      "type": "theme",
+      "cost_renown": 150,
+      "rarity": "rare",
+      "description": "Deep carbon black UI with high-contrast amber highlights."
+    },
+    {
+      "id": 10,
+      "name": "Black Ice Frost",
+      "type": "theme",
+      "cost_renown": 350,
+      "rarity": "epic",
+      "description": "Glacial cyan & arctic tactical palette."
+    },
+    {
+      "id": 11,
+      "name": "Pro League Gold",
+      "type": "theme",
+      "cost_renown": 500,
+      "rarity": "legendary",
+      "description": "Prestige championship gold and platinum tactical aesthetic."
+    }
+  ],
+  "unlocks": [
+    {
+      "id": 1,
+      "user_id": 2,
+      "item_id": 1,
+      "unlocked_at": "2026-10-13T17:39:41.096Z"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "item_id": 5,
+      "unlocked_at": "2026-10-13T17:39:41.096Z"
+    }
+  ],
+  "pass_goals": [
+    {
+      "id": 1,
+      "track": "free",
+      "goal_type": "complete_quizzes",
+      "target": 3,
+      "item_id": 5,
+      "description": "Complete 3 tactical quizzes (any category)"
+    },
+    {
+      "id": 2,
+      "track": "free",
+      "goal_type": "score_high",
+      "target": 1,
+      "item_id": 1,
+      "description": "Score 80%+ on any tactical quiz"
+    },
+    {
+      "id": 3,
+      "track": "free",
+      "goal_type": "daily_streak",
+      "target": 2,
+      "item_id": 9,
+      "description": "Achieve a 2-day daily streak"
+    },
+    {
+      "id": 4,
+      "track": "premium",
+      "goal_type": "complete_quizzes",
+      "target": 10,
+      "item_id": 4,
+      "description": "Complete 10 tactical quizzes"
+    },
+    {
+      "id": 5,
+      "track": "premium",
+      "goal_type": "perfect_score",
+      "target": 1,
+      "item_id": 8,
+      "description": "Score 100% (Flawless) on any quiz"
+    },
+    {
+      "id": 6,
+      "track": "premium",
+      "goal_type": "earn_renown",
+      "target": 200,
+      "item_id": 10,
+      "description": "Earn 200 total Renown from deployments"
+    }
+  ],
+  "pass_progress": [
+    {
+      "id": 1,
+      "user_id": 2,
+      "goal_id": 1,
+      "progress": 1,
+      "achieved_at": null
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "goal_id": 2,
+      "progress": 1,
+      "achieved_at": "2026-10-13T17:44:34.735Z"
+    },
+    {
+      "id": 3,
+      "user_id": 2,
+      "goal_id": 3,
+      "progress": 1,
+      "achieved_at": null
+    }
+  ],
+  "premium_pass": []
+}
