@@ -1002,6 +1002,54 @@ export async function initDatabase() {
             unlocked_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
           );
         `);
+
+        // Keep a fresh PostgreSQL database playable without overwriting any
+        // quizzes or questions that have already been added by a teacher.
+        await client.query("BEGIN");
+        try {
+          for (const seedQuiz of SEED_QUIZZES) {
+            const quizResult = await client.query(
+              "SELECT id FROM quizzes WHERE title = $1 ORDER BY id ASC LIMIT 1",
+              [seedQuiz.title],
+            );
+            let quizId = quizResult.rows[0]?.id;
+
+            if (!quizId) {
+              const insertedQuiz = await client.query(
+                "INSERT INTO quizzes (title, description) VALUES ($1, $2) RETURNING id",
+                [seedQuiz.title, seedQuiz.description],
+              );
+              quizId = insertedQuiz.rows[0].id;
+            }
+
+            const existingQuestions = await client.query(
+              "SELECT 1 FROM questions WHERE quiz_id = $1 LIMIT 1",
+              [quizId],
+            );
+            if (existingQuestions.rows.length > 0) continue;
+
+            const seedQuestions = SEED_QUESTIONS_DATA.filter(
+              (question) => question.quiz_id === seedQuiz.id,
+            );
+            for (const [index, seedQuestion] of seedQuestions.entries()) {
+              const insertedQuestion = await client.query(
+                "INSERT INTO questions (quiz_id, text, position) VALUES ($1, $2, $3) RETURNING id",
+                [quizId, seedQuestion.text, index + 1],
+              );
+              for (const choice of seedQuestion.choices) {
+                await client.query(
+                  "INSERT INTO choices (question_id, text, is_correct) VALUES ($1, $2, $3)",
+                  [insertedQuestion.rows[0].id, choice.text, choice.is_correct],
+                );
+              }
+            }
+          }
+          await client.query("COMMIT");
+        } catch (error) {
+          await client.query("ROLLBACK");
+          throw error;
+        }
+
         isPgConnected = true;
         console.log("PostgreSQL connected and schema verified.");
       } finally {

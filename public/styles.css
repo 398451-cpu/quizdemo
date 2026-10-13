@@ -73,6 +73,10 @@ body.theme-pro-league {
   padding: 0;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);

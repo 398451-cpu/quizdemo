@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { db, initDatabase } from "./db.js";
 
 const app = express();
-const port = Number(process.env.PORT || 3000);
+const port = Number(process.env.PORT || 5000);
 const publicDirectory = fileURLToPath(new URL("./public/", import.meta.url));
 
 // Simple in-memory session store

@@ -15,6 +15,7 @@
     currentQuestionIndex: 0,
     userAnswers: {}, // { [question_id]: choice_id }
     currentAttemptId: null,
+    pendingQuizId: null,
     shopData: null,
     leaderboardTab: "overall",
     teacherSelectedQuizId: 1,
@@ -481,7 +482,13 @@
       applyUserState(data.user);
       closeAuthModal();
       showNotification(`🎮 Welcome, Operator ${data.user.username}! Ready to deploy.`);
-      loadQuizzes();
+      if (state.pendingQuizId) {
+        const quizId = state.pendingQuizId;
+        state.pendingQuizId = null;
+        startQuizAssessment(quizId);
+      } else {
+        loadQuizzes();
+      }
     } catch {
       showNotification("Server error during guest join.", true);
     }
@@ -761,7 +768,7 @@
             <div class="quiz-card-footer">
               ${bestBadge}
               <button class="btn-tactical btn-accent deploy-btn" data-id="${q.id}">
-                ${isGuest ? "Authenticate to Deploy" : "Deploy Assessment →"}
+                 ${isGuest ? "Play as Guest →" : "Deploy Assessment →"}
               </button>
             </div>
           </div>
@@ -774,8 +781,9 @@
       btn.addEventListener("click", () => {
         const qid = btn.dataset.id;
         if (!state.user) {
-          openAuthModal("login");
-          showNotification("Operator login required to deploy on tactical assessments.");
+          state.pendingQuizId = qid;
+          openAuthModal("guest");
+          showNotification("Choose a callsign to start playing as a guest.");
           return;
         }
         startQuizAssessment(qid);
