@@ -729,11 +729,11 @@
   function renderGuestQuizzes() {
     // Show preview for unauthenticated users
     const sample = [
-      { id: 1, title: "Operators & Gadgets", description: "Who has what ability: defensive denial, intel gadgets, hard breaching, and electronic warfare.", question_count: 11, icon: "🛡️" },
-      { id: 2, title: "Maps & Callouts", description: "Name competitive bomb sites, key rooms, vertical soft spots, and iconic tactical angles.", question_count: 11, icon: "🗺️" },
-      { id: 3, title: "Weapons & Attachments", description: "Recoil mitigation, barrel attachments, ADS speeds, optics, and signature operator loadouts.", question_count: 11, icon: "🔫" },
-      { id: 4, title: "Game Mechanics", description: "Drone phase timings, team reinforcement pool, defuser mechanics, audio propagation, and health/armor.", question_count: 11, icon: "⚙️" },
-      { id: 5, title: "History & Esports", description: "Six Invitational champions, legendary pro clutch moments, major DLC operations, and competitive meta.", question_count: 11, icon: "🏆" },
+      { id: 1, title: "Operators & Gadgets", description: "Who has what ability: defensive denial, intel gadgets, hard breaching, and electronic warfare.", question_count: 14, icon: "🛡️" },
+      { id: 2, title: "Maps & Callouts", description: "Name competitive bomb sites, key rooms, vertical soft spots, and iconic tactical angles.", question_count: 14, icon: "🗺️" },
+      { id: 3, title: "Weapons & Attachments", description: "Recoil mitigation, barrel attachments, ADS speeds, optics, and signature operator loadouts.", question_count: 14, icon: "🔫" },
+      { id: 4, title: "Game Mechanics", description: "Drone phase timings, team reinforcement pool, defuser mechanics, audio propagation, and health/armor.", question_count: 14, icon: "⚙️" },
+      { id: 5, title: "History & Esports", description: "Six Invitational champions, legendary pro clutch moments, major DLC operations, and competitive meta.", question_count: 14, icon: "🏆" },
     ];
     renderQuizzesGrid(sample, true);
   }
@@ -810,7 +810,14 @@
       const qData = await qRes.json();
 
       state.activeQuiz = qData.quiz;
-      state.activeQuestions = qData.questions;
+      state.activeQuestions = qData.questions.map((question, index) => {
+        const choices = question.choices || [];
+        const offset = choices.length ? (index + Number(quizId)) % choices.length : 0;
+        const rotatedChoices = offset
+          ? [...choices.slice(-offset), ...choices.slice(0, -offset)]
+          : choices;
+        return { ...question, choices: rotatedChoices };
+      });
       state.currentQuestionIndex = 0;
       state.userAnswers = {};
 

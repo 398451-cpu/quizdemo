@@ -616,6 +616,158 @@ const SEED_QUESTIONS_DATA = [
       { text: "DarkZero Esports", is_correct: false },
     ],
   },
+
+  // Current Siege X content: Y11S2 System Override and Y11S3 Split Fire.
+  {
+    quiz_id: 1,
+    text: "Which new Defender uses the Horus Lance Launcher to counter shield pushes in Operation Split Fire?",
+    choices: [
+      { text: "Denari", is_correct: false },
+      { text: "Noor", is_correct: true },
+      { text: "Rauora", is_correct: false },
+      { text: "Skopós", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 1,
+    text: "In Dokkaebi's Y11S2 Jegeo Payload rework, what must happen for the upload to complete?",
+    choices: [
+      { text: "Dokkaebi must stay within 10 meters of the target", is_correct: false },
+      { text: "A teammate must scan the target twice", is_correct: false },
+      { text: "The payload must maintain a constant connection to its target", is_correct: true },
+      { text: "The target must be standing still", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 1,
+    text: "Which three Operators received the XK23 assault rifle in the Y11S2 loadout update?",
+    choices: [
+      { text: "Dokkaebi, Rauora, and Sens", is_correct: true },
+      { text: "Dokkaebi, Deimos, and Osa", is_correct: false },
+      { text: "Sens, Grim, and Ying", is_correct: false },
+      { text: "Rauora, Flores, and Ace", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 2,
+    text: "Which new map inspired by Rainbow Six: Vegas launched with Operation System Override in June 2026?",
+    choices: [
+      { text: "Calypso Casino", is_correct: true },
+      { text: "Stadium Bravo", is_correct: false },
+      { text: "Fortress", is_correct: false },
+      { text: "Nighthaven Labs", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 2,
+    text: "Operation Split Fire's targeted Villa update moved which first-floor areas to the basement?",
+    choices: [
+      { text: "Kitchen and Dining Room", is_correct: false },
+      { text: "Living Room and Library", is_correct: true },
+      { text: "Aviator Room and Games Room", is_correct: false },
+      { text: "Study and Trophy Room", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 2,
+    text: "Which three maps received visual overhauls in Operation Split Fire?",
+    choices: [
+      { text: "Bank, Kafe Dostoyevsky, and Oregon", is_correct: false },
+      { text: "Villa, Coastline, and Clubhouse", is_correct: false },
+      { text: "Stadium Alpha, Stadium Bravo, and House", is_correct: true },
+      { text: "Border, Consulate, and Chalet", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 3,
+    text: "How did Ubisoft describe the new XK23 assault rifle introduced in Y11S2?",
+    choices: [
+      { text: "A high-damage bullpup with a moderate rate of fire", is_correct: true },
+      { text: "A low-damage rifle with an extremely high rate of fire", is_correct: false },
+      { text: "A semi-automatic marksman rifle with a five-round magazine", is_correct: false },
+      { text: "A close-range shotgun with slug ammunition", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 3,
+    text: "After the Y11S2.3 update, what is Hibana's X-Kairos detonation timer?",
+    choices: [
+      { text: "2.5 seconds", is_correct: false },
+      { text: "3.8 seconds", is_correct: true },
+      { text: "5 seconds", is_correct: false },
+      { text: "7 seconds", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 3,
+    text: "After the Y11S2.3 update, how much total fuel ammunition does Maverick's Breaching Torch carry?",
+    choices: [
+      { text: "288", is_correct: false },
+      { text: "300", is_correct: false },
+      { text: "320", is_correct: true },
+      { text: "360", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 4,
+    text: "What does Noor's Horus Lance Launcher do when its projectile hits a shield or destructible surface?",
+    choices: [
+      { text: "It creates a temporary smoke screen", is_correct: false },
+      { text: "It attaches, then erupts into flames", is_correct: true },
+      { text: "It electrifies the surface for 10 seconds", is_correct: false },
+      { text: "It deploys a bulletproof camera", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 4,
+    text: "What kind of limited-time mode was Wasteland Circuit, introduced during Operation Split Fire?",
+    choices: [
+      { text: "A 1v1 operator duel", is_correct: false },
+      { text: "A hostage extraction race", is_correct: false },
+      { text: "A drone-racing event", is_correct: true },
+      { text: "A five-round bomb-defusal tournament", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 4,
+    text: "What competitive playlist division was added in Operation Split Fire?",
+    choices: [
+      { text: "Legend Division", is_correct: true },
+      { text: "Champion Division", is_correct: false },
+      { text: "Elite Division", is_correct: false },
+      { text: "Master Division", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 5,
+    text: "Which team won the Six Invitational 2026 grand final, defeating Team Secret 3–1?",
+    choices: [
+      { text: "FaZe Clan", is_correct: true },
+      { text: "Team Falcons", is_correct: false },
+      { text: "Team Secret", is_correct: false },
+      { text: "FURIA", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 5,
+    text: "Which new Defender headlined Operation Split Fire, released on September 1, 2026?",
+    choices: [
+      { text: "Denari", is_correct: false },
+      { text: "Noor", is_correct: true },
+      { text: "Rauora", is_correct: false },
+      { text: "Solis", is_correct: false },
+    ],
+  },
+  {
+    quiz_id: 5,
+    text: "Which team won the Rainbow Six Siege tournament at the Esports World Cup 2026, beating FURIA 3–1?",
+    choices: [
+      { text: "FURIA", is_correct: false },
+      { text: "Team Secret", is_correct: false },
+      { text: "FaZe Clan", is_correct: true },
+      { text: "G2 Esports", is_correct: false },
+    ],
+  },
 ];
 
 const SEED_SHOP_ITEMS = [
@@ -815,6 +967,48 @@ export async function initDatabase() {
       qId++;
     }
   }
+
+  // Add new built-in questions to existing memory stores without replacing
+  // questions that have been added or edited by teachers.
+  for (const seedQuiz of SEED_QUIZZES) {
+    const quiz = memoryDb.quizzes.find((item) => item.title === seedQuiz.title);
+    if (!quiz) continue;
+
+    const seedQuestions = SEED_QUESTIONS_DATA.filter(
+      (question) => question.quiz_id === seedQuiz.id,
+    );
+    for (const [index, seedQuestion] of seedQuestions.entries()) {
+      if (
+        memoryDb.questions.some(
+          (question) => question.quiz_id === quiz.id && question.text === seedQuestion.text,
+        )
+      ) {
+        continue;
+      }
+
+      const questionId = Math.max(0, ...memoryDb.questions.map((question) => question.id)) + 1;
+      const currentQuizQuestions = memoryDb.questions.filter(
+        (question) => question.quiz_id === quiz.id,
+      );
+      memoryDb.questions.push({
+        id: questionId,
+        quiz_id: quiz.id,
+        text: seedQuestion.text,
+        position: Math.max(0, ...currentQuizQuestions.map((question) => question.position)) + 1,
+      });
+
+      let choiceId = Math.max(0, ...memoryDb.choices.map((choice) => choice.id)) + 1;
+      for (const choice of seedQuestion.choices) {
+        memoryDb.choices.push({
+          id: choiceId++,
+          question_id: questionId,
+          text: choice.text,
+          is_correct: choice.is_correct,
+        });
+      }
+    }
+  }
+
   if (memoryDb.shop_items.length === 0) {
     memoryDb.shop_items = [...SEED_SHOP_ITEMS];
   }
@@ -1022,16 +1216,16 @@ export async function initDatabase() {
               quizId = insertedQuiz.rows[0].id;
             }
 
-            const existingQuestions = await client.query(
-              "SELECT 1 FROM questions WHERE quiz_id = $1 LIMIT 1",
-              [quizId],
-            );
-            if (existingQuestions.rows.length > 0) continue;
-
             const seedQuestions = SEED_QUESTIONS_DATA.filter(
               (question) => question.quiz_id === seedQuiz.id,
             );
             for (const [index, seedQuestion] of seedQuestions.entries()) {
+              const existingQuestion = await client.query(
+                "SELECT 1 FROM questions WHERE quiz_id = $1 AND text = $2 LIMIT 1",
+                [quizId, seedQuestion.text],
+              );
+              if (existingQuestion.rows.length > 0) continue;
+
               const insertedQuestion = await client.query(
                 "INSERT INTO questions (quiz_id, text, position) VALUES ($1, $2, $3) RETURNING id",
                 [quizId, seedQuestion.text, index + 1],

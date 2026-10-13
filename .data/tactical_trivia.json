@@ -454,6 +454,96 @@
       "quiz_id": 5,
       "text": "Which North American roster won the Six Invitational 2020 featuring Rampy, Bosco, ThinkingNade, Fultz, and Canadian?",
       "position": 55
+    },
+    {
+      "id": 56,
+      "quiz_id": 1,
+      "text": "Which new Defender uses the Horus Lance Launcher to counter shield pushes in Operation Split Fire?",
+      "position": 12
+    },
+    {
+      "id": 57,
+      "quiz_id": 1,
+      "text": "In Dokkaebi's Y11S2 Jegeo Payload rework, what must happen for the upload to complete?",
+      "position": 13
+    },
+    {
+      "id": 58,
+      "quiz_id": 1,
+      "text": "Which three Operators received the XK23 assault rifle in the Y11S2 loadout update?",
+      "position": 14
+    },
+    {
+      "id": 59,
+      "quiz_id": 2,
+      "text": "Which new map inspired by Rainbow Six: Vegas launched with Operation System Override in June 2026?",
+      "position": 23
+    },
+    {
+      "id": 60,
+      "quiz_id": 2,
+      "text": "Operation Split Fire's targeted Villa update moved which first-floor areas to the basement?",
+      "position": 24
+    },
+    {
+      "id": 61,
+      "quiz_id": 2,
+      "text": "Which three maps received visual overhauls in Operation Split Fire?",
+      "position": 25
+    },
+    {
+      "id": 62,
+      "quiz_id": 3,
+      "text": "How did Ubisoft describe the new XK23 assault rifle introduced in Y11S2?",
+      "position": 34
+    },
+    {
+      "id": 63,
+      "quiz_id": 3,
+      "text": "After the Y11S2.3 update, what is Hibana's X-Kairos detonation timer?",
+      "position": 35
+    },
+    {
+      "id": 64,
+      "quiz_id": 3,
+      "text": "After the Y11S2.3 update, how much total fuel ammunition does Maverick's Breaching Torch carry?",
+      "position": 36
+    },
+    {
+      "id": 65,
+      "quiz_id": 4,
+      "text": "What does Noor's Horus Lance Launcher do when its projectile hits a shield or destructible surface?",
+      "position": 45
+    },
+    {
+      "id": 66,
+      "quiz_id": 4,
+      "text": "What kind of limited-time mode was Wasteland Circuit, introduced during Operation Split Fire?",
+      "position": 46
+    },
+    {
+      "id": 67,
+      "quiz_id": 4,
+      "text": "What competitive playlist division was added in Operation Split Fire?",
+      "position": 47
+    },
+    {
+      "id": 68,
+      "quiz_id": 5,
+      "text": "Which team won the Six Invitational 2026 grand final, defeating Team Secret 3–1?",
+      "position": 56
+    },
+    {
+      "id": 69,
+      "quiz_id": 5,
+      "text": "Which new Defender headlined Operation Split Fire, released on September 1, 2026?",
+      "position": 57
+    },
+    {
+      "id": 70,
+      "quiz_id": 5,
+      "text": "Which team won the Rainbow Six Siege tournament at the Esports World Cup 2026, beating FURIA 3–1?",
+      "position": 58
     }
   ],
   "choices": [
@@ -1776,6 +1866,366 @@
       "question_id": 55,
       "text": "DarkZero Esports",
       "is_correct": false
+    },
+    {
+      "id": 221,
+      "question_id": 56,
+      "text": "Denari",
+      "is_correct": false
+    },
+    {
+      "id": 222,
+      "question_id": 56,
+      "text": "Noor",
+      "is_correct": true
+    },
+    {
+      "id": 223,
+      "question_id": 56,
+      "text": "Rauora",
+      "is_correct": false
+    },
+    {
+      "id": 224,
+      "question_id": 56,
+      "text": "Skopós",
+      "is_correct": false
+    },
+    {
+      "id": 225,
+      "question_id": 57,
+      "text": "Dokkaebi must stay within 10 meters of the target",
+      "is_correct": false
+    },
+    {
+      "id": 226,
+      "question_id": 57,
+      "text": "A teammate must scan the target twice",
+      "is_correct": false
+    },
+    {
+      "id": 227,
+      "question_id": 57,
+      "text": "The payload must maintain a constant connection to its target",
+      "is_correct": true
+    },
+    {
+      "id": 228,
+      "question_id": 57,
+      "text": "The target must be standing still",
+      "is_correct": false
+    },
+    {
+      "id": 229,
+      "question_id": 58,
+      "text": "Dokkaebi, Rauora, and Sens",
+      "is_correct": true
+    },
+    {
+      "id": 230,
+      "question_id": 58,
+      "text": "Dokkaebi, Deimos, and Osa",
+      "is_correct": false
+    },
+    {
+      "id": 231,
+      "question_id": 58,
+      "text": "Sens, Grim, and Ying",
+      "is_correct": false
+    },
+    {
+      "id": 232,
+      "question_id": 58,
+      "text": "Rauora, Flores, and Ace",
+      "is_correct": false
+    },
+    {
+      "id": 233,
+      "question_id": 59,
+      "text": "Calypso Casino",
+      "is_correct": true
+    },
+    {
+      "id": 234,
+      "question_id": 59,
+      "text": "Stadium Bravo",
+      "is_correct": false
+    },
+    {
+      "id": 235,
+      "question_id": 59,
+      "text": "Fortress",
+      "is_correct": false
+    },
+    {
+      "id": 236,
+      "question_id": 59,
+      "text": "Nighthaven Labs",
+      "is_correct": false
+    },
+    {
+      "id": 237,
+      "question_id": 60,
+      "text": "Kitchen and Dining Room",
+      "is_correct": false
+    },
+    {
+      "id": 238,
+      "question_id": 60,
+      "text": "Living Room and Library",
+      "is_correct": true
+    },
+    {
+      "id": 239,
+      "question_id": 60,
+      "text": "Aviator Room and Games Room",
+      "is_correct": false
+    },
+    {
+      "id": 240,
+      "question_id": 60,
+      "text": "Study and Trophy Room",
+      "is_correct": false
+    },
+    {
+      "id": 241,
+      "question_id": 61,
+      "text": "Bank, Kafe Dostoyevsky, and Oregon",
+      "is_correct": false
+    },
+    {
+      "id": 242,
+      "question_id": 61,
+      "text": "Villa, Coastline, and Clubhouse",
+      "is_correct": false
+    },
+    {
+      "id": 243,
+      "question_id": 61,
+      "text": "Stadium Alpha, Stadium Bravo, and House",
+      "is_correct": true
+    },
+    {
+      "id": 244,
+      "question_id": 61,
+      "text": "Border, Consulate, and Chalet",
+      "is_correct": false
+    },
+    {
+      "id": 245,
+      "question_id": 62,
+      "text": "A high-damage bullpup with a moderate rate of fire",
+      "is_correct": true
+    },
+    {
+      "id": 246,
+      "question_id": 62,
+      "text": "A low-damage rifle with an extremely high rate of fire",
+      "is_correct": false
+    },
+    {
+      "id": 247,
+      "question_id": 62,
+      "text": "A semi-automatic marksman rifle with a five-round magazine",
+      "is_correct": false
+    },
+    {
+      "id": 248,
+      "question_id": 62,
+      "text": "A close-range shotgun with slug ammunition",
+      "is_correct": false
+    },
+    {
+      "id": 249,
+      "question_id": 63,
+      "text": "2.5 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 250,
+      "question_id": 63,
+      "text": "3.8 seconds",
+      "is_correct": true
+    },
+    {
+      "id": 251,
+      "question_id": 63,
+      "text": "5 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 252,
+      "question_id": 63,
+      "text": "7 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 253,
+      "question_id": 64,
+      "text": "288",
+      "is_correct": false
+    },
+    {
+      "id": 254,
+      "question_id": 64,
+      "text": "300",
+      "is_correct": false
+    },
+    {
+      "id": 255,
+      "question_id": 64,
+      "text": "320",
+      "is_correct": true
+    },
+    {
+      "id": 256,
+      "question_id": 64,
+      "text": "360",
+      "is_correct": false
+    },
+    {
+      "id": 257,
+      "question_id": 65,
+      "text": "It creates a temporary smoke screen",
+      "is_correct": false
+    },
+    {
+      "id": 258,
+      "question_id": 65,
+      "text": "It attaches, then erupts into flames",
+      "is_correct": true
+    },
+    {
+      "id": 259,
+      "question_id": 65,
+      "text": "It electrifies the surface for 10 seconds",
+      "is_correct": false
+    },
+    {
+      "id": 260,
+      "question_id": 65,
+      "text": "It deploys a bulletproof camera",
+      "is_correct": false
+    },
+    {
+      "id": 261,
+      "question_id": 66,
+      "text": "A 1v1 operator duel",
+      "is_correct": false
+    },
+    {
+      "id": 262,
+      "question_id": 66,
+      "text": "A hostage extraction race",
+      "is_correct": false
+    },
+    {
+      "id": 263,
+      "question_id": 66,
+      "text": "A drone-racing event",
+      "is_correct": true
+    },
+    {
+      "id": 264,
+      "question_id": 66,
+      "text": "A five-round bomb-defusal tournament",
+      "is_correct": false
+    },
+    {
+      "id": 265,
+      "question_id": 67,
+      "text": "Legend Division",
+      "is_correct": true
+    },
+    {
+      "id": 266,
+      "question_id": 67,
+      "text": "Champion Division",
+      "is_correct": false
+    },
+    {
+      "id": 267,
+      "question_id": 67,
+      "text": "Elite Division",
+      "is_correct": false
+    },
+    {
+      "id": 268,
+      "question_id": 67,
+      "text": "Master Division",
+      "is_correct": false
+    },
+    {
+      "id": 269,
+      "question_id": 68,
+      "text": "FaZe Clan",
+      "is_correct": true
+    },
+    {
+      "id": 270,
+      "question_id": 68,
+      "text": "Team Falcons",
+      "is_correct": false
+    },
+    {
+      "id": 271,
+      "question_id": 68,
+      "text": "Team Secret",
+      "is_correct": false
+    },
+    {
+      "id": 272,
+      "question_id": 68,
+      "text": "FURIA",
+      "is_correct": false
+    },
+    {
+      "id": 273,
+      "question_id": 69,
+      "text": "Denari",
+      "is_correct": false
+    },
+    {
+      "id": 274,
+      "question_id": 69,
+      "text": "Noor",
+      "is_correct": true
+    },
+    {
+      "id": 275,
+      "question_id": 69,
+      "text": "Rauora",
+      "is_correct": false
+    },
+    {
+      "id": 276,
+      "question_id": 69,
+      "text": "Solis",
+      "is_correct": false
+    },
+    {
+      "id": 277,
+      "question_id": 70,
+      "text": "FURIA",
+      "is_correct": false
+    },
+    {
+      "id": 278,
+      "question_id": 70,
+      "text": "Team Secret",
+      "is_correct": false
+    },
+    {
+      "id": 279,
+      "question_id": 70,
+      "text": "FaZe Clan",
+      "is_correct": true
+    },
+    {
+      "id": 280,
+      "question_id": 70,
+      "text": "G2 Esports",
+      "is_correct": false
     }
   ],
   "attempts": [
@@ -1963,6 +2413,18 @@
       "user_id": 2,
       "item_id": 5,
       "unlocked_at": "2026-10-13T17:39:41.096Z"
+    },
+    {
+      "id": 3,
+      "user_id": 3,
+      "item_id": 5,
+      "unlocked_at": "2026-10-13T18:08:05.549Z"
+    },
+    {
+      "id": 4,
+      "user_id": 3,
+      "item_id": 1,
+      "unlocked_at": "2026-10-13T18:08:05.554Z"
     }
   ],
   "pass_goals": [
@@ -2041,8 +2503,15 @@
       "id": 4,
       "user_id": 3,
       "goal_id": 1,
+      "progress": 3,
+      "achieved_at": "2026-10-13T18:08:05.547Z"
+    },
+    {
+      "id": 5,
+      "user_id": 3,
+      "goal_id": 2,
       "progress": 1,
-      "achieved_at": null
+      "achieved_at": "2026-10-13T18:08:05.553Z"
     }
   ],
   "premium_pass": []
