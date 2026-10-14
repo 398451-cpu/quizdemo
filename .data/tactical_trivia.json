@@ -13,7 +13,8 @@
       "streak_last_date": "2026-10-13",
       "equipped_title": "Six Champion",
       "equipped_badge": "Six Invitational Star",
-      "equipped_theme": "Midnight Siege"
+      "equipped_theme": "Midnight Siege",
+      "lifetime_renown": 1500
     },
     {
       "id": 2,
@@ -28,7 +29,8 @@
       "streak_last_date": "2026-10-13",
       "equipped_title": "Recruit",
       "equipped_badge": "Tactical Breacher",
-      "equipped_theme": null
+      "equipped_theme": null,
+      "lifetime_renown": 260
     },
     {
       "id": 3,
@@ -43,7 +45,8 @@
       "streak_last_date": null,
       "equipped_title": null,
       "equipped_badge": null,
-      "equipped_theme": null
+      "equipped_theme": null,
+      "lifetime_renown": 0
     },
     {
       "id": 4,
@@ -60,7 +63,8 @@
       "equipped_badge": null,
       "equipped_theme": null,
       "avatar": "🪖",
-      "is_guest": true
+      "is_guest": true,
+      "lifetime_renown": 0
     },
     {
       "id": 5,
@@ -77,7 +81,8 @@
       "equipped_badge": null,
       "equipped_theme": null,
       "avatar": "💣",
-      "is_guest": true
+      "is_guest": true,
+      "lifetime_renown": 0
     },
     {
       "id": 6,
@@ -94,7 +99,8 @@
       "equipped_badge": null,
       "equipped_theme": null,
       "avatar": "🐺",
-      "is_guest": true
+      "is_guest": true,
+      "lifetime_renown": 0
     }
   ],
   "quizzes": [
@@ -129,421 +135,491 @@
       "id": 1,
       "quiz_id": 1,
       "text": "Which defender deploys the 'Mag-NET' system to capture and detonate incoming attacker projectiles?",
-      "position": 1
+      "position": 1,
+      "difficulty": "standard"
     },
     {
       "id": 2,
       "quiz_id": 1,
       "text": "What is the name of Hibana's signature remote-detonated hard breaching launcher?",
-      "position": 2
+      "position": 2,
+      "difficulty": "standard"
     },
     {
       "id": 3,
       "quiz_id": 1,
       "text": "Which attacker uses the 'EE-ONE-D' global surveillance drone to detect moving defenders across the map?",
-      "position": 3
+      "position": 3,
+      "difficulty": "standard"
     },
     {
       "id": 4,
       "quiz_id": 1,
       "text": "What tactical device does Mozzie launch to hack and commandeer enemy observation drones?",
-      "position": 4
+      "position": 4,
+      "difficulty": "standard"
     },
     {
       "id": 5,
       "quiz_id": 1,
       "text": "Which defender places bulletproof 'Evil Eye' cameras capable of rotating and firing high-energy laser darts?",
-      "position": 5
+      "position": 5,
+      "difficulty": "standard"
     },
     {
       "id": 6,
       "quiz_id": 1,
       "text": "Which attacker uses the 'Kawan Hive Launcher' to deploy swarms of tracking nanobots in doorways and choke points?",
-      "position": 6
+      "position": 6,
+      "difficulty": "ranked"
     },
     {
       "id": 7,
       "quiz_id": 1,
       "text": "Which defender places acoustic Banshee Sonic Defense devices that emit a disorienting hum and slow attackers?",
-      "position": 7
+      "position": 7,
+      "difficulty": "standard"
     },
     {
       "id": 8,
       "quiz_id": 1,
       "text": "What is the name of Solis's tactical visor capable of detecting attacker electronic gadgets through surfaces?",
-      "position": 8
+      "position": 8,
+      "difficulty": "ranked"
     },
     {
       "id": 9,
       "quiz_id": 1,
       "text": "Which hard breacher throws hydraulic 'S.E.L.M.A.' sequential explosive cylinders?",
-      "position": 9
+      "position": 9,
+      "difficulty": "ranked"
     },
     {
       "id": 10,
       "quiz_id": 1,
       "text": "Which defender drops an armor pack that grants damage resistance and guaranteed DBNO state to teammates?",
-      "position": 10
+      "position": 10,
+      "difficulty": "standard"
     },
     {
       "id": 11,
       "quiz_id": 1,
       "text": "Which attacker operates the automated BU-GI auto-breacher tank that chews through soft floors and barricades?",
-      "position": 11
+      "position": 11,
+      "difficulty": "ranked"
     },
     {
       "id": 12,
       "quiz_id": 2,
       "text": "On Clubhouse, what are the two primary bomb sites located in the basement?",
-      "position": 12
+      "position": 12,
+      "difficulty": "standard"
     },
     {
       "id": 13,
       "quiz_id": 2,
       "text": "On Oregon, which exterior structure callout contains a high-level ladder sniper vantage point over Meeting Hall?",
-      "position": 13
+      "position": 13,
+      "difficulty": "ranked"
     },
     {
       "id": 14,
       "quiz_id": 2,
       "text": "On Kafe Dostoyevsky, what is the competitive top-floor (3F) bomb site?",
-      "position": 14
+      "position": 14,
+      "difficulty": "standard"
     },
     {
       "id": 15,
       "quiz_id": 2,
       "text": "On Bank, what is the common callout for the large multi-story glass-ceiling atrium on the ground floor?",
-      "position": 15
+      "position": 15,
+      "difficulty": "standard"
     },
     {
       "id": 16,
       "quiz_id": 2,
       "text": "On Chalet, which basement exterior garage door is the primary target for attackers executing a snow-side breach?",
-      "position": 16
+      "position": 16,
+      "difficulty": "standard"
     },
     {
       "id": 17,
       "quiz_id": 2,
       "text": "On Coastline, what is the central open-air rooftop/courtyard callout surrounded by 1F and 2F interior hallways?",
-      "position": 17
+      "position": 17,
+      "difficulty": "standard"
     },
     {
       "id": 18,
       "quiz_id": 2,
       "text": "On Border, what is the 2F room directly above the 1F Workshop bomb site commonly called?",
-      "position": 18
+      "position": 18,
+      "difficulty": "standard"
     },
     {
       "id": 19,
       "quiz_id": 2,
       "text": "On Villa, what universally recognized callout refers to the 90-degree corner hallway connecting Trophy and Aviator?",
-      "position": 19
+      "position": 19,
+      "difficulty": "ranked"
     },
     {
       "id": 20,
       "quiz_id": 2,
       "text": "On Theme Park, which bomb site was previously known as 'Haunted Dining' before the competitive rework?",
-      "position": 20
+      "position": 20,
+      "difficulty": "ranked"
     },
     {
       "id": 21,
       "quiz_id": 2,
       "text": "On Clubhouse, what is the narrow dirt tunnel in the basement called that attackers push from Construction?",
-      "position": 21
+      "position": 21,
+      "difficulty": "ranked"
     },
     {
       "id": 22,
       "quiz_id": 2,
       "text": "On Oregon, what is the basement hallway callout leading into Laundry from Construction called?",
-      "position": 22
+      "position": 22,
+      "difficulty": "standard"
     },
     {
       "id": 23,
       "quiz_id": 3,
       "text": "Which defender is famous for wielding the blisteringly fast 1200 RPM Vector .45 ACP submachine gun?",
-      "position": 23
+      "position": 23,
+      "difficulty": "ranked"
     },
     {
       "id": 24,
       "quiz_id": 3,
       "text": "What specific recoil benefit does the 'Flash Hider' muzzle attachment provide in Rainbow Six Siege?",
-      "position": 24
+      "position": 24,
+      "difficulty": "ranked"
     },
     {
       "id": 25,
       "quiz_id": 3,
       "text": "What primary benefit does the 'Laser' attachment grant after the Year 9 weapon mechanics overhaul?",
-      "position": 25
+      "position": 25,
+      "difficulty": "standard"
     },
     {
       "id": 26,
       "quiz_id": 3,
       "text": "What unique stat boost does the 'Extended Barrel' attachment provide to compatible weapons?",
-      "position": 26
+      "position": 26,
+      "difficulty": "ranked"
     },
     {
       "id": 27,
       "quiz_id": 3,
       "text": "Which heavy sniper rifle belongs to Kali and penetrates multiple soft walls and bodies with intense velocity?",
-      "position": 27
+      "position": 27,
+      "difficulty": "ranked"
     },
     {
       "id": 28,
       "quiz_id": 3,
       "text": "What is the standard magazine capacity of Ash's signature R4-C assault rifle?",
-      "position": 28
+      "position": 28,
+      "difficulty": "standard"
     },
     {
       "id": 29,
       "quiz_id": 3,
       "text": "Which British pump-action shotgun is regarded as the competitive gold standard for soft wall site preparation?",
-      "position": 29
+      "position": 29,
+      "difficulty": "standard"
     },
     {
       "id": 30,
       "quiz_id": 3,
       "text": "What recoil characteristic does the 'Compensator' attachment specifically target during sustained fire?",
-      "position": 30
+      "position": 30,
+      "difficulty": "standard"
     },
     {
       "id": 31,
       "quiz_id": 3,
       "text": "Which secondary weapon option is a single-shot explosive launcher intended to destroy bulletproof gadgets?",
-      "position": 31
+      "position": 31,
+      "difficulty": "standard"
     },
     {
       "id": 32,
       "quiz_id": 3,
       "text": "Which magnification sight level was historically referred to by the community as the 'ACOG'?",
-      "position": 32
+      "position": 32,
+      "difficulty": "standard"
     },
     {
       "id": 33,
       "quiz_id": 3,
       "text": "Which defender carries the high-capacity ALDA 5.56 Light Machine Gun with an 80-round drum?",
-      "position": 33
+      "position": 33,
+      "difficulty": "standard"
     },
     {
       "id": 34,
       "quiz_id": 4,
       "text": "How long does the standard Preparation Phase last in competitive Ranked and Esports matches?",
-      "position": 34
+      "position": 34,
+      "difficulty": "ranked"
     },
     {
       "id": 35,
       "quiz_id": 4,
       "text": "How many total wall reinforcements does the defending team pool share collectively at the round start?",
-      "position": 35
+      "position": 35,
+      "difficulty": "ranked"
     },
     {
       "id": 36,
       "quiz_id": 4,
       "text": "Under standard competitive Bomb settings, how long does it take an attacker to plant the defuser?",
-      "position": 36
+      "position": 36,
+      "difficulty": "ranked"
     },
     {
       "id": 37,
       "quiz_id": 4,
       "text": "How does Thatcher's EMP Grenade interact with active electrical gadgets like Bandit batteries or Kaid claws?",
-      "position": 37
+      "position": 37,
+      "difficulty": "ranked"
     },
     {
       "id": 38,
       "quiz_id": 4,
       "text": "How does audio propagation work in the Rainbow Six Siege physics engine?",
-      "position": 38
+      "position": 38,
+      "difficulty": "ranked"
     },
     {
       "id": 39,
       "quiz_id": 4,
       "text": "What is the maximum number of observation drones available to each attacking operator across a full round?",
-      "position": 39
+      "position": 39,
+      "difficulty": "standard"
     },
     {
       "id": 40,
       "quiz_id": 4,
       "text": "What damage multiplier applies to headshots with bullet weapons in Rainbow Six Siege?",
-      "position": 40
+      "position": 40,
+      "difficulty": "standard"
     },
     {
       "id": 41,
       "quiz_id": 4,
       "text": "Once the defuser is planted, how long does a defender need to hold the defuse prompt to disable it?",
-      "position": 41
+      "position": 41,
+      "difficulty": "standard"
     },
     {
       "id": 42,
       "quiz_id": 4,
       "text": "Which tactic allows defenders to deny an attacker defuser plant through an unreinforced soft floor from below?",
-      "position": 42
+      "position": 42,
+      "difficulty": "standard"
     },
     {
       "id": 43,
       "quiz_id": 4,
       "text": "What happens if an attacker planting the defuser is struck by an Echo Yokai drone sonic burst?",
-      "position": 43
+      "position": 43,
+      "difficulty": "standard"
     },
     {
       "id": 44,
       "quiz_id": 4,
       "text": "Which operator speed rating has the fastest base sprint and movement speed in the game?",
-      "position": 44
+      "position": 44,
+      "difficulty": "standard"
     },
     {
       "id": 45,
       "quiz_id": 5,
       "text": "Which North American roster won the inaugural PC Six Invitational in Montreal in 2017?",
-      "position": 45
+      "position": 45,
+      "difficulty": "ranked"
     },
     {
       "id": 46,
       "quiz_id": 5,
       "text": "Which legendary European roster achieved back-to-back Six Invitational championship titles in 2018 and 2019?",
-      "position": 46
+      "position": 46,
+      "difficulty": "ranked"
     },
     {
       "id": 47,
       "quiz_id": 5,
       "text": "In what year and month did Rainbow Six Siege officially launch worldwide?",
-      "position": 47
+      "position": 47,
+      "difficulty": "standard"
     },
     {
       "id": 48,
       "quiz_id": 5,
       "text": "What was the name of Siege's first post-launch seasonal DLC in Year 1, introducing Buck, Frost, and Yacht?",
-      "position": 48
+      "position": 48,
+      "difficulty": "standard"
     },
     {
       "id": 49,
       "quiz_id": 5,
       "text": "Which famous Year 2 operation cancelled new operator releases to overhaul server tick rates and core engine stability?",
-      "position": 49
+      "position": 49,
+      "difficulty": "ranked"
     },
     {
       "id": 50,
       "quiz_id": 5,
       "text": "Which Brazilian team became the first South American squad to lift the Six Invitational Hammer in 2021?",
-      "position": 50
+      "position": 50,
+      "difficulty": "ranked"
     },
     {
       "id": 51,
       "quiz_id": 5,
       "text": "During the Six Invitational 2020 grand finals on Oregon, which player's clutch defense on white stairs became an esports icon?",
-      "position": 51
+      "position": 51,
+      "difficulty": "standard"
     },
     {
       "id": 52,
       "quiz_id": 5,
       "text": "Which Brazilian powerhouse won the Six Invitational 2024 grand final in São Paulo after a historic 3-2 series against FaZe Clan?",
-      "position": 52
+      "position": 52,
+      "difficulty": "standard"
     },
     {
       "id": 53,
       "quiz_id": 5,
       "text": "Which map from the university setting was removed from the competitive playlist due to balance issues?",
-      "position": 53
+      "position": 53,
+      "difficulty": "standard"
     },
     {
       "id": 54,
       "quiz_id": 5,
       "text": "Which French entry fragger is internationally famous for extreme mechanical precision and the 'Shaiiko lean'?",
-      "position": 54
+      "position": 54,
+      "difficulty": "standard"
     },
     {
       "id": 55,
       "quiz_id": 5,
       "text": "Which North American roster won the Six Invitational 2020 featuring Rampy, Bosco, ThinkingNade, Fultz, and Canadian?",
-      "position": 55
+      "position": 55,
+      "difficulty": "standard"
     },
     {
       "id": 56,
       "quiz_id": 1,
       "text": "Which new Defender uses the Horus Lance Launcher to counter shield pushes in Operation Split Fire?",
-      "position": 12
+      "position": 12,
+      "difficulty": "ranked"
     },
     {
       "id": 57,
       "quiz_id": 1,
       "text": "In Dokkaebi's Y11S2 Jegeo Payload rework, what must happen for the upload to complete?",
-      "position": 13
+      "position": 13,
+      "difficulty": "ranked"
     },
     {
       "id": 58,
       "quiz_id": 1,
       "text": "Which three Operators received the XK23 assault rifle in the Y11S2 loadout update?",
-      "position": 14
+      "position": 14,
+      "difficulty": "ranked"
     },
     {
       "id": 59,
       "quiz_id": 2,
       "text": "Which new map inspired by Rainbow Six: Vegas launched with Operation System Override in June 2026?",
-      "position": 23
+      "position": 23,
+      "difficulty": "ranked"
     },
     {
       "id": 60,
       "quiz_id": 2,
       "text": "Operation Split Fire's targeted Villa update moved which first-floor areas to the basement?",
-      "position": 24
+      "position": 24,
+      "difficulty": "ranked"
     },
     {
       "id": 61,
       "quiz_id": 2,
       "text": "Which three maps received visual overhauls in Operation Split Fire?",
-      "position": 25
+      "position": 25,
+      "difficulty": "ranked"
     },
     {
       "id": 62,
       "quiz_id": 3,
       "text": "How did Ubisoft describe the new XK23 assault rifle introduced in Y11S2?",
-      "position": 34
+      "position": 34,
+      "difficulty": "ranked"
     },
     {
       "id": 63,
       "quiz_id": 3,
       "text": "After the Y11S2.3 update, what is Hibana's X-Kairos detonation timer?",
-      "position": 35
+      "position": 35,
+      "difficulty": "ranked"
     },
     {
       "id": 64,
       "quiz_id": 3,
       "text": "After the Y11S2.3 update, how much total fuel ammunition does Maverick's Breaching Torch carry?",
-      "position": 36
+      "position": 36,
+      "difficulty": "ranked"
     },
     {
       "id": 65,
       "quiz_id": 4,
       "text": "What does Noor's Horus Lance Launcher do when its projectile hits a shield or destructible surface?",
-      "position": 45
+      "position": 45,
+      "difficulty": "ranked"
     },
     {
       "id": 66,
       "quiz_id": 4,
       "text": "What kind of limited-time mode was Wasteland Circuit, introduced during Operation Split Fire?",
-      "position": 46
+      "position": 46,
+      "difficulty": "ranked"
     },
     {
       "id": 67,
       "quiz_id": 4,
       "text": "What competitive playlist division was added in Operation Split Fire?",
-      "position": 47
+      "position": 47,
+      "difficulty": "ranked"
     },
     {
       "id": 68,
       "quiz_id": 5,
       "text": "Which team won the Six Invitational 2026 grand final, defeating Team Secret 3–1?",
-      "position": 56
+      "position": 56,
+      "difficulty": "ranked"
     },
     {
       "id": 69,
       "quiz_id": 5,
       "text": "Which new Defender headlined Operation Split Fire, released on September 1, 2026?",
-      "position": 57
+      "position": 57,
+      "difficulty": "ranked"
     },
     {
       "id": 70,
       "quiz_id": 5,
       "text": "Which team won the Rainbow Six Siege tournament at the Esports World Cup 2026, beating FURIA 3–1?",
-      "position": 58
+      "position": 58,
+      "difficulty": "ranked"
     }
   ],
   "choices": [
@@ -2503,14 +2579,14 @@
       "id": 4,
       "user_id": 3,
       "goal_id": 1,
-      "progress": 3,
+      "progress": 6,
       "achieved_at": "2026-10-13T18:08:05.547Z"
     },
     {
       "id": 5,
       "user_id": 3,
       "goal_id": 2,
-      "progress": 1,
+      "progress": 2,
       "achieved_at": "2026-10-13T18:08:05.553Z"
     }
   ],
