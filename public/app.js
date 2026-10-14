@@ -19,6 +19,8 @@
     pendingQuizMode: "practice",
     activeMode: "practice",
     shopData: null,
+    alphaPackStatus: null,
+    alphaBusy: false,
     leaderboardTab: "overall",
     teacherSelectedQuizId: 1,
     csvPreviewData: null,
@@ -1212,10 +1214,223 @@
 
       renderPassGoals(data.goals, data.has_premium_pass);
       renderShopItems(data.items, "all");
+      loadAlphaPackStatus();
     } catch (err) {
       showNotification(err.message || "Failed to load shop", true);
     }
   }
+
+  // -----------------------------------------------------------------
+  // Alpha Packs & collectible duck charms
+  // -----------------------------------------------------------------
+  const alpha = {
+    loading: document.querySelector("#alpha-pack-loading"),
+    content: document.querySelector("#alpha-pack-content"),
+    error: document.querySelector("#alpha-pack-error"),
+    packCount: document.querySelector("#alpha-pack-count"),
+    packCost: document.querySelector("#alpha-pack-cost"),
+    collectionCount: document.querySelector("#alpha-collection-count"),
+    progressFill: document.querySelector("#alpha-progress-fill"),
+    odds: document.querySelector("#alpha-rarity-odds"),
+    charms: document.querySelector("#alpha-charms-grid"),
+    summary: document.querySelector("#alpha-vault-summary"),
+    buy: document.querySelector("#alpha-buy-btn"),
+    open: document.querySelector("#alpha-open-btn"),
+    note: document.querySelector("#alpha-action-note"),
+    result: document.querySelector("#alpha-opening-result"),
+  };
+
+  function escapeMarkup(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    })[char]);
+  }
+
+  function safeColor(value, fallback) {
+    const color = String(value || "");
+    return /^(#[0-9a-f]{3,8}|[a-z]{3,20})$/i.test(color) ? color : fallback;
+  }
+
+  function charmArtwork(charm, locked = false) {
+    const body = locked ? "#66717c" : safeColor(charm.body_color, "#d9c69d");
+    const accent = locked ? "#8c969e" : safeColor(charm.accent_color, "#e3a83d");
+    const accessory = String(charm.accessory || "").toLowerCase();
+    let detail = "";
+    if (!locked && /helmet|helm|hat|cap/.test(accessory)) {
+      detail = `<path d="M49 36c2-13 28-15 32 0l5 4H45z" fill="${accent}" stroke="#17202a" stroke-width="2.5"/><path d="M51 38h31" stroke="#fff4d6" stroke-width="2" opacity=".75"/>`;
+    } else if (!locked && /crown|royal/.test(accessory)) {
+      detail = `<path d="m51 39 3-13 11 8 10-9 5 14z" fill="${accent}" stroke="#17202a" stroke-width="2.5"/>`;
+    } else if (!locked && /flower|blossom/.test(accessory)) {
+      detail = `<path d="M76 33c-5-7 3-11 7-5 6-6 11 2 4 6 6 5-2 10-6 5-5 6-10-2-5-6z" fill="${accent}" stroke="#17202a" stroke-width="2"/>`;
+    } else if (!locked && /glasses|visor|goggle/.test(accessory)) {
+      detail = `<path d="M54 48h27" stroke="${accent}" stroke-width="5" stroke-linecap="round"/><path d="M57 45h8v8h-8zm12 0h8v8h-8z" fill="#243747" stroke="#17202a" stroke-width="2"/>`;
+    } else if (!locked && accessory && accessory !== "none") {
+      detail = `<path d="M49 37c2-10 24-13 31 0l4 4H46z" fill="${accent}" stroke="#17202a" stroke-width="2.5"/><path d="M55 37h19" stroke="#fff4d6" stroke-width="2" opacity=".7"/>`;
+    }
+    return `<svg class="duck-art" viewBox="0 0 128 112" role="img" aria-label="${locked ? "Unfound charm" : `${escapeMarkup(charm.name)} duck charm`}">
+      <ellipse cx="66" cy="98" rx="35" ry="5" fill="#09121a" opacity=".35"/>
+      <path d="M37 77c0-18 12-29 31-29 18 0 31 10 31 27 0 14-13 21-32 21-18 0-30-7-30-19z" fill="${body}" stroke="#17202a" stroke-width="3"/>
+      <path d="M48 54c-4-7-3-18 3-25 7-8 20-8 27-1 6 6 6 15 1 24" fill="${body}" stroke="#17202a" stroke-width="3"/>
+      <path d="M78 40c13-2 18 2 23 7-7 5-15 6-24 3z" fill="${accent}" stroke="#17202a" stroke-width="2.5"/>
+      <circle cx="70" cy="38" r="2.7" fill="#16232d"/><circle cx="71" cy="37" r=".8" fill="#fff"/>
+      <path d="M51 73c8 5 16 6 25 4" fill="none" stroke="#fff" stroke-width="2" opacity=".36" stroke-linecap="round"/>
+      ${detail}
+      <path d="M47 94v5m13-4v5" stroke="#e8a84b" stroke-width="3" stroke-linecap="round"/>
+      <path d="M42 100h11m2 0h11" stroke="#17202a" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>`;
+  }
+
+  function setAlphaError(message) {
+    alpha.error.textContent = message;
+    alpha.error.hidden = !message;
+  }
+
+  function renderAlphaPackStatus(data) {
+    state.alphaPackStatus = data;
+    alpha.loading.hidden = true;
+    alpha.content.hidden = false;
+    const total = Number(data.total_charms) || 0;
+    const collected = Number(data.unique_collected) || 0;
+    const count = Number(data.pack_count) || 0;
+    alpha.packCount.textContent = count.toLocaleString();
+    alpha.packCost.textContent = `${Number(data.pack_cost || 0).toLocaleString()} Renown`;
+    alpha.collectionCount.textContent = `${collected} / ${total}`;
+    alpha.progressFill.style.width = `${total ? Math.min(100, collected / total * 100) : 0}%`;
+    alpha.summary.textContent = total
+      ? `${collected} secured · ${Math.max(0, total - collected)} still classified`
+      : "No charm records available";
+    alpha.open.disabled = count < 1 || state.alphaBusy;
+    alpha.buy.disabled = state.alphaBusy;
+    alpha.note.textContent = count > 0
+      ? "Your pack is ready. Opening is final."
+      : `Acquire one for ${Number(data.pack_cost || 0).toLocaleString()} Renown. Opening is final.`;
+
+    const odds = Array.isArray(data.rarity_odds) ? data.rarity_odds : [];
+    alpha.odds.innerHTML = odds.length ? odds.map((entry) => {
+      const rarity = escapeMarkup(entry.rarity || "Standard");
+      const pct = Math.max(0, Number(entry.percent) || 0);
+      return `<div class="alpha-odds-row"><span class="rarity-mark rarity-mark-${rarity.toLowerCase().replace(/[^a-z0-9-]/g, "")}"></span><span>${rarity}</span><strong>${pct}%</strong></div>`;
+    }).join("") : `<p class="alpha-odds-empty">Drop rates are not available right now.</p>`;
+
+    const charms = Array.isArray(data.charms) ? data.charms : [];
+    alpha.charms.innerHTML = charms.length ? charms.map((charm) => {
+      const owned = Boolean(charm.is_owned);
+      const rarity = escapeMarkup(charm.rarity || "Common");
+      return `<article class="charm-card ${owned ? "is-owned" : "is-locked"} rarity-${rarity.toLowerCase().replace(/[^a-z0-9-]/g, "")}">
+        <div class="charm-card-art">${charmArtwork(charm, !owned)}${owned ? `<span class="charm-count">×${Number(charm.owned_count || 1)}</span>` : `<span class="charm-lock-mark" aria-label="Not collected">LOCKED</span>`}</div>
+        <div class="charm-card-copy"><span class="charm-rarity">${rarity}</span><h5>${owned ? escapeMarkup(charm.name) : "Unknown contact"}</h5><p>${owned ? escapeMarkup(charm.accessory || "Field charm") : "Open an Alpha Pack to discover this keepsake."}</p></div>
+      </article>`;
+    }).join("") : `<div class="charm-empty"><span class="empty-index">NO RECORDS</span><strong>Locker is standing by.</strong><p>Charm records will appear here when the collection is available.</p></div>`;
+  }
+
+  async function loadAlphaPackStatus() {
+    if (!alpha.content || !state.user) return;
+    alpha.loading.hidden = false;
+    alpha.content.hidden = true;
+    setAlphaError("");
+    try {
+      const res = await fetch("/api/alpha-packs", { credentials: "include" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Could not load Alpha Pack inventory.");
+      renderAlphaPackStatus(data);
+    } catch (error) {
+      alpha.loading.hidden = true;
+      alpha.content.hidden = false;
+      setAlphaError(error.message || "Alpha Pack status could not be reached.");
+      alpha.packCount.textContent = "—";
+      alpha.open.disabled = true;
+      alpha.buy.disabled = true;
+      alpha.note.textContent = "Reconnect to quartermaster to continue.";
+      alpha.charms.innerHTML = `<div class="charm-empty"><strong>Collection unavailable</strong><p>Check your connection and retry.</p><button type="button" class="btn-tactical-sm btn-secondary" data-alpha-retry>Retry status check</button></div>`;
+      alpha.charms.querySelector("[data-alpha-retry]")?.addEventListener("click", loadAlphaPackStatus);
+    }
+  }
+
+  function updateRenownAfterPack(data) {
+    if (!state.user) return;
+    if (Number.isFinite(Number(data.renown))) state.user.renown = Number(data.renown);
+    if (Number.isFinite(Number(data.lifetime_renown))) state.user.lifetime_renown = Number(data.lifetime_renown);
+    if (data.rank) state.user.rank = data.rank;
+    if (el.shopUserRenown) el.shopUserRenown.textContent = state.user.renown;
+    if (el.navRenownDisplay) el.navRenownDisplay.innerHTML = `<span class="currency-symbol" aria-hidden="true">R</span> ${state.user.renown} Renown`;
+    if (el.navRankBadge) {
+      applyRankBadgeClass(el.navRankBadge, state.user.rank);
+      el.navRankBadge.textContent = (state.user.rank || "Unranked").toUpperCase();
+    }
+    if (el.profileRenownDisplay && !el.views.profile.hidden) renderProfile();
+  }
+
+  alpha.buy?.addEventListener("click", async () => {
+    if (state.alphaBusy || !state.alphaPackStatus) return;
+    state.alphaBusy = true;
+    renderAlphaPackStatus(state.alphaPackStatus);
+    alpha.buy.disabled = true;
+    alpha.open.disabled = true;
+    try {
+      const res = await fetch("/api/alpha-packs/buy", {
+        method: "POST", credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Pack acquisition failed.");
+      if (state.user && Number.isFinite(Number(data.renown))) state.user.renown = Number(data.renown);
+      updateRenownAfterPack(data);
+      await loadAlphaPackStatus();
+      playSound("win");
+      showNotification("Alpha Pack secured. Ready when you are.");
+    } catch (error) {
+      setAlphaError(error.message || "Pack acquisition failed.");
+    } finally {
+      state.alphaBusy = false;
+      if (state.alphaPackStatus) renderAlphaPackStatus(state.alphaPackStatus);
+    }
+  });
+
+  alpha.open?.addEventListener("click", async () => {
+    if (state.alphaBusy || !state.alphaPackStatus || state.alphaPackStatus.pack_count < 1) return;
+    state.alphaBusy = true;
+    alpha.buy.disabled = true;
+    alpha.open.disabled = true;
+    alpha.result.hidden = true;
+    alpha.content.classList.add("is-opening");
+    alpha.note.textContent = "Unsealing pack…";
+    try {
+      const res = await fetch("/api/alpha-packs/open", {
+        method: "POST", credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Pack opening failed.");
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        await new Promise((resolve) => setTimeout(resolve, 80));
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 650));
+      }
+      updateRenownAfterPack(data);
+      const charm = data.charm || {};
+      const duplicateText = data.duplicate
+        ? `Duplicate secured. ${Number(data.duplicate_renown || 0).toLocaleString()} Renown returned.`
+        : "New keepsake added to your locker.";
+      alpha.result.innerHTML = `<div class="reveal-stamp">${data.duplicate ? "REPEAT CONTACT" : "NEW KEEPSAKE"}</div><div class="reveal-art">${charmArtwork(charm)}</div><div class="reveal-copy"><span class="alpha-kicker">${escapeMarkup(charm.rarity || "STANDARD")} DROP</span><h4>${escapeMarkup(charm.name || "Duck charm")}</h4><p>${escapeMarkup(charm.accessory || "Field charm")} · ${duplicateText}</p></div>`;
+      alpha.result.hidden = false;
+      alpha.result.classList.remove("reveal-in");
+      void alpha.result.offsetWidth;
+      alpha.result.classList.add("reveal-in");
+      playSound("win");
+      await loadAlphaPackStatus();
+      alpha.note.textContent = Number(data.pack_count) > 0 ? "Another pack is ready to open." : "No packs left. Acquire another whenever you are ready.";
+    } catch (error) {
+      await loadAlphaPackStatus();
+      setAlphaError(error.message || "Pack opening failed. Check your connection and try again.");
+      alpha.note.textContent = "Try again after checking your connection.";
+    } finally {
+      state.alphaBusy = false;
+      alpha.content.classList.remove("is-opening");
+      if (state.alphaPackStatus) renderAlphaPackStatus(state.alphaPackStatus);
+    }
+  });
 
   function renderPassGoals(goals, hasPremium) {
     const free = goals.filter((g) => g.track === "free");

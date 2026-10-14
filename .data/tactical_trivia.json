@@ -2501,6 +2501,60 @@
       "user_id": 3,
       "item_id": 1,
       "unlocked_at": "2026-10-13T18:08:05.554Z"
+    },
+    {
+      "id": 5,
+      "user_id": 3,
+      "item_id": 3,
+      "unlocked_at": "2026-10-14T18:16:42.672Z"
+    },
+    {
+      "id": 6,
+      "user_id": 3,
+      "item_id": 7,
+      "unlocked_at": "2026-10-14T18:16:44.006Z"
+    },
+    {
+      "id": 7,
+      "user_id": 3,
+      "item_id": 8,
+      "unlocked_at": "2026-10-14T18:16:44.673Z"
+    },
+    {
+      "id": 8,
+      "user_id": 3,
+      "item_id": 6,
+      "unlocked_at": "2026-10-14T18:16:45.418Z"
+    },
+    {
+      "id": 9,
+      "user_id": 3,
+      "item_id": 4,
+      "unlocked_at": "2026-10-14T18:16:45.961Z"
+    },
+    {
+      "id": 10,
+      "user_id": 3,
+      "item_id": 2,
+      "unlocked_at": "2026-10-14T18:16:46.441Z"
+    },
+    {
+      "id": 11,
+      "user_id": 3,
+      "item_id": 10,
+      "unlocked_at": "2026-10-14T18:16:47.145Z"
+    },
+    {
+      "id": 12,
+      "user_id": 3,
+      "item_id": 9,
+      "unlocked_at": "2026-10-14T18:16:48.307Z"
+    },
+    {
+      "id": 13,
+      "user_id": 3,
+      "item_id": 11,
+      "unlocked_at": "2026-10-14T18:16:49.272Z"
     }
   ],
   "pass_goals": [
@@ -2590,5 +2644,26 @@
       "achieved_at": "2026-10-13T18:08:05.553Z"
     }
   ],
-  "premium_pass": []
+  "premium_pass": [
+    {
+      "id": 1,
+      "user_id": 3,
+      "unlocked_at": "2026-10-14T18:16:37.626Z"
+    }
+  ],
+  "alpha_pack_inventory": [
+    {
+      "user_id": 1,
+      "count": 0,
+      "starter_granted": true
+    }
+  ],
+  "ducky_charms": [
+    {
+      "user_id": 1,
+      "charm_id": "duck-16",
+      "count": 1,
+      "unlocked_at": "2026-10-14T18:25:10.597Z"
+    }
+  ]
 }

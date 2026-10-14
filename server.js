@@ -194,6 +194,10 @@ app.get("/api/admin/shop-items", requireAdmin, async (_req, res) => {
   res.json(await db.getShopItems());
 });
 
+app.get("/api/admin/duck-charms", requireAdmin, async (_req, res) => {
+  res.json(await db.getDuckyCharms());
+});
+
 app.post("/api/admin/users/lookup", requireAdmin, async (req, res) => {
   const username = typeof req.body?.username === "string" ? req.body.username.trim().slice(0, 30) : "";
   if (username.length < 2) {
@@ -218,7 +222,7 @@ app.post("/api/admin/users/:id/unlocks", requireAdmin, async (req, res) => {
   const user = await db.findUserById(req.params.id);
   if (!user) return res.status(404).json({ error: "Player not found." });
 
-  const { item_id, premium_pass, unlock_all } = req.body ?? {};
+  const { item_id, premium_pass, unlock_all, alpha_pack, charm_id } = req.body ?? {};
   const items = await db.getShopItems();
   const granted = [];
 
@@ -228,12 +232,27 @@ app.post("/api/admin/users/:id/unlocks", requireAdmin, async (req, res) => {
       granted.push(item.name);
     }
     await db.unlockPremiumPass(user.id);
+    const duckyCharmsGranted = await db.grantAllDuckyCharms(user.id);
+    const alphaPackCount = await db.addAlphaPacks(user.id, 1);
     return res.json({
       status: "ok",
       username: user.username,
       granted,
       premium_pass_unlocked: true,
+      ducky_charms_granted: duckyCharmsGranted,
+      alpha_pack_count: alphaPackCount,
     });
+  }
+
+  if (alpha_pack === true) {
+    const alphaPackCount = await db.addAlphaPacks(user.id, 1);
+    return res.json({ status: "ok", username: user.username, alpha_pack_count: alphaPackCount });
+  }
+
+  if (charm_id) {
+    const charm = await db.grantDuckyCharm(user.id, charm_id);
+    if (!charm) return res.status(404).json({ error: "Ducky charm not found." });
+    return res.json({ status: "ok", username: user.username, granted_charms: [charm.name] });
   }
 
   if (premium_pass === true) {
@@ -834,6 +853,56 @@ app.get("/api/shop", requireAuth, async (req, res) => {
     items,
     goals,
     has_premium_pass: hasPremium,
+  });
+});
+
+app.get("/api/alpha-packs", requireAuth, async (req, res) => {
+  res.json(await db.getAlphaPackStatus(req.user.id));
+});
+
+app.post("/api/alpha-packs/buy", requireAuth, async (req, res) => {
+  const user = await db.findUserById(req.user.id);
+  if (!user) return res.status(404).json({ error: "Player not found." });
+  const packStatus = await db.getAlphaPackStatus(user.id);
+  const balance = Number(user.renown) || 0;
+  if (balance < packStatus.pack_cost) {
+    return res.status(400).json({
+      error: `An Alpha Pack costs ${packStatus.pack_cost} Renown; you have ${balance}.`,
+    });
+  }
+
+  const renown = balance - packStatus.pack_cost;
+  await db.updateUser(user.id, { renown });
+  const packCount = await db.addAlphaPacks(user.id, 1);
+  res.json({ status: "ok", pack_count: packCount, renown });
+});
+
+app.post("/api/alpha-packs/open", requireAuth, async (req, res) => {
+  const opened = await db.openAlphaPack(req.user.id);
+  if (!opened) {
+    return res.status(400).json({ error: "You do not have an Alpha Pack to open." });
+  }
+
+  let user = await db.findUserById(req.user.id);
+  let rank = user?.rank || "Unranked";
+  if (opened.duplicate_renown > 0 && user) {
+    const renown = (Number(user.renown) || 0) + opened.duplicate_renown;
+    const lifetime_renown =
+      (Number(user.lifetime_renown ?? user.renown) || 0) + opened.duplicate_renown;
+    await db.updateUser(user.id, { renown, lifetime_renown });
+    rank = await db.recalculateSkillRank(user.id);
+    user = await db.findUserById(user.id);
+  }
+  const packStatus = await db.getAlphaPackStatus(req.user.id);
+  res.json({
+    status: "ok",
+    ...opened,
+    pack_count: packStatus.pack_count,
+    unique_collected: packStatus.unique_collected,
+    total_charms: packStatus.total_charms,
+    renown: user?.renown ?? req.user.renown,
+    lifetime_renown: user?.lifetime_renown ?? user?.renown ?? req.user.renown,
+    rank,
   });
 });
 

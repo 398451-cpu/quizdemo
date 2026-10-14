@@ -25,7 +25,91 @@ let memoryDb = {
   pass_goals: [],
   pass_progress: [],
   premium_pass: [],
+  alpha_pack_inventory: [],
+  ducky_charms: [],
 };
+
+const DUCKY_CHARM_DATA = [
+  ["Safety Patrol", "common", "#f5c84c", "#d98a27", "helmet"],
+  ["Butter Biscuit", "common", "#f2d17b", "#b96a38", "bowtie"],
+  ["Coffee Break", "common", "#d9ab65", "#69442d", "cap"],
+  ["Raincoat", "common", "#f0cc4d", "#4d8fc6", "raincoat"],
+  ["Ocean Scout", "common", "#54b9d1", "#245d95", "goggles"],
+  ["Lilypad", "common", "#8bd266", "#398a55", "flower"],
+  ["Sunset Sherbet", "common", "#f19969", "#d15164", "sunglasses"],
+  ["Powder Puff", "common", "#fff0c4", "#e79bba", "scarf"],
+  ["Camo Mallard", "common", "#8ba36d", "#4b603e", "helmet"],
+  ["Rubber Recruit", "common", "#ffdc54", "#eea728", "cap"],
+  ["Garden Guard", "common", "#a6ce72", "#ec6f66", "flower"],
+  ["Space Cadet", "common", "#d5a7ec", "#7865c8", "antenna"],
+  ["Seafoam", "common", "#82d7c5", "#378f9a", "sailor"],
+  ["Cherry Pop", "common", "#f4a1ae", "#cb4665", "bowtie"],
+  ["Honeycomb", "common", "#f4b943", "#d17b2b", "visor"],
+  ["Night Watch", "common", "#8794b6", "#414e72", "headphones"],
+  ["Arctic Float", "common", "#e8f4f5", "#83b8d1", "earmuffs"],
+  ["Beach Bum", "common", "#f3ce60", "#39a9a6", "sunglasses"],
+  ["Bubbles", "common", "#a4ddeb", "#5c8fc4", "bubble"],
+  ["Firecracker", "common", "#f4b444", "#d34f45", "bandana"],
+  ["Moss Boss", "common", "#9bbf63", "#466444", "cap"],
+  ["Doodle Duck", "common", "#f3dcb2", "#7861a6", "glasses"],
+  ["Golden Beak", "common", "#edc94d", "#f5e19a", "bowtie"],
+  ["Toasty", "common", "#e8af72", "#a95d3a", "scarf"],
+  ["Pilot Puddle", "uncommon", "#f4ca52", "#386d9a", "pilot"],
+  ["Captain Quack", "uncommon", "#f2d37c", "#2a4f79", "captain"],
+  ["RoboQuack", "uncommon", "#9db5c5", "#5de0d2", "robot"],
+  ["Royal Waddle", "uncommon", "#efc755", "#7448a2", "crown"],
+  ["Ninja Nibbler", "uncommon", "#d4a4bc", "#343747", "ninja"],
+  ["Detective Bill", "uncommon", "#d7aa6d", "#654b35", "detective"],
+  ["Disco Drakes", "uncommon", "#f4ca5e", "#d249b8", "disco"],
+  ["Rainbow Splash", "uncommon", "#f6d86d", "#50a7db", "rainbow"],
+  ["Snow Patrol", "uncommon", "#f2f5f0", "#5e9dc3", "snow"],
+  ["Chef Quackers", "uncommon", "#f1d078", "#d84f4f", "chef"],
+  ["Punk Plume", "uncommon", "#e6b0a3", "#cf477a", "punk"],
+  ["Starboard", "uncommon", "#f0cb57", "#366e8c", "sailor"],
+  ["Spacewalk", "uncommon", "#c7a7e9", "#5b72c3", "space"],
+  ["Bandit Beak", "uncommon", "#e5bd72", "#45424c", "mask"],
+  ["Medic Mallard", "uncommon", "#f2d27b", "#4f9d78", "medic"],
+  ["Pumpkin Plop", "uncommon", "#f1a34d", "#df623a", "pumpkin"],
+  ["Frosty Flippers", "uncommon", "#e4f5f4", "#73b5cc", "ice"],
+  ["Scout Squeak", "uncommon", "#f3d26c", "#567f4c", "scout"],
+  ["Cardinal Quackers", "rare", "#efc34c", "#b9384d", "beret"],
+  ["Midnight Mallard", "rare", "#7f8dd1", "#3b376f", "moon"],
+  ["Pixel Paddler", "rare", "#eed04e", "#40b7a5", "pixel"],
+  ["Dragon Waddle", "rare", "#dc8a65", "#873f48", "dragon"],
+  ["Aurora Quack", "rare", "#bce6dc", "#5c76cc", "aurora"],
+  ["Velvet Beak", "rare", "#edc55a", "#70427c", "monocle"],
+  ["Thunderbill", "rare", "#f3d05d", "#555fbb", "lightning"],
+  ["Pearl Diver", "rare", "#f1d277", "#3a8fa9", "diver"],
+  ["Citrus Commander", "rare", "#f3b848", "#73a44d", "commander"],
+  ["Phantom Feathers", "rare", "#c9c9e8", "#59547e", "phantom"],
+  ["Solar Sentinel", "epic", "#ffe16a", "#e58038", "solar"],
+  ["Glacier General", "epic", "#d9f6f8", "#478ab0", "ice-armor"],
+  ["Neon Navigator", "epic", "#d5f06b", "#46c9c0", "neon"],
+  ["Empress of Ponds", "epic", "#f2c867", "#a34f9a", "royal"],
+  ["Mecha Mallard", "epic", "#aab7c1", "#4ce2cb", "mecha"],
+  ["Comet Commander", "epic", "#f3cf5c", "#9d6cdc", "comet"],
+  ["The Gilded Quack", "legendary", "#ffe06a", "#f8f0d3", "golden-crown"],
+  ["Ducky of the Deep", "legendary", "#8fe3d4", "#324d91", "deep-sea"],
+];
+
+const DUCKY_CHARMS = DUCKY_CHARM_DATA.map(([name, rarity, body_color, accent_color, accessory], index) => ({
+  id: `duck-${String(index + 1).padStart(2, "0")}`,
+  name,
+  rarity,
+  body_color,
+  accent_color,
+  accessory,
+}));
+
+const ALPHA_PACK_COST = 100;
+const ALPHA_PACK_ODDS = [
+  { rarity: "common", weight: 55 },
+  { rarity: "uncommon", weight: 25 },
+  { rarity: "rare", weight: 12 },
+  { rarity: "epic", weight: 6 },
+  { rarity: "legendary", weight: 2 },
+];
+const DUPE_RENOWN = { common: 10, uncommon: 20, rare: 35, epic: 60, legendary: 100 };
 
 // Seed questions catalog: 5 Quizzes, 10+ questions each, 4 choices, 1 correct
 const SEED_QUIZZES = [
@@ -980,6 +1064,8 @@ let pgPool = null;
 
 export async function initDatabase() {
   loadMemoryDb();
+  if (!Array.isArray(memoryDb.alpha_pack_inventory)) memoryDb.alpha_pack_inventory = [];
+  if (!Array.isArray(memoryDb.ducky_charms)) memoryDb.ducky_charms = [];
   for (const question of memoryDb.questions) {
     if (!question.difficulty) {
       question.difficulty = RANKED_SEED_QUESTION_TEXTS.has(question.text) ? "ranked" : "standard";
@@ -1942,6 +2028,140 @@ export const db = {
   // Shop & Unlocks
   async getShopItems() {
     return [...memoryDb.shop_items];
+  },
+
+  async getDuckyCharms() {
+    return DUCKY_CHARMS.map((charm) => ({ ...charm }));
+  },
+
+  async getAlphaPackStatus(userId) {
+    const uid = Number(userId);
+    let inventory = memoryDb.alpha_pack_inventory.find((row) => row.user_id === uid);
+    if (!inventory) {
+      inventory = {
+        user_id: uid,
+        count: 1,
+        starter_granted: true,
+      };
+      memoryDb.alpha_pack_inventory.push(inventory);
+      persistMemoryDb();
+    }
+
+    const ownedCharms = memoryDb.ducky_charms.filter((row) => row.user_id === uid);
+    const ownedByCharmId = new Map(ownedCharms.map((row) => [row.charm_id, row]));
+    return {
+      pack_count: inventory.count,
+      pack_cost: ALPHA_PACK_COST,
+      rarity_odds: ALPHA_PACK_ODDS.map(({ rarity, weight }) => ({ rarity, percent: weight })),
+      total_charms: DUCKY_CHARMS.length,
+      unique_collected: ownedCharms.length,
+      charms: DUCKY_CHARMS.map((charm) => {
+        const owned = ownedByCharmId.get(charm.id);
+        return {
+          ...charm,
+          owned_count: owned?.count || 0,
+          is_owned: Boolean(owned),
+        };
+      }),
+    };
+  },
+
+  async addAlphaPacks(userId, amount = 1) {
+    const uid = Number(userId);
+    const count = Math.max(1, Math.min(100, Math.floor(Number(amount) || 1)));
+    await this.getAlphaPackStatus(uid);
+    const inventory = memoryDb.alpha_pack_inventory.find((row) => row.user_id === uid);
+    inventory.count += count;
+    persistMemoryDb();
+    return inventory.count;
+  },
+
+  async openAlphaPack(userId) {
+    const uid = Number(userId);
+    await this.getAlphaPackStatus(uid);
+    const inventory = memoryDb.alpha_pack_inventory.find((row) => row.user_id === uid);
+    if (!inventory || inventory.count < 1) return null;
+
+    const roll = Math.random() * 100;
+    let threshold = 0;
+    let rarity = "common";
+    for (const tier of ALPHA_PACK_ODDS) {
+      threshold += tier.weight;
+      if (roll < threshold) {
+        rarity = tier.rarity;
+        break;
+      }
+    }
+    const pool = DUCKY_CHARMS.filter((charm) => charm.rarity === rarity);
+    const charm = pool[Math.floor(Math.random() * pool.length)];
+    const owned = memoryDb.ducky_charms.find(
+      (row) => row.user_id === uid && row.charm_id === charm.id,
+    );
+
+    inventory.count -= 1;
+    let duplicateRenown = 0;
+    if (owned) {
+      owned.count += 1;
+      duplicateRenown = DUPE_RENOWN[charm.rarity] || 0;
+    } else {
+      memoryDb.ducky_charms.push({
+        user_id: uid,
+        charm_id: charm.id,
+        count: 1,
+        unlocked_at: new Date().toISOString(),
+      });
+    }
+    persistMemoryDb();
+
+    return {
+      charm: { ...charm },
+      duplicate: Boolean(owned),
+      duplicate_renown: duplicateRenown,
+      pack_count: inventory.count,
+      unique_collected: memoryDb.ducky_charms.filter((row) => row.user_id === uid).length,
+    };
+  },
+
+  async grantDuckyCharm(userId, charmId) {
+    const uid = Number(userId);
+    const charm = DUCKY_CHARMS.find((entry) => entry.id === String(charmId));
+    if (!charm) return null;
+    const owned = memoryDb.ducky_charms.find(
+      (row) => row.user_id === uid && row.charm_id === charm.id,
+    );
+    if (!owned) {
+      memoryDb.ducky_charms.push({
+        user_id: uid,
+        charm_id: charm.id,
+        count: 1,
+        unlocked_at: new Date().toISOString(),
+      });
+      persistMemoryDb();
+    }
+    return { ...charm };
+  },
+
+  async grantAllDuckyCharms(userId) {
+    const uid = Number(userId);
+    const ownedIds = new Set(
+      memoryDb.ducky_charms
+        .filter((row) => row.user_id === uid)
+        .map((row) => row.charm_id),
+    );
+    let grantedCount = 0;
+    for (const charm of DUCKY_CHARMS) {
+      if (!ownedIds.has(charm.id)) {
+        memoryDb.ducky_charms.push({
+          user_id: uid,
+          charm_id: charm.id,
+          count: 1,
+          unlocked_at: new Date().toISOString(),
+        });
+        grantedCount += 1;
+      }
+    }
+    persistMemoryDb();
+    return grantedCount;
   },
 
   async getUserUnlocks(userId) {

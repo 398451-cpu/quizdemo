@@ -26,11 +26,15 @@
     playerRenown: document.querySelector("#admin-player-renown"),
     unlockEverything: document.querySelector("#admin-unlock-everything"),
     unlockPremium: document.querySelector("#admin-unlock-premium"),
+    grantAlphaPack: document.querySelector("#admin-grant-alpha-pack"),
+    duckyCharmSelect: document.querySelector("#admin-ducky-charm"),
+    grantDuckyCharm: document.querySelector("#admin-grant-ducky-charm"),
     shopItemList: document.querySelector("#admin-shop-item-list"),
   };
   let questions = [];
   let editingQuestion = null;
   let shopItems = [];
+  let duckyCharms = [];
   let selectedAdminUser = null;
 
   async function request(url, options = {}) {
@@ -57,11 +61,21 @@
   async function showDashboard() {
     el.loginPanel.hidden = true;
     el.dashboard.hidden = false;
-    const [quizzes, items] = await Promise.all([
+    const [quizzes, items, charms] = await Promise.all([
       request("/api/admin/quizzes"),
       request("/api/admin/shop-items"),
+      request("/api/admin/duck-charms"),
     ]);
     shopItems = items;
+    duckyCharms = charms;
+    el.duckyCharmSelect.replaceChildren(
+      ...duckyCharms.map((charm) => {
+        const option = document.createElement("option");
+        option.value = charm.id;
+        option.textContent = `${charm.name} — ${charm.rarity}`;
+        return option;
+      }),
+    );
     el.quizSelect.replaceChildren(
       ...quizzes.map((quiz) => {
         const option = document.createElement("option");
@@ -257,7 +271,13 @@
       const granted = result.granted?.length
         ? ` Granted ${result.granted.length} item${result.granted.length === 1 ? "" : "s"}.`
         : "";
-      el.userMessage.textContent = `Unlocks updated for ${result.username}.${granted}${result.premium_pass_unlocked ? " Premium Pass active." : ""}`;
+      const charms = result.granted_charms?.length
+        ? ` Granted ${result.granted_charms.join(", ")}.`
+        : result.ducky_charms_granted
+          ? ` Granted ${result.ducky_charms_granted} duck charms.`
+          : "";
+      const packs = result.alpha_pack_count !== undefined ? ` Alpha Packs: ${result.alpha_pack_count}.` : "";
+      el.userMessage.textContent = `Unlocks updated for ${result.username}.${granted}${charms}${packs}${result.premium_pass_unlocked ? " Premium Pass active." : ""}`;
     } catch (error) {
       el.userMessage.textContent = error.message;
     }
@@ -291,6 +311,14 @@
 
   el.unlockPremium.addEventListener("click", () => {
     grantUnlock({ premium_pass: true });
+  });
+
+  el.grantAlphaPack.addEventListener("click", () => {
+    grantUnlock({ alpha_pack: true });
+  });
+
+  el.grantDuckyCharm.addEventListener("click", () => {
+    grantUnlock({ charm_id: el.duckyCharmSelect.value });
   });
 
   el.questionForm.addEventListener("submit", async (event) => {
