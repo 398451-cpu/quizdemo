@@ -2579,14 +2579,14 @@
       "id": 4,
       "user_id": 3,
       "goal_id": 1,
-      "progress": 6,
+      "progress": 7,
       "achieved_at": "2026-10-13T18:08:05.547Z"
     },
     {
       "id": 5,
       "user_id": 3,
       "goal_id": 2,
-      "progress": 2,
+      "progress": 3,
       "achieved_at": "2026-10-13T18:08:05.553Z"
     }
   ],
