@@ -16,6 +16,8 @@
     userAnswers: {}, // { [question_id]: choice_id }
     currentAttemptId: null,
     pendingQuizId: null,
+    pendingQuizMode: "practice",
+    activeMode: "practice",
     shopData: null,
     leaderboardTab: "overall",
     teacherSelectedQuizId: 1,
@@ -192,6 +194,7 @@
     profileEquippedBadge: document.querySelector("#profile-equipped-badge"),
     profileRankDisplay: document.querySelector("#profile-rank-display"),
     profileRenownDisplay: document.querySelector("#profile-renown-display"),
+    profileLifetimeRenownDisplay: document.querySelector("#profile-lifetime-renown-display"),
     profileStreakDisplay: document.querySelector("#profile-streak-display"),
     profileAttemptsCount: document.querySelector("#profile-attempts-count"),
     equipTitleSelect: document.querySelector("#equip-title-select"),
@@ -484,8 +487,10 @@
       showNotification(`🎮 Welcome, Operator ${data.user.username}! Ready to deploy.`);
       if (state.pendingQuizId) {
         const quizId = state.pendingQuizId;
+        const mode = state.pendingQuizMode || "practice";
         state.pendingQuizId = null;
-        startQuizAssessment(quizId);
+        state.pendingQuizMode = "practice";
+        startQuizAssessment(quizId, mode);
       } else {
         loadQuizzes();
       }
@@ -525,7 +530,10 @@
   }
 
   function applyUserState(user) {
-    state.user = user;
+    state.user = {
+      ...user,
+      lifetime_renown: user.lifetime_renown ?? user.renown ?? 0,
+    };
     el.userPill.hidden = false;
     el.userPill.style.display = "flex";
 
@@ -729,11 +737,11 @@
   function renderGuestQuizzes() {
     // Show preview for unauthenticated users
     const sample = [
-      { id: 1, title: "Operators & Gadgets", description: "Who has what ability: defensive denial, intel gadgets, hard breaching, and electronic warfare.", question_count: 14, icon: "🛡️" },
-      { id: 2, title: "Maps & Callouts", description: "Name competitive bomb sites, key rooms, vertical soft spots, and iconic tactical angles.", question_count: 14, icon: "🗺️" },
-      { id: 3, title: "Weapons & Attachments", description: "Recoil mitigation, barrel attachments, ADS speeds, optics, and signature operator loadouts.", question_count: 14, icon: "🔫" },
-      { id: 4, title: "Game Mechanics", description: "Drone phase timings, team reinforcement pool, defuser mechanics, audio propagation, and health/armor.", question_count: 14, icon: "⚙️" },
-      { id: 5, title: "History & Esports", description: "Six Invitational champions, legendary pro clutch moments, major DLC operations, and competitive meta.", question_count: 14, icon: "🏆" },
+      { id: 1, title: "Operators & Gadgets", description: "Who has what ability: defensive denial, intel gadgets, hard breaching, and electronic warfare.", question_count: 14, ranked_question_count: 7, icon: "🛡️" },
+      { id: 2, title: "Maps & Callouts", description: "Name competitive bomb sites, key rooms, vertical soft spots, and iconic tactical angles.", question_count: 14, ranked_question_count: 7, icon: "🗺️" },
+      { id: 3, title: "Weapons & Attachments", description: "Recoil mitigation, barrel attachments, ADS speeds, optics, and signature operator loadouts.", question_count: 14, ranked_question_count: 7, icon: "🔫" },
+      { id: 4, title: "Game Mechanics", description: "Drone phase timings, team reinforcement pool, defuser mechanics, audio propagation, and health/armor.", question_count: 14, ranked_question_count: 7, icon: "⚙️" },
+      { id: 5, title: "History & Esports", description: "Six Invitational champions, legendary pro clutch moments, major DLC operations, and competitive meta.", question_count: 14, ranked_question_count: 7, icon: "🏆" },
     ];
     renderQuizzesGrid(sample, true);
   }
@@ -765,11 +773,16 @@
               <h3 class="quiz-card-title">${q.title}</h3>
               <p class="quiz-card-desc">${q.description}</p>
             </div>
-            <div class="quiz-card-footer">
+            <div class="quiz-card-footer quiz-mode-footer">
               ${bestBadge}
-              <button class="btn-tactical btn-accent deploy-btn" data-id="${q.id}">
-                 ${isGuest ? "Play as Guest →" : "Deploy Assessment →"}
-              </button>
+              <div class="quiz-mode-buttons">
+                <button class="btn-tactical btn-secondary deploy-btn" data-id="${q.id}" data-mode="practice">
+                  ${isGuest ? "Practice as Guest" : "Practice"} · ${q.question_count}
+                </button>
+                <button class="btn-tactical btn-accent deploy-btn" data-id="${q.id}" data-mode="ranked" ${q.ranked_question_count ? "" : "disabled"}>
+                  Ranked · ${q.ranked_question_count || 0} Hard
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -780,13 +793,15 @@
     el.quizzesGrid.querySelectorAll(".deploy-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const qid = btn.dataset.id;
+        const mode = btn.dataset.mode === "ranked" ? "ranked" : "practice";
         if (!state.user) {
           state.pendingQuizId = qid;
+          state.pendingQuizMode = mode;
           openAuthModal("guest");
-          showNotification("Choose a callsign to start playing as a guest.");
+          showNotification("Choose a callsign to start this assessment.");
           return;
         }
-        startQuizAssessment(qid);
+        startQuizAssessment(qid, mode);
       });
     });
   }
@@ -794,23 +809,36 @@
   // -----------------------------------------------------------------
   // VIEW 2: Quiz Player / Assessment Runner
   // -----------------------------------------------------------------
-  async function startQuizAssessment(quizId) {
+  async function startQuizAssessment(quizId, mode = "practice") {
     try {
       // 1. Initialize attempt row on server (is_complete = false, score = null)
       const startRes = await fetch(`/api/quizzes/${quizId}/start`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode }),
       });
       if (!startRes.ok) throw new Error("Could not initialize assessment attempt.");
       const startData = await startRes.json();
       state.currentAttemptId = startData.attempt_id;
 
       // 2. Fetch questions with answer keys hidden
-      const qRes = await fetch(`/api/quizzes/${quizId}/questions`);
+      const qRes = await fetch(
+        `/api/quizzes/${quizId}/questions${mode === "ranked" ? "?mode=ranked" : ""}`,
+      );
       if (!qRes.ok) throw new Error("Could not load questions.");
       const qData = await qRes.json();
 
       state.activeQuiz = qData.quiz;
-      state.activeQuestions = qData.questions.map((question, index) => {
+      state.activeMode = mode;
+      const shuffledQuestions = [...qData.questions];
+      for (let index = shuffledQuestions.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [shuffledQuestions[index], shuffledQuestions[swapIndex]] = [
+          shuffledQuestions[swapIndex],
+          shuffledQuestions[index],
+        ];
+      }
+      state.activeQuestions = shuffledQuestions.map((question, index) => {
         const choices = question.choices || [];
         const offset = choices.length ? (index + Number(quizId)) % choices.length : 0;
         const rotatedChoices = offset
@@ -833,7 +861,7 @@
     const total = state.activeQuestions.length;
     const currentNum = state.currentQuestionIndex + 1;
 
-    el.runnerQuizTitle.textContent = state.activeQuiz.title;
+    el.runnerQuizTitle.textContent = `${state.activeQuiz.title} · ${state.activeMode === "ranked" ? "Ranked" : "Practice"}`;
     el.runnerCounter.textContent = `Question ${currentNum} of ${total}`;
     el.dossierQNum.textContent = `ITEM #${String(currentNum).padStart(2, "0")}`;
 
@@ -945,6 +973,7 @@
         body: JSON.stringify({
           attempt_id: state.currentAttemptId,
           answers: state.userAnswers,
+          mode: state.activeMode,
         }),
       });
 
@@ -979,7 +1008,7 @@
       el.scoreboardStatusText.style.backgroundColor = "var(--color-eliminated)";
     }
 
-    el.scoreboardTitle.textContent = `${state.activeQuiz.title} — Debrief`;
+    el.scoreboardTitle.textContent = `${state.activeQuiz.title} — ${state.activeMode === "ranked" ? "Ranked" : "Practice"} Debrief`;
     el.scoreboardScoreNumbers.textContent = `${result.score} / ${result.question_count}`;
     el.scoreboardScorePct.textContent = `(${result.percentage}%)`;
 
@@ -1033,7 +1062,7 @@
 
   el.scoreboardRetryBtn.addEventListener("click", () => {
     if (state.activeQuiz) {
-      startQuizAssessment(state.activeQuiz.id);
+      startQuizAssessment(state.activeQuiz.id, state.activeMode);
     } else {
       switchView("home");
     }
@@ -1375,6 +1404,7 @@
     el.profileRankDisplay.textContent = (u.rank || "unranked").toUpperCase();
 
     el.profileRenownDisplay.textContent = `⚡ ${u.renown}`;
+    el.profileLifetimeRenownDisplay.textContent = `${Number(u.lifetime_renown ?? u.renown ?? 0).toLocaleString()} Renown`;
     el.profileStreakDisplay.textContent = `🔥 ${u.streak_count} Days`;
 
     // Fetch attempts count and user unlocks to populate equip dropdowns

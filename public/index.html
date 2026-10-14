@@ -132,16 +132,16 @@
             <div class="tactical-card info-card">
               <h3 class="card-heading">🎖️ Skill Rank Progression</h3>
               <p class="card-body-text">
-                Your rank reflects your average score percentage across all completed attempts. Retries count toward your permanent average.
+                Your rank combines your average score with lifetime Renown. Renown earned unlocks higher tiers, and spending it will not lower a rank you have earned.
               </p>
               <div class="rank-ladder-mini">
-                <span class="ladder-pill rank-copper">Copper (0–39%)</span>
-                <span class="ladder-pill rank-bronze">Bronze (40–54%)</span>
-                <span class="ladder-pill rank-silver">Silver (55–69%)</span>
-                <span class="ladder-pill rank-gold">Gold (70–79%)</span>
-                <span class="ladder-pill rank-platinum">Plat (80–89%)</span>
-                <span class="ladder-pill rank-diamond">Diamond (90–97%)</span>
-                <span class="ladder-pill rank-champion">Champ (98–100%)</span>
+                <span class="ladder-pill rank-copper">Copper · 0 Renown · 0–39%</span>
+                <span class="ladder-pill rank-bronze">Bronze · 50 Renown · 40%+</span>
+                <span class="ladder-pill rank-silver">Silver · 150 Renown · 55%+</span>
+                <span class="ladder-pill rank-gold">Gold · 300 Renown · 70%+</span>
+                <span class="ladder-pill rank-platinum">Platinum · 500 Renown · 80%+</span>
+                <span class="ladder-pill rank-diamond">Diamond · 750 Renown · 90%+</span>
+                <span class="ladder-pill rank-champion">Champion · 1,000 Renown · 98%+</span>
               </div>
             </div>
 
@@ -438,8 +438,12 @@
                   <span id="profile-rank-display" class="stat-val rank-badge rank-unranked">UNRANKED</span>
                 </div>
                 <div class="dossier-stat">
-                  <span class="stat-name">RENOWN RESERVES</span>
+                  <span class="stat-name">RENOWN BALANCE</span>
                   <span id="profile-renown-display" class="stat-val">⚡ 0</span>
+                </div>
+                <div class="dossier-stat">
+                  <span class="stat-name">LIFETIME EARNED</span>
+                  <span id="profile-lifetime-renown-display" class="stat-val">0 Renown</span>
                 </div>
                 <div class="dossier-stat">
                   <span class="stat-name">DAILY STREAK</span>
@@ -745,6 +749,7 @@
           <span>Student: Rhiz Fam · High School Tech Class</span>
         </div>
         <div class="footer-right">
+          <a class="admin-footer-link" href="/admin.html">Admin</a>
           <span id="system-status-indicator" class="status-indicator">● System Online</span>
         </div>
       </footer>

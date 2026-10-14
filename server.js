@@ -11,6 +11,11 @@ const publicDirectory = fileURLToPath(new URL("./public/", import.meta.url));
 
 // Simple in-memory session store
 const sessions = new Map(); // token -> { userId, expiresAt }
+const adminSessions = new Map(); // token -> { expiresAt }
+const adminLoginAttempts = new Map(); // ip -> { attempts, resetAt }
+const ADMIN_SESSION_TTL = 8 * 60 * 60 * 1000;
+const ADMIN_LOGIN_WINDOW = 15 * 60 * 1000;
+const ADMIN_LOGIN_MAX_ATTEMPTS = 5;
 
 app.disable("x-powered-by");
 app.use(express.json({ limit: "500kb" }));
@@ -44,6 +49,11 @@ async function requireAuth(req, res, next) {
 }
 
 async function requireTeacher(req, res, next) {
+  if (getAdminSession(req)) {
+    req.isAdmin = true;
+    return next();
+  }
+
   const user = await getAuthenticatedUser(req);
   if (!user) {
     return res.status(401).json({ error: "Authentication required." });
@@ -52,6 +62,28 @@ async function requireTeacher(req, res, next) {
     return res.status(403).json({ error: "Teacher permissions required. Access denied." });
   }
   req.user = user;
+  next();
+}
+
+function getAdminSession(req) {
+  const token = req.cookies?.admin_session;
+  if (!token) return null;
+
+  const session = adminSessions.get(token);
+  if (!session) return null;
+  if (session.expiresAt < Date.now()) {
+    adminSessions.delete(token);
+    return null;
+  }
+  return session;
+}
+
+function requireAdmin(req, res, next) {
+  const session = getAdminSession(req);
+  if (!session) {
+    return res.status(401).json({ error: "Admin access required." });
+  }
+  req.isAdmin = true;
   next();
 }
 
@@ -86,6 +118,137 @@ app.post("/api/db/echo", (req, res) => {
     return res.status(400).json({ message: "Provide a non-empty message string." });
   }
   res.json({ message: message.trim() });
+});
+
+// -------------------------------------------------------------
+// Admin access (password is supplied through Replit Secrets)
+// -------------------------------------------------------------
+app.post("/api/admin/login", (req, res) => {
+  const expectedPassword = process.env.ADMIN_PASSWORD;
+  if (!expectedPassword) {
+    return res.status(503).json({ error: "Admin access is not configured yet." });
+  }
+
+  const ip = req.ip || req.socket.remoteAddress || "unknown";
+  const now = Date.now();
+  let attemptState = adminLoginAttempts.get(ip);
+  if (!attemptState || attemptState.resetAt <= now) {
+    attemptState = { attempts: 0, resetAt: now + ADMIN_LOGIN_WINDOW };
+    adminLoginAttempts.set(ip, attemptState);
+  }
+  if (attemptState.attempts >= ADMIN_LOGIN_MAX_ATTEMPTS) {
+    return res.status(429).json({ error: "Too many attempts. Wait 15 minutes and try again." });
+  }
+  attemptState.attempts += 1;
+
+  const { password } = req.body ?? {};
+  if (typeof password !== "string" || password.length > 1024) {
+    return res.status(401).json({ error: "Incorrect admin password." });
+  }
+
+  const suppliedHash = crypto.createHash("sha256").update(password).digest();
+  const expectedHash = crypto.createHash("sha256").update(expectedPassword).digest();
+  if (!crypto.timingSafeEqual(suppliedHash, expectedHash)) {
+    return res.status(401).json({ error: "Incorrect admin password." });
+  }
+
+  adminLoginAttempts.delete(ip);
+  const token = crypto.randomBytes(32).toString("hex");
+  adminSessions.set(token, { expiresAt: now + ADMIN_SESSION_TTL });
+  res.cookie("admin_session", token, {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: ADMIN_SESSION_TTL,
+  });
+  res.json({ status: "ok" });
+});
+
+app.get("/api/admin/session", (req, res) => {
+  res.json({ authenticated: Boolean(getAdminSession(req)) });
+});
+
+app.post("/api/admin/logout", (req, res) => {
+  const token = req.cookies?.admin_session;
+  if (token) adminSessions.delete(token);
+  res.clearCookie("admin_session", { httpOnly: true, sameSite: "strict" });
+  res.json({ status: "ok" });
+});
+
+app.get("/api/admin/quizzes", requireAdmin, async (_req, res) => {
+  const quizzes = await db.getQuizzes();
+  const result = await Promise.all(
+    quizzes.map(async (quiz) => {
+      const questions = await db.getQuestionsForQuiz(quiz.id, true);
+      return {
+        ...quiz,
+        question_count: questions.length,
+        ranked_question_count: questions.filter((question) => question.difficulty === "ranked").length,
+      };
+    }),
+  );
+  res.json(result);
+});
+
+app.get("/api/admin/shop-items", requireAdmin, async (_req, res) => {
+  res.json(await db.getShopItems());
+});
+
+app.post("/api/admin/users/lookup", requireAdmin, async (req, res) => {
+  const username = typeof req.body?.username === "string" ? req.body.username.trim().slice(0, 30) : "";
+  if (username.length < 2) {
+    return res.status(400).json({ error: "Enter a player callsign with at least 2 characters." });
+  }
+  const user = await db.findUserByUsernameOrEmail(username);
+  if (!user || user.username.toLowerCase() !== username.toLowerCase()) {
+    return res.status(404).json({ error: "Player callsign not found." });
+  }
+  res.json({
+    user: {
+      id: user.id,
+      username: user.username,
+      renown: user.renown,
+      lifetime_renown: user.lifetime_renown ?? user.renown,
+      rank: user.rank,
+    },
+  });
+});
+
+app.post("/api/admin/users/:id/unlocks", requireAdmin, async (req, res) => {
+  const user = await db.findUserById(req.params.id);
+  if (!user) return res.status(404).json({ error: "Player not found." });
+
+  const { item_id, premium_pass, unlock_all } = req.body ?? {};
+  const items = await db.getShopItems();
+  const granted = [];
+
+  if (unlock_all === true) {
+    for (const item of items) {
+      await db.unlockItem(user.id, item.id);
+      granted.push(item.name);
+    }
+    await db.unlockPremiumPass(user.id);
+    return res.json({
+      status: "ok",
+      username: user.username,
+      granted,
+      premium_pass_unlocked: true,
+    });
+  }
+
+  if (premium_pass === true) {
+    await db.unlockPremiumPass(user.id);
+    return res.json({
+      status: "ok",
+      username: user.username,
+      premium_pass_unlocked: true,
+    });
+  }
+
+  const item = items.find((shopItem) => shopItem.id === Number(item_id));
+  if (!item) return res.status(404).json({ error: "Shop item not found." });
+  await db.unlockItem(user.id, item.id);
+  res.json({ status: "ok", username: user.username, granted: [item.name] });
 });
 
 // -------------------------------------------------------------
@@ -214,6 +377,7 @@ app.post("/api/register", async (req, res) => {
       role: user.role,
       avatar: user.avatar || "🛡️",
       renown: user.renown,
+      lifetime_renown: user.lifetime_renown ?? user.renown,
       rank: user.rank,
       streak_count: user.streak_count,
       equipped_title: user.equipped_title,
@@ -253,6 +417,7 @@ app.post("/api/login", async (req, res) => {
       role: user.role,
       avatar: user.avatar || "🛡️",
       renown: user.renown,
+      lifetime_renown: user.lifetime_renown ?? user.renown,
       rank: user.rank,
       streak_count: user.streak_count,
       equipped_title: user.equipped_title,
@@ -291,6 +456,7 @@ app.get("/api/me", async (req, res) => {
       role: user.role,
       avatar: user.avatar || "🛡️",
       renown: user.renown,
+      lifetime_renown: user.lifetime_renown ?? user.renown,
       rank: user.rank,
       streak_count: user.streak_count,
       streak_last_date: user.streak_last_date,
@@ -363,10 +529,12 @@ app.get("/api/quizzes", requireAuth, async (req, res) => {
 
   for (const q of quizzes) {
     const questions = await db.getQuestionsForQuiz(q.id, false);
+    const rankedQuestions = await db.getQuestionsForQuiz(q.id, false, "ranked");
     const bestScore = await db.getUserQuizBestScore(req.user.id, q.id);
     result.push({
       ...q,
       question_count: questions.length,
+      ranked_question_count: rankedQuestions.length,
       user_best_score: bestScore,
     });
   }
@@ -381,9 +549,21 @@ app.get("/api/quizzes/:id/questions", requireAuth, async (req, res) => {
     return res.status(404).json({ error: "Quiz not found." });
   }
 
-  const questions = await db.getQuestionsForQuiz(quiz.id, false);
+  if (req.query.mode && req.query.mode !== "ranked") {
+    return res.status(400).json({ error: "Unknown question mode." });
+  }
+  const mode = req.query.mode === "ranked" ? "ranked" : "practice";
+  const questions = await db.getQuestionsForQuiz(
+    quiz.id,
+    false,
+    mode === "ranked" ? "ranked" : null,
+  );
+  if (mode === "ranked" && questions.length === 0) {
+    return res.status(404).json({ error: "No ranked questions are available in this quiz yet." });
+  }
   res.json({
     quiz: { id: quiz.id, title: quiz.title, description: quiz.description },
+    mode,
     questions,
   });
 });
@@ -395,28 +575,64 @@ app.post("/api/quizzes/:id/start", requireAuth, async (req, res) => {
     return res.status(404).json({ error: "Quiz not found." });
   }
 
-  const questions = await db.getQuestionsForQuiz(quiz.id, false);
+  const { mode = "practice" } = req.body ?? {};
+  if (!["practice", "ranked"].includes(mode)) {
+    return res.status(400).json({ error: "Mode must be practice or ranked." });
+  }
+  const questions = await db.getQuestionsForQuiz(
+    quiz.id,
+    false,
+    mode === "ranked" ? "ranked" : null,
+  );
+  if (questions.length === 0) {
+    return res.status(400).json({ error: "This quiz does not have any questions for that mode." });
+  }
   const attemptId = await db.startAttempt({
     user_id: req.user.id,
     quiz_id: quiz.id,
     question_count: questions.length,
+    mode,
   });
 
-  res.json({ status: "ok", attempt_id: attemptId });
+  res.json({ status: "ok", attempt_id: attemptId, mode, question_count: questions.length });
 });
 
 // POST /api/quizzes/:id/attempts (Scores all answers server-side, saves attempt, returns score)
 app.post("/api/quizzes/:id/attempts", requireAuth, async (req, res) => {
   const quizId = Number(req.params.id);
-  const { attempt_id, answers } = req.body ?? {};
+  const { attempt_id, answers, mode: requestedMode = "practice" } = req.body ?? {};
 
   const quiz = await db.getQuizById(quizId);
   if (!quiz) {
     return res.status(404).json({ error: "Quiz not found." });
   }
 
+  if (!["practice", "ranked"].includes(requestedMode)) {
+    return res.status(400).json({ error: "Mode must be practice or ranked." });
+  }
+
+  let mode = requestedMode;
+  if (attempt_id) {
+    const existingAttempt = await db.getAttemptById(attempt_id);
+    if (
+      !existingAttempt ||
+      Number(existingAttempt.user_id) !== Number(req.user.id) ||
+      Number(existingAttempt.quiz_id) !== quizId
+    ) {
+      return res.status(403).json({ error: "This attempt does not belong to your account." });
+    }
+    if (existingAttempt.is_complete) {
+      return res.status(409).json({ error: "This attempt has already been scored." });
+    }
+    mode = existingAttempt.mode === "ranked" ? "ranked" : "practice";
+  }
+
   // Load questions with full answer keys securely on the server
-  const questions = await db.getQuestionsForQuiz(quizId, true);
+  const questions = await db.getQuestionsForQuiz(
+    quizId,
+    true,
+    mode === "ranked" ? "ranked" : null,
+  );
   if (questions.length === 0) {
     return res.status(400).json({ error: "Quiz has no questions configured." });
   }
@@ -453,6 +669,7 @@ app.post("/api/quizzes/:id/attempts", requireAuth, async (req, res) => {
       user_id: req.user.id,
       quiz_id: quizId,
       question_count: questionCount,
+      mode,
     });
     attempt = await db.finishAttempt(aid, score);
   }
@@ -490,9 +707,11 @@ app.post("/api/quizzes/:id/attempts", requireAuth, async (req, res) => {
 
   renownEarned += streakBonus;
   const newRenownTotal = (req.user.renown || 0) + renownEarned;
+  const newLifetimeRenown = Number(req.user.lifetime_renown ?? req.user.renown ?? 0) + renownEarned;
 
   await db.updateUser(req.user.id, {
     renown: newRenownTotal,
+    lifetime_renown: newLifetimeRenown,
     streak_count: streakCount,
     streak_last_date: todayStr,
   });
@@ -541,6 +760,8 @@ app.post("/api/quizzes/:id/attempts", requireAuth, async (req, res) => {
       streak_bonus: streakBonus,
     },
     total_renown: newRenownTotal,
+    lifetime_renown: newLifetimeRenown,
+    mode,
     rank: newRank,
     prev_rank: prevRank,
     rank_changed: newRank !== prevRank,
@@ -691,12 +912,15 @@ app.get("/api/questions", requireTeacher, async (req, res) => {
 
 // POST /api/questions (Teacher only)
 app.post("/api/questions", requireTeacher, async (req, res) => {
-  const { quiz_id, text, position, choices } = req.body ?? {};
+  const { quiz_id, text, position, choices, difficulty = "standard" } = req.body ?? {};
 
   if (!quiz_id || !text || !Array.isArray(choices) || choices.length !== 4) {
     return res.status(400).json({
       error: "Question must have a quiz_id, prompt text, and exactly 4 choices.",
     });
+  }
+  if (!["standard", "ranked"].includes(difficulty)) {
+    return res.status(400).json({ error: "Difficulty must be standard or ranked." });
   }
 
   const correctCount = choices.filter((c) => Boolean(c.is_correct)).length;
@@ -711,6 +935,7 @@ app.post("/api/questions", requireTeacher, async (req, res) => {
     text,
     position: position || 1,
     choices,
+    difficulty,
   });
 
   res.status(201).json({ status: "ok", question });
@@ -719,8 +944,11 @@ app.post("/api/questions", requireTeacher, async (req, res) => {
 // PUT /api/questions/:id (Teacher only)
 app.put("/api/questions/:id", requireTeacher, async (req, res) => {
   const qid = Number(req.params.id);
-  const { text, position, choices } = req.body ?? {};
+  const { text, position, choices, difficulty } = req.body ?? {};
 
+  if (difficulty !== undefined && !["standard", "ranked"].includes(difficulty)) {
+    return res.status(400).json({ error: "Difficulty must be standard or ranked." });
+  }
   if (Array.isArray(choices)) {
     if (choices.length !== 4) {
       return res.status(400).json({ error: "Questions must have exactly 4 choices." });
@@ -731,7 +959,7 @@ app.put("/api/questions/:id", requireTeacher, async (req, res) => {
     }
   }
 
-  const result = await db.updateQuestion(qid, { text, position, choices });
+  const result = await db.updateQuestion(qid, { text, position, choices, difficulty });
   if (!result.success) {
     return res.status(404).json({ error: result.error || "Question update failed." });
   }

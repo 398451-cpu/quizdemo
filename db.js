@@ -770,6 +770,45 @@ const SEED_QUESTIONS_DATA = [
   },
 ];
 
+const RANKED_SEED_QUESTION_TEXTS = new Set([
+  "Which attacker uses the 'Kawan Hive Launcher' to deploy swarms of tracking nanobots in doorways and choke points?",
+  "What is the name of Solis's tactical visor capable of detecting attacker electronic gadgets through surfaces?",
+  "Which hard breacher throws hydraulic 'S.E.L.M.A.' sequential explosive cylinders?",
+  "Which attacker operates the automated BU-GI auto-breacher tank that chews through soft floors and barricades?",
+  "Which new Defender uses the Horus Lance Launcher to counter shield pushes in Operation Split Fire?",
+  "In Dokkaebi's Y11S2 Jegeo Payload rework, what must happen for the upload to complete?",
+  "Which three Operators received the XK23 assault rifle in the Y11S2 loadout update?",
+  "Which new map inspired by Rainbow Six: Vegas launched with Operation System Override in June 2026?",
+  "Operation Split Fire's targeted Villa update moved which first-floor areas to the basement?",
+  "Which three maps received visual overhauls in Operation Split Fire?",
+  "On Oregon, which exterior structure callout contains a high-level ladder sniper vantage point over Meeting Hall?",
+  "On Villa, what universally recognized callout refers to the 90-degree corner hallway connecting Trophy and Aviator?",
+  "On Theme Park, which bomb site was previously known as 'Haunted Dining' before the competitive rework?",
+  "On Clubhouse, what is the narrow dirt tunnel in the basement called that attackers push from Construction?",
+  "Which defender is famous for wielding the blisteringly fast 1200 RPM Vector .45 ACP submachine gun?",
+  "What specific recoil benefit does the 'Flash Hider' muzzle attachment provide in Rainbow Six Siege?",
+  "What unique stat boost does the 'Extended Barrel' attachment provide to compatible weapons?",
+  "Which heavy sniper rifle belongs to Kali and penetrates multiple soft walls and bodies with intense velocity?",
+  "How did Ubisoft describe the new XK23 assault rifle introduced in Y11S2?",
+  "After the Y11S2.3 update, what is Hibana's X-Kairos detonation timer?",
+  "After the Y11S2.3 update, how much total fuel ammunition does Maverick's Breaching Torch carry?",
+  "How long does the standard Preparation Phase last in competitive Ranked and Esports matches?",
+  "How many total wall reinforcements does the defending team pool share collectively at the round start?",
+  "Under standard competitive Bomb settings, how long does it take an attacker to plant the defuser?",
+  "How does Thatcher's EMP Grenade interact with active electrical gadgets like Bandit batteries or Kaid claws?",
+  "How does audio propagation work in the Rainbow Six Siege physics engine?",
+  "What does Noor's Horus Lance Launcher do when its projectile hits a shield or destructible surface?",
+  "What kind of limited-time mode was Wasteland Circuit, introduced during Operation Split Fire?",
+  "What competitive playlist division was added in Operation Split Fire?",
+  "Which North American roster won the inaugural PC Six Invitational in Montreal in 2017?",
+  "Which legendary European roster achieved back-to-back Six Invitational championship titles in 2018 and 2019?",
+  "Which famous Year 2 operation cancelled new operator releases to overhaul server tick rates and core engine stability?",
+  "Which Brazilian team became the first South American squad to lift the Six Invitational Hammer in 2021?",
+  "Which team won the Six Invitational 2026 grand final, defeating Team Secret 3–1?",
+  "Which new Defender headlined Operation Split Fire, released on September 1, 2026?",
+  "Which team won the Rainbow Six Siege tournament at the Esports World Cup 2026, beating FURIA 3–1?",
+]);
+
 const SEED_SHOP_ITEMS = [
   {
     id: 1,
@@ -941,6 +980,16 @@ let pgPool = null;
 
 export async function initDatabase() {
   loadMemoryDb();
+  for (const question of memoryDb.questions) {
+    if (!question.difficulty) {
+      question.difficulty = RANKED_SEED_QUESTION_TEXTS.has(question.text) ? "ranked" : "standard";
+    }
+  }
+  for (const user of memoryDb.users) {
+    if (!Number.isFinite(Number(user.lifetime_renown))) {
+      user.lifetime_renown = Number(user.renown) || 0;
+    }
+  }
 
   // Seed default seed data in memoryDb if empty
   if (memoryDb.quizzes.length === 0) {
@@ -955,6 +1004,7 @@ export async function initDatabase() {
         quiz_id: q.quiz_id,
         text: q.text,
         position: qId,
+        difficulty: RANKED_SEED_QUESTION_TEXTS.has(q.text) ? "ranked" : "standard",
       });
       for (const c of q.choices) {
         memoryDb.choices.push({
@@ -995,6 +1045,7 @@ export async function initDatabase() {
         quiz_id: quiz.id,
         text: seedQuestion.text,
         position: Math.max(0, ...currentQuizQuestions.map((question) => question.position)) + 1,
+        difficulty: RANKED_SEED_QUESTION_TEXTS.has(seedQuestion.text) ? "ranked" : "standard",
       });
 
       let choiceId = Math.max(0, ...memoryDb.choices.map((choice) => choice.id)) + 1;
@@ -1107,6 +1158,20 @@ export async function initDatabase() {
       });
       const client = await pgPool.connect();
       try {
+        const migrationState = await client.query(`
+          SELECT
+            EXISTS (
+              SELECT 1 FROM information_schema.columns
+              WHERE table_schema = current_schema() AND table_name = 'users' AND column_name = 'lifetime_renown'
+            ) AS has_lifetime_renown,
+            EXISTS (
+              SELECT 1 FROM information_schema.columns
+              WHERE table_schema = current_schema() AND table_name = 'questions' AND column_name = 'difficulty'
+            ) AS has_question_difficulty
+        `);
+        const hasLifetimeRenown = migrationState.rows[0].has_lifetime_renown;
+        const hasQuestionDifficulty = migrationState.rows[0].has_question_difficulty;
+
         await client.query(`
           CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -1115,6 +1180,7 @@ export async function initDatabase() {
             password_hash TEXT NOT NULL,
             role TEXT NOT NULL DEFAULT 'player',
             renown INT NOT NULL DEFAULT 0,
+            lifetime_renown INT NOT NULL DEFAULT 0,
             rank TEXT NOT NULL DEFAULT 'Unranked',
             created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
             streak_count INT NOT NULL DEFAULT 0,
@@ -1137,7 +1203,8 @@ export async function initDatabase() {
             id SERIAL PRIMARY KEY,
             quiz_id INT NOT NULL REFERENCES quizzes(id) ON DELETE CASCADE,
             text TEXT NOT NULL,
-            position INT NOT NULL DEFAULT 1
+            position INT NOT NULL DEFAULT 1,
+            difficulty TEXT NOT NULL DEFAULT 'standard'
           );
 
           CREATE TABLE IF NOT EXISTS choices (
@@ -1153,6 +1220,7 @@ export async function initDatabase() {
             quiz_id INT NOT NULL REFERENCES quizzes(id) ON DELETE CASCADE,
             score INT,
             question_count INT NOT NULL,
+            mode TEXT NOT NULL DEFAULT 'practice',
             completed_at TIMESTAMPTZ,
             is_complete BOOLEAN NOT NULL DEFAULT false
           );
@@ -1197,6 +1265,21 @@ export async function initDatabase() {
           );
         `);
 
+        await client.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS lifetime_renown INT NOT NULL DEFAULT 0");
+        await client.query("ALTER TABLE questions ADD COLUMN IF NOT EXISTS difficulty TEXT NOT NULL DEFAULT 'standard'");
+        await client.query("ALTER TABLE attempts ADD COLUMN IF NOT EXISTS mode TEXT NOT NULL DEFAULT 'practice'");
+        if (!hasLifetimeRenown) {
+          await client.query("UPDATE users SET lifetime_renown = renown");
+        }
+        if (!hasQuestionDifficulty) {
+          for (const questionText of RANKED_SEED_QUESTION_TEXTS) {
+            await client.query(
+              "UPDATE questions SET difficulty = 'ranked' WHERE text = $1",
+              [questionText],
+            );
+          }
+        }
+
         // Keep a fresh PostgreSQL database playable without overwriting any
         // quizzes or questions that have already been added by a teacher.
         await client.query("BEGIN");
@@ -1227,8 +1310,13 @@ export async function initDatabase() {
               if (existingQuestion.rows.length > 0) continue;
 
               const insertedQuestion = await client.query(
-                "INSERT INTO questions (quiz_id, text, position) VALUES ($1, $2, $3) RETURNING id",
-                [quizId, seedQuestion.text, index + 1],
+                "INSERT INTO questions (quiz_id, text, position, difficulty) VALUES ($1, $2, $3, $4) RETURNING id",
+                [
+                  quizId,
+                  seedQuestion.text,
+                  index + 1,
+                  RANKED_SEED_QUESTION_TEXTS.has(seedQuestion.text) ? "ranked" : "standard",
+                ],
               );
               for (const choice of seedQuestion.choices) {
                 await client.query(
@@ -1398,14 +1486,17 @@ export const db = {
   },
 
   // Questions & Choices
-  async getQuestionsForQuiz(quizId, includeAnswers = false) {
+  async getQuestionsForQuiz(quizId, includeAnswers = false, difficulty = null) {
     const qid = Number(quizId);
+    const rankedOnly = difficulty === "ranked";
     let questions = [];
     if (isPgConnected && pgPool) {
       try {
         const qRes = await pgPool.query(
-          "SELECT id, quiz_id, text, position FROM questions WHERE quiz_id = $1 ORDER BY position ASC, id ASC",
-          [qid]
+          rankedOnly
+            ? "SELECT id, quiz_id, text, position, difficulty FROM questions WHERE quiz_id = $1 AND difficulty = 'ranked' ORDER BY position ASC, id ASC"
+            : "SELECT id, quiz_id, text, position, difficulty FROM questions WHERE quiz_id = $1 ORDER BY position ASC, id ASC",
+          [qid],
         );
         questions = qRes.rows;
         for (const q of questions) {
@@ -1424,7 +1515,7 @@ export const db = {
     }
 
     questions = memoryDb.questions
-      .filter((q) => q.quiz_id === qid)
+      .filter((q) => q.quiz_id === qid && (!rankedOnly || q.difficulty === "ranked"))
       .sort((a, b) => a.position - b.position || a.id - b.id)
       .map((q) => {
         const choices = memoryDb.choices
@@ -1440,6 +1531,7 @@ export const db = {
           quiz_id: q.quiz_id,
           text: q.text,
           position: q.position,
+          difficulty: q.difficulty || "standard",
           choices,
         };
       });
@@ -1447,14 +1539,15 @@ export const db = {
     return questions;
   },
 
-  async addQuestion({ quiz_id, text, position, choices }) {
+  async addQuestion({ quiz_id, text, position, choices, difficulty = "standard" }) {
     const qid = Number(quiz_id);
     const pos = Number(position || 1);
+    const questionDifficulty = difficulty === "ranked" ? "ranked" : "standard";
     if (isPgConnected && pgPool) {
       try {
         const qRes = await pgPool.query(
-          "INSERT INTO questions (quiz_id, text, position) VALUES ($1, $2, $3) RETURNING *",
-          [qid, text.trim(), pos]
+          "INSERT INTO questions (quiz_id, text, position, difficulty) VALUES ($1, $2, $3, $4) RETURNING *",
+          [qid, text.trim(), pos, questionDifficulty],
         );
         const question = qRes.rows[0];
         question.choices = [];
@@ -1477,6 +1570,7 @@ export const db = {
       quiz_id: qid,
       text: text.trim(),
       position: pos,
+      difficulty: questionDifficulty,
     };
     memoryDb.questions.push(newQuestion);
 
@@ -1496,14 +1590,31 @@ export const db = {
     return { ...newQuestion, choices: savedChoices };
   },
 
-  async updateQuestion(questionId, { text, position, choices }) {
+  async updateQuestion(questionId, { text, position, choices, difficulty }) {
     const qid = Number(questionId);
     if (isPgConnected && pgPool) {
       try {
-        await pgPool.query(
-          "UPDATE questions SET text = $1, position = $2 WHERE id = $3",
-          [text.trim(), Number(position || 1), qid]
-        );
+        const fields = [];
+        const values = [qid];
+        if (text !== undefined) {
+          values.push(text.trim());
+          fields.push(`text = $${values.length}`);
+        }
+        if (position !== undefined) {
+          values.push(Number(position || 1));
+          fields.push(`position = $${values.length}`);
+        }
+        if (difficulty !== undefined) {
+          values.push(difficulty === "ranked" ? "ranked" : "standard");
+          fields.push(`difficulty = $${values.length}`);
+        }
+        if (fields.length) {
+          const updated = await pgPool.query(
+            `UPDATE questions SET ${fields.join(", ")} WHERE id = $1 RETURNING id`,
+            values,
+          );
+          if (!updated.rows[0]) return { success: false, error: "Question not found" };
+        }
         if (Array.isArray(choices) && choices.length) {
           await pgPool.query("DELETE FROM choices WHERE question_id = $1", [qid]);
           for (const c of choices) {
@@ -1523,6 +1634,7 @@ export const db = {
     if (q) {
       if (text !== undefined) q.text = text.trim();
       if (position !== undefined) q.position = Number(position);
+      if (difficulty !== undefined) q.difficulty = difficulty === "ranked" ? "ranked" : "standard";
       if (Array.isArray(choices) && choices.length) {
         memoryDb.choices = memoryDb.choices.filter((c) => c.question_id !== qid);
         for (const c of choices) {
@@ -1558,18 +1670,19 @@ export const db = {
   },
 
   // Attempts
-  async startAttempt({ user_id, quiz_id, question_count }) {
+  async startAttempt({ user_id, quiz_id, question_count, mode = "practice" }) {
     const uid = Number(user_id);
     const qid = Number(quiz_id);
     const count = Number(question_count);
+    const attemptMode = mode === "ranked" ? "ranked" : "practice";
 
     if (isPgConnected && pgPool) {
       try {
         const res = await pgPool.query(
-          `INSERT INTO attempts (user_id, quiz_id, score, question_count, completed_at, is_complete)
-           VALUES ($1, $2, NULL, $3, NULL, false)
+          `INSERT INTO attempts (user_id, quiz_id, score, question_count, mode, completed_at, is_complete)
+           VALUES ($1, $2, NULL, $3, $4, NULL, false)
            RETURNING id`,
-          [uid, qid, count]
+          [uid, qid, count, attemptMode],
         );
         return res.rows[0].id;
       } catch (err) {
@@ -1584,12 +1697,26 @@ export const db = {
       quiz_id: qid,
       score: null,
       question_count: count,
+      mode: attemptMode,
       completed_at: null,
       is_complete: false,
     };
     memoryDb.attempts.push(attempt);
     persistMemoryDb();
     return newId;
+  },
+
+  async getAttemptById(attemptId) {
+    const aid = Number(attemptId);
+    if (isPgConnected && pgPool) {
+      try {
+        const res = await pgPool.query("SELECT * FROM attempts WHERE id = $1", [aid]);
+        if (res.rows[0]) return res.rows[0];
+      } catch (err) {
+        console.warn("PG getAttemptById error, fallback:", err.message);
+      }
+    }
+    return memoryDb.attempts.find((attempt) => attempt.id === aid) || null;
   },
 
   async finishAttempt(attemptId, score) {
@@ -1655,6 +1782,19 @@ export const db = {
   async getUserQuizBestScore(userId, quizId) {
     const uid = Number(userId);
     const qid = Number(quizId);
+    if (isPgConnected && pgPool) {
+      try {
+        const res = await pgPool.query(
+          "SELECT MAX(score) AS best FROM attempts WHERE user_id = $1 AND quiz_id = $2 AND is_complete = true",
+          [uid, qid],
+        );
+        if (res.rows[0]?.best !== null && res.rows[0]?.best !== undefined) {
+          return Number(res.rows[0].best);
+        }
+      } catch (err) {
+        console.warn("PG getUserQuizBestScore error, fallback:", err.message);
+      }
+    }
     const userAttempts = memoryDb.attempts.filter(
       (a) => a.user_id === uid && a.quiz_id === qid && a.is_complete
     );
@@ -1882,12 +2022,10 @@ export const db = {
     return { row, newlyAchieved };
   },
 
-  // Rank Calculation: Recalculates average score percentage across all completed attempts
+  // Rank calculation combines average score with lifetime Renown unlock gates.
   async recalculateSkillRank(userId) {
     const uid = Number(userId);
-    const attempts = memoryDb.attempts.filter(
-      (a) => a.user_id === uid && a.is_complete
-    );
+    const attempts = await this.getUserAttempts(uid);
 
     if (attempts.length === 0) {
       await this.updateUser(uid, { rank: "Unranked" });
@@ -1897,15 +2035,21 @@ export const db = {
     const totalScore = attempts.reduce((acc, a) => acc + (a.score ?? 0), 0);
     const totalMax = attempts.reduce((acc, a) => acc + (a.question_count || 1), 0);
     const avgPct = Math.round((totalScore / totalMax) * 100);
-
-    let rank = "Unranked";
-    if (avgPct >= 98) rank = "Champion";
-    else if (avgPct >= 90) rank = "Diamond";
-    else if (avgPct >= 80) rank = "Platinum";
-    else if (avgPct >= 70) rank = "Gold";
-    else if (avgPct >= 55) rank = "Silver";
-    else if (avgPct >= 40) rank = "Bronze";
-    else rank = "Copper";
+    const user = await this.findUserById(uid);
+    const lifetimeRenown = Number(user?.lifetime_renown ?? user?.renown ?? 0);
+    const rankTiers = [
+      { name: "Copper", minScore: 0, minRenown: 0 },
+      { name: "Bronze", minScore: 40, minRenown: 50 },
+      { name: "Silver", minScore: 55, minRenown: 150 },
+      { name: "Gold", minScore: 70, minRenown: 300 },
+      { name: "Platinum", minScore: 80, minRenown: 500 },
+      { name: "Diamond", minScore: 90, minRenown: 750 },
+      { name: "Champion", minScore: 98, minRenown: 1000 },
+    ];
+    const eligibleTiers = rankTiers.filter(
+      (tier) => avgPct >= tier.minScore && lifetimeRenown >= tier.minRenown,
+    );
+    const rank = eligibleTiers.at(-1)?.name || "Copper";
 
     await this.updateUser(uid, { rank });
     return rank;

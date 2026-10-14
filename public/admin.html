@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0e1117">
+    <title>Admin Command | Tactical Trivia</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/admin.css">
+    <script src="/admin.js" defer></script>
+  </head>
+  <body class="theme-default admin-page">
+    <div class="admin-shell">
+      <header class="admin-header">
+        <a class="admin-brand" href="/">
+          <span class="admin-emblem">6</span>
+          <span><small>TACTICAL TRIVIA</small><strong>ADMIN COMMAND</strong></span>
+        </a>
+        <a class="btn-tactical-sm btn-ghost" href="/">← Back to game</a>
+      </header>
+
+      <main class="admin-main">
+        <section id="admin-login-panel" class="admin-login-card">
+          <p class="section-tag">RESTRICTED ACCESS</p>
+          <h1>Admin sign in</h1>
+          <p class="admin-copy">Enter the admin password to manage the question bank.</p>
+          <form id="admin-login-form">
+            <input type="text" name="username" autocomplete="username" value="admin" hidden>
+            <label for="admin-password">Admin password</label>
+            <div class="admin-password-row">
+              <input id="admin-password" class="tactical-input" type="password" autocomplete="current-password" required>
+              <button class="btn-tactical btn-accent" type="submit">Unlock admin</button>
+            </div>
+          </form>
+          <p id="admin-login-message" class="admin-message" aria-live="polite"></p>
+        </section>
+
+        <section id="admin-dashboard" class="admin-dashboard" hidden>
+          <div class="admin-dashboard-heading">
+            <div>
+              <p class="section-tag">QUESTION BANK</p>
+              <h1>Assessment management</h1>
+              <p class="admin-copy">Add, edit, or remove questions and set the correct answer.</p>
+            </div>
+            <button id="admin-logout" class="btn-tactical-sm btn-ghost" type="button">Lock admin</button>
+          </div>
+
+          <div class="admin-toolbar">
+            <div class="admin-filter">
+              <label for="admin-quiz-select">Quiz module</label>
+              <select id="admin-quiz-select" class="tactical-select"></select>
+            </div>
+            <button id="admin-new-question" class="btn-tactical btn-accent" type="button">＋ Add question</button>
+          </div>
+
+          <form id="admin-question-form" class="admin-form-card" hidden>
+            <h2 id="admin-form-title">Add question</h2>
+            <label for="admin-question-text">Question</label>
+            <textarea id="admin-question-text" class="tactical-input textarea" rows="3" required></textarea>
+            <div class="admin-position">
+              <label for="admin-question-position">Position</label>
+              <input id="admin-question-position" class="tactical-input" type="number" min="1" value="1" required>
+            </div>
+            <fieldset class="admin-choice-fieldset">
+              <legend>Answer choices — select the correct answer</legend>
+              <div id="admin-choice-fields"></div>
+            </fieldset>
+            <label class="admin-ranked-toggle">
+              <input id="admin-question-ranked" type="checkbox">
+              Include this question in Ranked mode (hard question)
+            </label>
+            <p id="admin-form-message" class="admin-message" aria-live="polite"></p>
+            <div class="admin-form-actions">
+              <button class="btn-tactical btn-accent" type="submit">Save question</button>
+              <button id="admin-cancel-edit" class="btn-tactical btn-ghost" type="button">Cancel</button>
+            </div>
+          </form>
+
+          <div id="admin-question-list" class="admin-question-list" aria-live="polite"></div>
+          <p id="admin-status" class="admin-message" aria-live="polite"></p>
+
+          <section class="admin-unlock-card">
+            <div>
+              <p class="section-tag">PLAYER REWARDS</p>
+              <h2>Grant unlocks</h2>
+              <p class="admin-copy">Find a player by callsign, then grant individual items or everything in the shop.</p>
+            </div>
+            <form id="admin-user-lookup-form" class="admin-user-lookup">
+              <label for="admin-user-callsign">Player callsign</label>
+              <div class="admin-password-row">
+                <input id="admin-user-callsign" class="tactical-input" type="text" minlength="2" maxlength="30" required>
+                <button class="btn-tactical btn-accent" type="submit">Find player</button>
+              </div>
+            </form>
+            <p id="admin-user-message" class="admin-message" aria-live="polite"></p>
+            <div id="admin-player-unlocks" hidden>
+              <div class="admin-player-summary">
+                <strong id="admin-player-name"></strong>
+                <span id="admin-player-renown"></span>
+              </div>
+              <div class="admin-grant-actions">
+                <button id="admin-unlock-everything" class="btn-tactical btn-accent" type="button">Unlock all items + Premium Pass</button>
+                <button id="admin-unlock-premium" class="btn-tactical btn-secondary" type="button">Grant Premium Pass</button>
+              </div>
+              <div id="admin-shop-item-list" class="admin-shop-item-list"></div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

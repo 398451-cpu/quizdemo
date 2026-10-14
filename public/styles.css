@@ -549,6 +549,22 @@ body {
   border-top: 1px solid var(--border-color);
 }
 
+.quiz-mode-footer {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.quiz-mode-buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.quiz-mode-buttons .btn-tactical {
+  width: 100%;
+  min-height: 42px;
+}
+
 .pb-badge {
   font-size: 0.76rem;
   color: var(--accent-secondary);
