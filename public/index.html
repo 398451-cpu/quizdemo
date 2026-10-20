@@ -411,7 +411,25 @@
                 <div id="alpha-charms-grid" class="charms-grid" aria-live="polite"></div>
               </section>
             </div>
-            <div id="alpha-opening-result" class="alpha-opening-result" role="status" aria-live="polite" hidden></div>
+            <div id="alpha-opening-result" class="alpha-opening-result alpha-cutscene" role="dialog" aria-modal="true" aria-labelledby="alpha-cutscene-title" aria-describedby="alpha-cutscene-status" hidden>
+              <div class="alpha-cutscene-panel">
+                <div class="alpha-cutscene-topline"><span class="alpha-kicker">QUARTERMASTER // SECURE CHANNEL</span><span class="cutscene-index">DISPATCH 01</span></div>
+                <h4 id="alpha-cutscene-title" class="alpha-cutscene-title" tabindex="-1">Alpha Pack in transit</h4>
+                <div class="cutscene-scene" aria-hidden="true">
+                  <div class="cutscene-scanline"></div>
+                  <div class="cutscene-orbit cutscene-orbit-one"></div>
+                  <div class="cutscene-orbit cutscene-orbit-two"></div>
+                  <div class="cutscene-pack"><span class="pack-mark">A</span><span class="pack-label">FIELD<br>SUPPLY</span><span class="cutscene-pack-seam"></span></div>
+                  <div class="cutscene-flash"></div>
+                </div>
+                <p id="alpha-cutscene-status" class="alpha-cutscene-status" role="status" aria-live="polite">Awaiting secure confirmation.</p>
+                <div class="cutscene-reward" hidden></div>
+                <div class="cutscene-controls">
+                  <span class="cutscene-hint">ESC TO SKIP</span>
+                  <button type="button" class="btn-tactical-sm btn-secondary" data-alpha-cutscene-action>Skip reveal</button>
+                </div>
+              </div>
+            </div>
           </section>
 
           <!-- Renown Shop Catalog -->

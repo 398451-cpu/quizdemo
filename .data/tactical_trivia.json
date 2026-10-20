@@ -2633,15 +2633,36 @@
       "id": 4,
       "user_id": 3,
       "goal_id": 1,
-      "progress": 7,
+      "progress": 8,
       "achieved_at": "2026-10-13T18:08:05.547Z"
     },
     {
       "id": 5,
       "user_id": 3,
       "goal_id": 2,
-      "progress": 3,
+      "progress": 4,
       "achieved_at": "2026-10-13T18:08:05.553Z"
+    },
+    {
+      "id": 6,
+      "user_id": 3,
+      "goal_id": 4,
+      "progress": 1,
+      "achieved_at": null
+    },
+    {
+      "id": 7,
+      "user_id": 3,
+      "goal_id": 5,
+      "progress": 1,
+      "achieved_at": "2026-10-20T18:59:49.601Z"
+    },
+    {
+      "id": 8,
+      "user_id": 3,
+      "goal_id": 6,
+      "progress": 13,
+      "achieved_at": null
     }
   ],
   "premium_pass": [
@@ -2656,6 +2677,11 @@
       "user_id": 1,
       "count": 0,
       "starter_granted": true
+    },
+    {
+      "user_id": 3,
+      "count": 1,
+      "starter_granted": true
     }
   ],
   "ducky_charms": [
@@ -2664,6 +2690,12 @@
       "charm_id": "duck-16",
       "count": 1,
       "unlocked_at": "2026-10-14T18:25:10.597Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-25",
+      "count": 1,
+      "unlocked_at": "2026-10-20T18:58:53.742Z"
     }
   ]
 }

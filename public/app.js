@@ -1360,6 +1360,109 @@
     if (el.profileRenownDisplay && !el.views.profile.hidden) renderProfile();
   }
 
+  const alphaCutscene = {
+    action: alpha.result?.querySelector("[data-alpha-cutscene-action]"),
+    title: alpha.result?.querySelector("#alpha-cutscene-title"),
+    status: alpha.result?.querySelector("#alpha-cutscene-status"),
+    scene: alpha.result?.querySelector(".cutscene-scene"),
+    reward: alpha.result?.querySelector(".cutscene-reward"),
+    hint: alpha.result?.querySelector(".cutscene-hint"),
+    active: false,
+    revealed: false,
+    timer: null,
+    resolve: null,
+    opener: null,
+    rewardData: null,
+  };
+
+  function revealAlphaReward() {
+    if (!alphaCutscene.active || alphaCutscene.revealed) return;
+    window.clearTimeout(alphaCutscene.timer);
+    alphaCutscene.timer = null;
+    alphaCutscene.revealed = true;
+    const data = alphaCutscene.rewardData || {};
+    const charm = data.charm || {};
+    const duplicateText = data.duplicate
+      ? `Duplicate secured. ${Number(data.duplicate_renown || 0).toLocaleString()} Renown returned.`
+      : "New keepsake added to your locker.";
+    const balance = Number.isFinite(Number(data.renown))
+      ? `<span class="reveal-balance">Current balance: ${Number(data.renown).toLocaleString()} Renown</span>`
+      : "";
+
+    alphaCutscene.scene.dataset.stage = "opened";
+    alphaCutscene.title.textContent = data.duplicate ? "Repeat contact secured" : "Keepsake secured";
+    alphaCutscene.status.textContent = "Dispatch confirmed. Reward added to your collection.";
+    alphaCutscene.reward.innerHTML = `<div class="reveal-stamp">${data.duplicate ? "REPEAT CONTACT" : "NEW KEEPSAKE"}</div><div class="reveal-art">${charmArtwork(charm)}</div><div class="reveal-copy"><span class="alpha-kicker">${escapeMarkup(charm.rarity || "STANDARD")} DROP</span><h4>${escapeMarkup(charm.name || "Duck charm")}</h4><p>${escapeMarkup(charm.accessory || "Field charm")} · ${escapeMarkup(duplicateText)}</p>${balance}</div>`;
+    alphaCutscene.reward.hidden = false;
+    alphaCutscene.hint.textContent = "REWARD CONFIRMED";
+    alphaCutscene.action.textContent = "Close";
+    alphaCutscene.action.focus();
+    playSound("win");
+  }
+
+  function closeAlphaCutscene() {
+    if (!alphaCutscene.active || !alphaCutscene.revealed) return;
+    window.clearTimeout(alphaCutscene.timer);
+    alphaCutscene.active = false;
+    alpha.result.hidden = true;
+    alpha.content.classList.remove("is-opening");
+    document.removeEventListener("keydown", handleAlphaCutsceneKeydown);
+    const resolve = alphaCutscene.resolve;
+    alphaCutscene.resolve = null;
+    alphaCutscene.rewardData = null;
+    resolve?.();
+  }
+
+  function handleAlphaCutsceneKeydown(event) {
+    if (!alphaCutscene.active) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      if (alphaCutscene.revealed) closeAlphaCutscene();
+      else revealAlphaReward();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const controls = [alphaCutscene.action].filter((element) => element && !element.disabled);
+    if (!controls.length) return;
+    event.preventDefault();
+    controls[0].focus();
+  }
+
+  function playAlphaCutscene(data) {
+    return new Promise((resolve) => {
+      alphaCutscene.active = true;
+      alphaCutscene.revealed = false;
+      alphaCutscene.resolve = resolve;
+      alphaCutscene.rewardData = data;
+      alphaCutscene.opener = alpha.open;
+      alpha.result.hidden = false;
+      alpha.result.classList.remove("reveal-in");
+      alphaCutscene.reward.hidden = true;
+      alphaCutscene.reward.innerHTML = "";
+      alphaCutscene.title.textContent = "Alpha Pack in transit";
+      alphaCutscene.status.textContent = "Pack confirmed. Dispatching secure case.";
+      alphaCutscene.scene.dataset.stage = "sealed";
+      alphaCutscene.hint.textContent = "ESC TO SKIP";
+      alphaCutscene.action.textContent = "Skip reveal";
+      alpha.content.classList.add("is-opening");
+      document.addEventListener("keydown", handleAlphaCutsceneKeydown);
+      alphaCutscene.action.focus();
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      alphaCutscene.timer = window.setTimeout(() => {
+        if (!alphaCutscene.active) return;
+        alphaCutscene.scene.dataset.stage = "unsealing";
+        alphaCutscene.status.textContent = "Seal disengaged. Recovering contents.";
+        alphaCutscene.timer = window.setTimeout(revealAlphaReward, reducedMotion ? 70 : 760);
+      }, reducedMotion ? 20 : 520);
+    });
+  }
+
+  alphaCutscene.action?.addEventListener("click", () => {
+    if (alphaCutscene.revealed) closeAlphaCutscene();
+    else revealAlphaReward();
+  });
+
   alpha.buy?.addEventListener("click", async () => {
     if (state.alphaBusy || !state.alphaPackStatus) return;
     state.alphaBusy = true;
@@ -1392,9 +1495,8 @@
     state.alphaBusy = true;
     alpha.buy.disabled = true;
     alpha.open.disabled = true;
-    alpha.result.hidden = true;
-    alpha.content.classList.add("is-opening");
-    alpha.note.textContent = "Unsealing pack…";
+    setAlphaError("");
+    alpha.note.textContent = "Requesting secure dispatch…";
     try {
       const res = await fetch("/api/alpha-packs/open", {
         method: "POST", credentials: "include",
@@ -1403,23 +1505,13 @@
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Pack opening failed.");
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        await new Promise((resolve) => setTimeout(resolve, 80));
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 650));
+      if (!data.charm || typeof data.charm !== "object" || !data.charm.name) {
+        throw new Error("Pack opening response did not include reward details.");
       }
       updateRenownAfterPack(data);
-      const charm = data.charm || {};
-      const duplicateText = data.duplicate
-        ? `Duplicate secured. ${Number(data.duplicate_renown || 0).toLocaleString()} Renown returned.`
-        : "New keepsake added to your locker.";
-      alpha.result.innerHTML = `<div class="reveal-stamp">${data.duplicate ? "REPEAT CONTACT" : "NEW KEEPSAKE"}</div><div class="reveal-art">${charmArtwork(charm)}</div><div class="reveal-copy"><span class="alpha-kicker">${escapeMarkup(charm.rarity || "STANDARD")} DROP</span><h4>${escapeMarkup(charm.name || "Duck charm")}</h4><p>${escapeMarkup(charm.accessory || "Field charm")} · ${duplicateText}</p></div>`;
-      alpha.result.hidden = false;
-      alpha.result.classList.remove("reveal-in");
-      void alpha.result.offsetWidth;
-      alpha.result.classList.add("reveal-in");
-      playSound("win");
-      await loadAlphaPackStatus();
+      const statusRefresh = loadAlphaPackStatus();
+      await playAlphaCutscene(data);
+      await statusRefresh;
       alpha.note.textContent = Number(data.pack_count) > 0 ? "Another pack is ready to open." : "No packs left. Acquire another whenever you are ready.";
     } catch (error) {
       await loadAlphaPackStatus();
@@ -1428,7 +1520,12 @@
     } finally {
       state.alphaBusy = false;
       alpha.content.classList.remove("is-opening");
+      alpha.result.hidden = true;
       if (state.alphaPackStatus) renderAlphaPackStatus(state.alphaPackStatus);
+      if (alphaCutscene.opener) {
+        (alpha.open.disabled ? alpha.buy : alpha.open).focus();
+        alphaCutscene.opener = null;
+      }
     }
   });
 
