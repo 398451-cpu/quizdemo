@@ -90,15 +90,20 @@ const DUCKY_CHARM_DATA = [
   ["Comet Commander", "epic", "#f3cf5c", "#9d6cdc", "comet"],
   ["The Gilded Quack", "legendary", "#ffe06a", "#f8f0d3", "golden-crown"],
   ["Ducky of the Deep", "legendary", "#8fe3d4", "#324d91", "deep-sea"],
+  ["Black Ice: Cold Front", "rare", "#071c36", "#73ddff", "black-ice"],
+  ["Black Ice: Fracture", "epic", "#13294a", "#b4f4ff", "black-ice"],
+  ["Black Ice: Deep Freeze", "legendary", "#071324", "#66d9f2", "black-ice"],
+  ["Volt Tail", "legendary", "#ffdc35", "#e64e58", "electric-duck", true],
 ];
 
-const DUCKY_CHARMS = DUCKY_CHARM_DATA.map(([name, rarity, body_color, accent_color, accessory], index) => ({
+const DUCKY_CHARMS = DUCKY_CHARM_DATA.map(([name, rarity, body_color, accent_color, accessory, admin_only = false], index) => ({
   id: `duck-${String(index + 1).padStart(2, "0")}`,
   name,
   rarity,
   body_color,
   accent_color,
   accessory,
+  admin_only: Boolean(admin_only),
 }));
 
 const ALPHA_PACK_COST = 100;
@@ -2092,7 +2097,8 @@ export const db = {
         break;
       }
     }
-    const pool = DUCKY_CHARMS.filter((charm) => charm.rarity === rarity);
+    const pool = DUCKY_CHARMS.filter((charm) => charm.rarity === rarity && !charm.admin_only);
+    if (!pool.length) return null;
     const charm = pool[Math.floor(Math.random() * pool.length)];
     const owned = memoryDb.ducky_charms.find(
       (row) => row.user_id === uid && row.charm_id === charm.id,

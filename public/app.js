@@ -1251,32 +1251,78 @@
     return /^(#[0-9a-f]{3,8}|[a-z]{3,20})$/i.test(color) ? color : fallback;
   }
 
+  let charmArtworkSequence = 0;
+
   function charmArtwork(charm, locked = false) {
-    const body = locked ? "#66717c" : safeColor(charm.body_color, "#d9c69d");
-    const accent = locked ? "#8c969e" : safeColor(charm.accent_color, "#e3a83d");
     const accessory = String(charm.accessory || "").toLowerCase();
+    const svgId = `duck-art-${++charmArtworkSequence}`;
+    const gradient = (name) => `${svgId}-${name}`;
+    const isBlackIce = accessory === "black-ice";
+    const isElectric = accessory === "electric-duck";
+    const body = locked ? "#66717c" : safeColor(charm.body_color, "#e9bb55");
+    const accent = locked ? "#8c969e" : safeColor(charm.accent_color, "#ef9c3a");
     let detail = "";
-    if (!locked && /helmet|helm|hat|cap/.test(accessory)) {
-      detail = `<path d="M49 36c2-13 28-15 32 0l5 4H45z" fill="${accent}" stroke="#17202a" stroke-width="2.5"/><path d="M51 38h31" stroke="#fff4d6" stroke-width="2" opacity=".75"/>`;
+    if (isBlackIce) {
+      detail = `<path d="m41 74 10-17 9 6 9-13 10 11 8-5 10 17-8 13-24 8-20-7z" fill="url(#${gradient("iceFacet")})" opacity=".96"/>
+        <path d="m43 76 12-12 6 9 10-17 9 14 7-8 9 14M52 88l12-15 11 13 9-10" fill="none" stroke="#b9f5ff" stroke-width="1.35" opacity=".9"/>
+        <path d="M48 55c-3-7-2-17 4-24 7-8 20-8 27-1 5 5 6 12 3 19l-8-6-8 7-7-5z" fill="url(#${gradient("iceHead")})" stroke="#263b50" stroke-width="2.5"/>
+        <path d="m52 38 8-10 3 12 8-14 4 15M46 78l5-6m39 10 5-8" fill="none" stroke="#efffff" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="m50 28 1.3 3 3 .5-3 1.1-1.1 3-1-3-3-.9 3-.7zM91 62l1.1 2.4 2.5.6-2.5.9-.8 2.5-.9-2.5-2.5-.8 2.5-.8z" fill="#f1ffff"/>`;
+    } else if (isElectric) {
+      detail = `<path d="M49 35 47 19l12 10 7-14 8 15 12-10-4 19" fill="#f5c719" stroke="#8d6017" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M38 77c-8-4-13-9-16-16l12 4-5-12 15 9" fill="none" stroke="#f4c61e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M38 77c-8-4-13-9-16-16l12 4-5-12 15 9" fill="none" stroke="#a96c11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M52 69c8-8 21-8 28 0 5 6 3 13-4 16-9 4-21 1-25-5" fill="#f7d537" opacity=".78"/>
+        <path d="M59 43c4 3 10 3 14 0" fill="none" stroke="#fff5a8" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="58" cy="46" rx="4" ry="3" fill="#ef5260"/><ellipse cx="58.8" cy="45.5" rx="1.5" ry="1" fill="#ff9a9f"/>`;
+    } else if (!locked && /helmet|helm|hat|cap/.test(accessory)) {
+      detail = `<path d="M49 36c2-13 28-15 32 0l5 4H45z" fill="${accent}" stroke="#704b28" stroke-width="2"/><path d="M51 37h31" stroke="#fff4d6" stroke-width="2" opacity=".9"/>`;
     } else if (!locked && /crown|royal/.test(accessory)) {
-      detail = `<path d="m51 39 3-13 11 8 10-9 5 14z" fill="${accent}" stroke="#17202a" stroke-width="2.5"/>`;
+      detail = `<path d="m51 39 3-13 11 8 10-9 5 14z" fill="${accent}" stroke="#704b28" stroke-width="2"/><path d="m56 34 9 5 9-7" fill="none" stroke="#fff0bd" stroke-width="1.5"/>`;
     } else if (!locked && /flower|blossom/.test(accessory)) {
-      detail = `<path d="M76 33c-5-7 3-11 7-5 6-6 11 2 4 6 6 5-2 10-6 5-5 6-10-2-5-6z" fill="${accent}" stroke="#17202a" stroke-width="2"/>`;
+      detail = `<path d="M76 33c-5-7 3-11 7-5 6-6 11 2 4 6 6 5-2 10-6 5-5 6-10-2-5-6z" fill="${accent}" stroke="#704b28" stroke-width="1.7"/><circle cx="82" cy="36" r="2" fill="#ffe9a2"/>`;
     } else if (!locked && /glasses|visor|goggle/.test(accessory)) {
       detail = `<path d="M54 48h27" stroke="${accent}" stroke-width="5" stroke-linecap="round"/><path d="M57 45h8v8h-8zm12 0h8v8h-8z" fill="#243747" stroke="#17202a" stroke-width="2"/>`;
     } else if (!locked && accessory && accessory !== "none") {
-      detail = `<path d="M49 37c2-10 24-13 31 0l4 4H46z" fill="${accent}" stroke="#17202a" stroke-width="2.5"/><path d="M55 37h19" stroke="#fff4d6" stroke-width="2" opacity=".7"/>`;
+      detail = `<path d="M49 37c2-10 24-13 31 0l4 4H46z" fill="${accent}" stroke="#704b28" stroke-width="2"/><path d="M55 37h19" stroke="#fff4d6" stroke-width="2" opacity=".85"/>`;
     }
-    return `<svg class="duck-art" viewBox="0 0 128 112" role="img" aria-label="${locked ? "Unfound charm" : `${escapeMarkup(charm.name)} duck charm`}">
-      <ellipse cx="66" cy="98" rx="35" ry="5" fill="#09121a" opacity=".35"/>
-      <path d="M37 77c0-18 12-29 31-29 18 0 31 10 31 27 0 14-13 21-32 21-18 0-30-7-30-19z" fill="${body}" stroke="#17202a" stroke-width="3"/>
-      <path d="M48 54c-4-7-3-18 3-25 7-8 20-8 27-1 6 6 6 15 1 24" fill="${body}" stroke="#17202a" stroke-width="3"/>
-      <path d="M78 40c13-2 18 2 23 7-7 5-15 6-24 3z" fill="${accent}" stroke="#17202a" stroke-width="2.5"/>
-      <circle cx="70" cy="38" r="2.7" fill="#16232d"/><circle cx="71" cy="37" r=".8" fill="#fff"/>
-      <path d="M51 73c8 5 16 6 25 4" fill="none" stroke="#fff" stroke-width="2" opacity=".36" stroke-linecap="round"/>
+
+    const bodyFill = isBlackIce
+      ? `url(#${gradient("iceBody")})`
+      : isElectric
+        ? `url(#${gradient("electricBody")})`
+        : `url(#${gradient("duckBody")})`;
+    const beakFill = isBlackIce ? `url(#${gradient("iceBeak")})` : isElectric ? "#e98a27" : accent;
+    const className = `duck-art${isBlackIce ? " duck-art-black-ice" : ""}${isElectric ? " duck-art-electric" : ""}`;
+    const duckBody = `<path d="M36 77c0-17 12-28 31-29 18-1 32 9 33 26 1 14-12 22-31 22-18 0-31-7-33-19z" fill="${bodyFill}" stroke="#263039" stroke-width="2.8"/>
+      <path d="M48 54c-4-7-3-18 3-25 7-8 20-8 27-1 6 6 6 15 1 24" fill="${bodyFill}" stroke="#263039" stroke-width="2.8"/>`;
+    const head = isElectric
+      ? `<path d="M49 39 47 19l13 13 7-17 8 17 13-12-4 22" fill="#f3ca24" stroke="#27303a" stroke-width="2.5" stroke-linejoin="round"/>
+         <path d="M48 54c-4-7-3-18 3-25 7-8 20-8 27-1 6 6 6 15 1 24" fill="${bodyFill}" stroke="#263039" stroke-width="2.8"/>`
+      : "";
+    return `<svg class="${className}" viewBox="0 0 128 112" role="img" aria-label="${locked ? "Unfound charm" : `${escapeMarkup(charm.name)} duck charm`}">
+      <defs>
+        <linearGradient id="${gradient("duckBody")}" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="${body}"/><stop offset=".54" stop-color="${body}"/><stop offset="1" stop-color="#aa7440"/></linearGradient>
+        <linearGradient id="${gradient("duckBeak")}" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffd777"/><stop offset="1" stop-color="${accent}"/></linearGradient>
+        <linearGradient id="${gradient("iceBody")}" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="#b8f6ff"/><stop offset=".2" stop-color="#397b9d"/><stop offset=".53" stop-color="#102f50"/><stop offset=".78" stop-color="#28658a"/><stop offset="1" stop-color="#071a32"/></linearGradient>
+        <linearGradient id="${gradient("iceHead")}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6ffff"/><stop offset=".3" stop-color="#5799b7"/><stop offset=".7" stop-color="#153c5c"/><stop offset="1" stop-color="#071b34"/></linearGradient>
+        <linearGradient id="${gradient("iceBeak")}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eaffff"/><stop offset=".45" stop-color="#82d9ed"/><stop offset="1" stop-color="#24618a"/></linearGradient>
+        <linearGradient id="${gradient("electricBody")}" x1=".2" y1="0" x2=".8" y2="1"><stop stop-color="#fff38b"/><stop offset=".34" stop-color="#ffdf36"/><stop offset=".72" stop-color="#f4b91f"/><stop offset="1" stop-color="#d68a20"/></linearGradient>
+        <linearGradient id="${gradient("iceFacet")}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#efffff"/><stop offset=".42" stop-color="#77cee6"/><stop offset="1" stop-color="#164a71"/></linearGradient>
+      </defs>
+      <ellipse cx="66" cy="99" rx="34" ry="4.5" fill="#07111c" opacity=".48"/>
+      <path d="M29 76c-7-3-12-7-15-13l11 3-3-10 13 8" fill="none" stroke="${isBlackIce ? "#5ab9dc" : isElectric ? "#f2c326" : body}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+      ${duckBody}${head}
+      <path d="M40 78c0-13 10-23 24-25 11-2 21 3 26 12-9-4-17-1-22 5-7 8-15 12-28 8z" fill="${isBlackIce ? "#4b91b2" : isElectric ? "#f8d44b" : "#fff1c8"}" opacity=".44" stroke="${isBlackIce ? "#a7efff" : "#fff9e9"}" stroke-width="1.15"/>
+      <path d="M49 72c5-6 11-8 17-7m-11 13c5-5 10-6 15-5m-6 9c4-3 8-4 12-3" fill="none" stroke="${isBlackIce ? "#c9f8ff" : isElectric ? "#fff2a1" : "#fff8df"}" stroke-width="1.25" opacity=".86" stroke-linecap="round"/>
+      <path d="M78 40c13-2 18 2 23 7-7 5-15 6-24 3z" fill="${beakFill}" stroke="${isBlackIce ? "#163c5b" : "#744926"}" stroke-width="2"/>
+      <path d="M82 43c6-.7 10 .3 13 2" fill="none" stroke="#fff7d7" stroke-width="1.3" opacity=".8" stroke-linecap="round"/>
+      ${isElectric ? `<path d="M82 43c2-2 5-2 7 0" fill="none" stroke="#28303a" stroke-width="2.7" stroke-linecap="round"/><ellipse cx="76" cy="51" rx="3.1" ry="2.4" fill="#ef5060"/><ellipse cx="76.7" cy="50.5" rx="1.2" ry=".7" fill="#ffb0aa"/>` : `<ellipse cx="70" cy="38" rx="2.8" ry="3.3" fill="#18242d"/><circle cx="71" cy="37" r="1" fill="#fff"/>`}
       ${detail}
-      <path d="M47 94v5m13-4v5" stroke="#e8a84b" stroke-width="3" stroke-linecap="round"/>
-      <path d="M42 100h11m2 0h11" stroke="#17202a" stroke-width="2.5" stroke-linecap="round"/>
+      ${isBlackIce ? `<path d="m48 55 1.4 3 3.2.7-3 1.1-1.2 3.2-1.1-3.2-3.1-.9 3-.8zM95 69l1 2.3 2.4.6-2.4.9-.8 2.4-.9-2.4-2.4-.8 2.4-.8z" fill="#f2ffff"/>` : ""}
+      <path d="M47 94v5m14-4v5" stroke="${isBlackIce ? "#a9eaff" : isElectric ? "#cf8124" : "#d98f3c"}" stroke-width="3" stroke-linecap="round"/>
+      <path d="M40 101h14m2 0h14" stroke="#273039" stroke-width="2.7" stroke-linecap="round"/>
+      <path d="M40 100h9m10 0h8" stroke="${isBlackIce ? "#e4fbff" : isElectric ? "#ffe888" : "#ffdf9f"}" stroke-width="1" stroke-linecap="round" opacity=".8"/>
     </svg>`;
   }
 
@@ -1315,10 +1361,16 @@
     const charms = Array.isArray(data.charms) ? data.charms : [];
     alpha.charms.innerHTML = charms.length ? charms.map((charm) => {
       const owned = Boolean(charm.is_owned);
+      const adminOnly = Boolean(charm.admin_only) && !owned;
       const rarity = escapeMarkup(charm.rarity || "Common");
-      return `<article class="charm-card ${owned ? "is-owned" : "is-locked"} rarity-${rarity.toLowerCase().replace(/[^a-z0-9-]/g, "")}">
-        <div class="charm-card-art">${charmArtwork(charm, !owned)}${owned ? `<span class="charm-count">×${Number(charm.owned_count || 1)}</span>` : `<span class="charm-lock-mark" aria-label="Not collected">LOCKED</span>`}</div>
-        <div class="charm-card-copy"><span class="charm-rarity">${rarity}</span><h5>${owned ? escapeMarkup(charm.name) : "Unknown contact"}</h5><p>${owned ? escapeMarkup(charm.accessory || "Field charm") : "Open an Alpha Pack to discover this keepsake."}</p></div>
+      const accessoryLabel = charm.accessory === "black-ice"
+        ? "Black Ice finish"
+        : charm.accessory === "electric-duck"
+          ? "Electric duck"
+          : escapeMarkup(charm.accessory || "Field charm");
+      return `<article class="charm-card ${owned ? "is-owned" : "is-locked"}${adminOnly ? " is-admin-exclusive" : ""} ${charm.accessory === "black-ice" ? "is-black-ice" : ""}${charm.accessory === "electric-duck" ? " is-electric-duck" : ""} rarity-${rarity.toLowerCase().replace(/[^a-z0-9-]/g, "")}">
+        <div class="charm-card-art">${charmArtwork(charm, !owned)}${owned ? `<span class="charm-count">×${Number(charm.owned_count || 1)}</span>` : `<span class="charm-lock-mark" aria-label="${adminOnly ? "Admin exclusive" : "Not collected"}">${adminOnly ? "ADMIN ONLY" : "LOCKED"}</span>`}</div>
+        <div class="charm-card-copy"><span class="charm-rarity">${rarity}</span><h5>${owned ? escapeMarkup(charm.name) : "Unknown contact"}</h5><p>${owned ? accessoryLabel : adminOnly ? "Must be granted by an admin." : "Open an Alpha Pack to discover this keepsake."}</p></div>
       </article>`;
     }).join("") : `<div class="charm-empty"><span class="empty-index">NO RECORDS</span><strong>Locker is standing by.</strong><p>Charm records will appear here when the collection is available.</p></div>`;
   }

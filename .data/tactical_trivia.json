@@ -2680,7 +2680,7 @@
     },
     {
       "user_id": 3,
-      "count": 1,
+      "count": 0,
       "starter_granted": true
     }
   ],
@@ -2694,8 +2694,140 @@
     {
       "user_id": 3,
       "charm_id": "duck-25",
-      "count": 1,
+      "count": 2,
       "unlocked_at": "2026-10-20T18:58:53.742Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-19",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:07:10.228Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-15",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:07:16.751Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-35",
+      "count": 2,
+      "unlocked_at": "2026-10-20T19:07:20.417Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-17",
+      "count": 3,
+      "unlocked_at": "2026-10-20T19:07:29.475Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-05",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:07:32.812Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-21",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:07:39.618Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-13",
+      "count": 2,
+      "unlocked_at": "2026-10-20T19:07:42.843Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-22",
+      "count": 3,
+      "unlocked_at": "2026-10-20T19:07:45.851Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-26",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:07:49.379Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-09",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:07:52.340Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-60",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:07:55.209Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-06",
+      "count": 3,
+      "unlocked_at": "2026-10-20T19:09:10.115Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-24",
+      "count": 2,
+      "unlocked_at": "2026-10-20T19:09:13.748Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-37",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:09:16.404Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-44",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:09:18.597Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-57",
+      "count": 2,
+      "unlocked_at": "2026-10-20T19:09:21.002Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-31",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:09:28.270Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-49",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:09:32.701Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-20",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:09:41.702Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-23",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:09:47.372Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-02",
+      "count": 2,
+      "unlocked_at": "2026-10-20T19:09:58.900Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-43",
+      "count": 1,
+      "unlocked_at": "2026-10-20T19:10:05.420Z"
     }
   ]
 }
