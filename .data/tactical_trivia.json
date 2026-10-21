@@ -2680,7 +2680,7 @@
     },
     {
       "user_id": 3,
-      "count": 0,
+      "count": 38,
       "starter_granted": true
     }
   ],
@@ -2778,7 +2778,7 @@
     {
       "user_id": 3,
       "charm_id": "duck-37",
-      "count": 1,
+      "count": 2,
       "unlocked_at": "2026-10-20T19:09:16.404Z"
     },
     {
