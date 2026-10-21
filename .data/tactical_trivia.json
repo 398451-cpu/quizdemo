@@ -2828,6 +2828,12 @@
       "charm_id": "duck-43",
       "count": 1,
       "unlocked_at": "2026-10-20T19:10:05.420Z"
+    },
+    {
+      "user_id": 3,
+      "charm_id": "duck-64",
+      "count": 1,
+      "unlocked_at": "2026-10-21T17:45:02.198Z"
     }
   ]
 }
