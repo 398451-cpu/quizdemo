@@ -1259,10 +1259,27 @@
     const gradient = (name) => `${svgId}-${name}`;
     const isBlackIce = accessory === "black-ice";
     const isElectric = accessory === "electric-duck";
+    const isCrimson = accessory === "crimson-crown";
+    const isMythical = accessory === "mythical-crown";
     const body = locked ? "#66717c" : safeColor(charm.body_color, "#e9bb55");
     const accent = locked ? "#8c969e" : safeColor(charm.accent_color, "#ef9c3a");
     let detail = "";
-    if (isBlackIce) {
+    if (!locked && isCrimson) {
+      detail = `<path d="M50 35 52 22l7 5 5-16 7 15 7-9 2 14-7 6H56z" fill="url(#${gradient("crimsonGold")})" stroke="#5a2028" stroke-width="2" stroke-linejoin="round"/>
+        <path d="m58 25 6 3 1-9 5 10 7-6" fill="none" stroke="#fff1b6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="65" cy="29" r="2.1" fill="#8de7e9" stroke="#f8df91" stroke-width=".8"/>
+        <path d="M57 36h22" stroke="#f4d887" stroke-width="2.1" stroke-linecap="round"/>
+        <path d="M58 36h8l1 7h-8zM70 36h8l-1 7h-7z" fill="#12212d" stroke="#202b35" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M60 38h4m8 0h4" stroke="#9cecf2" stroke-width="1.2" opacity=".9" stroke-linecap="round"/>
+        <path d="M69 40h2" stroke="#d6e8de" stroke-width="1.5"/>`;
+    } else if (!locked && isMythical) {
+      detail = `<path d="M49 36 50 22l8 6 5-17 8 14 8-10 2 17-5 6z" fill="url(#${gradient("mythicGold")})" stroke="#573c69" stroke-width="2" stroke-linejoin="round"/>
+        <path d="m55 26 5 3 3-12 6 13 8-9" fill="none" stroke="#fff3cd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M52 34h28l-2 5H54z" fill="#f4d68c" stroke="#664866" stroke-width="1.6"/>
+        <path d="M58 34v4m8-4v4m8-4v4" stroke="#fff4d7" stroke-width="1.2"/>
+        <path d="M66 25c-4-5 2-8 4-4 3-4 8 1 4 4-2 2-5 2-8 0z" fill="#8ce9dc" stroke="#fff0c5" stroke-width="1"/>
+        <path d="M55 49c4 2 9 2 13 0" fill="none" stroke="#dcfff1" stroke-width="1.8" stroke-linecap="round"/>`;
+    } else if (isBlackIce) {
       detail = `<path d="m41 74 10-17 9 6 9-13 10 11 8-5 10 17-8 13-24 8-20-7z" fill="url(#${gradient("iceFacet")})" opacity=".96"/>
         <path d="m43 76 12-12 6 9 10-17 9 14 7-8 9 14M52 88l12-15 11 13 9-10" fill="none" stroke="#b9f5ff" stroke-width="1.35" opacity=".9"/>
         <path d="M48 55c-3-7-2-17 4-24 7-8 20-8 27-1 5 5 6 12 3 19l-8-6-8 7-7-5z" fill="url(#${gradient("iceHead")})" stroke="#263b50" stroke-width="2.5"/>
@@ -1287,23 +1304,48 @@
       detail = `<path d="M49 37c2-10 24-13 31 0l4 4H46z" fill="${accent}" stroke="#704b28" stroke-width="2"/><path d="M55 37h19" stroke="#fff4d6" stroke-width="2" opacity=".85"/>`;
     }
 
-    const bodyFill = isBlackIce
+    const bodyFill = isCrimson
+      ? `url(#${gradient("crimsonBody")})`
+      : isMythical
+        ? `url(#${gradient("mythicBody")})`
+        : isBlackIce
       ? `url(#${gradient("iceBody")})`
       : isElectric
         ? `url(#${gradient("electricBody")})`
         : `url(#${gradient("duckBody")})`;
-    const beakFill = isBlackIce ? `url(#${gradient("iceBeak")})` : isElectric ? "#e98a27" : accent;
-    const className = `duck-art${isBlackIce ? " duck-art-black-ice" : ""}${isElectric ? " duck-art-electric" : ""}`;
+    const beakFill = locked ? accent : isBlackIce ? `url(#${gradient("iceBeak")})` : isElectric ? "#e98a27" : isCrimson ? "#efa34e" : isMythical ? "#eac879" : accent;
+    const className = `duck-art${isBlackIce ? " duck-art-black-ice" : ""}${isElectric ? " duck-art-electric" : ""}${isCrimson ? " duck-art-crimson" : ""}${isMythical ? " duck-art-mythical" : ""}`;
     const duckBody = `<path d="M36 77c0-17 12-28 31-29 18-1 32 9 33 26 1 14-12 22-31 22-18 0-31-7-33-19z" fill="${bodyFill}" stroke="#263039" stroke-width="2.8"/>
       <path d="M48 54c-4-7-3-18 3-25 7-8 20-8 27-1 6 6 6 15 1 24" fill="${bodyFill}" stroke="#263039" stroke-width="2.8"/>`;
     const head = isElectric
       ? `<path d="M49 39 47 19l13 13 7-17 8 17 13-12-4 22" fill="#f3ca24" stroke="#27303a" stroke-width="2.5" stroke-linejoin="round"/>
          <path d="M48 54c-4-7-3-18 3-25 7-8 20-8 27-1 6 6 6 15 1 24" fill="${bodyFill}" stroke="#263039" stroke-width="2.8"/>`
       : "";
+    const tail = !locked && isCrimson
+      ? `<path d="M40 72c-10 0-24-3-29-12-5-8-1-17 8-18 8-1 15 6 18 12 3 6 9 7 13 2 5-6 0-13-5-19-8-10-10-20-5-28 4-7 13-9 19-4 7 6 5 15 1 22l-9 16" fill="url(#${gradient("crimsonTail")})" stroke="#54232a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17 48c5-2 10 1 13 7 4 8 13 10 19 3M45 12c5-2 10 1 11 6 1 5-2 10-5 15" fill="none" stroke="#ffb6a8" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+        <path d="m43 40 6-7m-3 14 5-5" stroke="#ffd6c8" stroke-width="1.2" stroke-linecap="round"/>`
+      : !locked && isMythical
+        ? `<path d="M39 72c-8-4-13-10-15-18 8 3 12 8 15 14m-2-1c5-9 11-12 18-13-3 8-8 13-16 16" fill="none" stroke="#83dccf" stroke-width="2.4" opacity=".9" stroke-linecap="round"/>
+           <path d="m21 54 1.2 2.6 2.8.6-2.8 1-1 2.8-1-2.8-2.8-.9 2.8-.7z" fill="#fff1bc"/>`
+        : `<path d="M29 76c-7-3-12-7-15-13l11 3-3-10 13 8" fill="none" stroke="${isBlackIce ? "#5ab9dc" : isElectric ? "#f2c326" : body}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>`;
+    const legsAndFeet = !locked && isCrimson
+      ? `<path d="M48 91v6l-5 2v5h17v-5l-5-2v-6zm17 0v6l-5 2v5h18v-5l-6-2v-6z" fill="url(#${gradient("crimsonBoot")})" stroke="#48242a" stroke-width="2" stroke-linejoin="round"/>
+         <path d="M44 101h15m4 0h15M50 96l3 3m-1-4 3 3m10-2 3 3m-1-4 3 3" stroke="#f3cc9f" stroke-width="1.2" stroke-linecap="round"/>
+         <path d="M47 93h6m13 0h6" stroke="#ffb7a5" stroke-width="1.3" stroke-linecap="round"/>`
+      : `<path d="M47 94v5m14-4v5" stroke="${isBlackIce ? "#a9eaff" : isElectric ? "#cf8124" : "#d98f3c"}" stroke-width="3" stroke-linecap="round"/>
+         <path d="M40 101h14m2 0h14" stroke="#273039" stroke-width="2.7" stroke-linecap="round"/>
+         <path d="M40 100h9m10 0h8" stroke="${isBlackIce ? "#e4fbff" : isElectric ? "#ffe888" : "#ffdf9f"}" stroke-width="1" stroke-linecap="round" opacity=".8"/>`;
     return `<svg class="${className}" viewBox="0 0 128 112" role="img" aria-label="${locked ? "Unfound charm" : `${escapeMarkup(charm.name)} duck charm`}">
       <defs>
         <linearGradient id="${gradient("duckBody")}" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="${body}"/><stop offset=".54" stop-color="${body}"/><stop offset="1" stop-color="#aa7440"/></linearGradient>
         <linearGradient id="${gradient("duckBeak")}" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffd777"/><stop offset="1" stop-color="${accent}"/></linearGradient>
+        <linearGradient id="${gradient("crimsonBody")}" x1=".1" y1="0" x2=".8" y2="1"><stop stop-color="${locked ? "#9ba3a8" : "#ff8775"}"/><stop offset=".3" stop-color="${locked ? "#77818a" : "#d94246"}"/><stop offset=".68" stop-color="${locked ? "#68747c" : "#ac2536"}"/><stop offset="1" stop-color="${locked ? "#4e5a63" : "#711d31"}"/></linearGradient>
+        <linearGradient id="${gradient("crimsonTail")}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9c85"/><stop offset=".52" stop-color="#d23843"/><stop offset="1" stop-color="#771c32"/></linearGradient>
+        <linearGradient id="${gradient("crimsonBoot")}" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e95d4d"/><stop offset=".55" stop-color="#a92d38"/><stop offset="1" stop-color="#54222e"/></linearGradient>
+        <linearGradient id="${gradient("crimsonGold")}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0bd"/><stop offset=".4" stop-color="#d7ad66"/><stop offset="1" stop-color="#9e673e"/></linearGradient>
+        <linearGradient id="${gradient("mythicBody")}" x1=".1" y1="0" x2=".85" y2="1"><stop stop-color="${locked ? "#9ba3a8" : "#d4f4dc"}"/><stop offset=".3" stop-color="${locked ? "#77818a" : "#72c8ba"}"/><stop offset=".67" stop-color="${locked ? "#68747c" : "#398b8b"}"/><stop offset="1" stop-color="${locked ? "#4e5a63" : "#234e68"}"/></linearGradient>
+        <linearGradient id="${gradient("mythicGold")}" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fff8d7"/><stop offset=".35" stop-color="#edcf83"/><stop offset=".7" stop-color="#c18d59"/><stop offset="1" stop-color="#765078"/></linearGradient>
         <linearGradient id="${gradient("iceBody")}" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="#b8f6ff"/><stop offset=".2" stop-color="#397b9d"/><stop offset=".53" stop-color="#102f50"/><stop offset=".78" stop-color="#28658a"/><stop offset="1" stop-color="#071a32"/></linearGradient>
         <linearGradient id="${gradient("iceHead")}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6ffff"/><stop offset=".3" stop-color="#5799b7"/><stop offset=".7" stop-color="#153c5c"/><stop offset="1" stop-color="#071b34"/></linearGradient>
         <linearGradient id="${gradient("iceBeak")}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eaffff"/><stop offset=".45" stop-color="#82d9ed"/><stop offset="1" stop-color="#24618a"/></linearGradient>
@@ -1311,7 +1353,8 @@
         <linearGradient id="${gradient("iceFacet")}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#efffff"/><stop offset=".42" stop-color="#77cee6"/><stop offset="1" stop-color="#164a71"/></linearGradient>
       </defs>
       <ellipse cx="66" cy="99" rx="34" ry="4.5" fill="#07111c" opacity=".48"/>
-      <path d="M29 76c-7-3-12-7-15-13l11 3-3-10 13 8" fill="none" stroke="${isBlackIce ? "#5ab9dc" : isElectric ? "#f2c326" : body}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+      ${!locked && isMythical ? `<path d="M41 65c-9 0-16 7-17 15m67-39c8 2 12 8 11 14m-8 21c7 2 11 7 10 12" fill="none" stroke="#80dfd0" stroke-width="1.2" opacity=".8"/><path d="m35 53 1.4 3.3 3.4.8-3.4 1.2-1.2 3.3-1.2-3.3-3.4-1.1 3.4-.9zM94 49l1.2 2.6 2.8.7-2.8 1-1 2.8-1-2.8-2.8-.9 2.8-.8zM89 82l1 2.2 2.3.6-2.3.8-.8 2.3-.9-2.3-2.2-.8 2.2-.7z" fill="#e9fff0"/>` : ""}
+      ${tail}
       ${duckBody}${head}
       <path d="M40 78c0-13 10-23 24-25 11-2 21 3 26 12-9-4-17-1-22 5-7 8-15 12-28 8z" fill="${isBlackIce ? "#4b91b2" : isElectric ? "#f8d44b" : "#fff1c8"}" opacity=".44" stroke="${isBlackIce ? "#a7efff" : "#fff9e9"}" stroke-width="1.15"/>
       <path d="M49 72c5-6 11-8 17-7m-11 13c5-5 10-6 15-5m-6 9c4-3 8-4 12-3" fill="none" stroke="${isBlackIce ? "#c9f8ff" : isElectric ? "#fff2a1" : "#fff8df"}" stroke-width="1.25" opacity=".86" stroke-linecap="round"/>
@@ -1320,9 +1363,7 @@
       ${isElectric ? `<path d="M82 43c2-2 5-2 7 0" fill="none" stroke="#28303a" stroke-width="2.7" stroke-linecap="round"/><ellipse cx="76" cy="51" rx="3.1" ry="2.4" fill="#ef5060"/><ellipse cx="76.7" cy="50.5" rx="1.2" ry=".7" fill="#ffb0aa"/>` : `<ellipse cx="70" cy="38" rx="2.8" ry="3.3" fill="#18242d"/><circle cx="71" cy="37" r="1" fill="#fff"/>`}
       ${detail}
       ${isBlackIce ? `<path d="m48 55 1.4 3 3.2.7-3 1.1-1.2 3.2-1.1-3.2-3.1-.9 3-.8zM95 69l1 2.3 2.4.6-2.4.9-.8 2.4-.9-2.4-2.4-.8 2.4-.8z" fill="#f2ffff"/>` : ""}
-      <path d="M47 94v5m14-4v5" stroke="${isBlackIce ? "#a9eaff" : isElectric ? "#cf8124" : "#d98f3c"}" stroke-width="3" stroke-linecap="round"/>
-      <path d="M40 101h14m2 0h14" stroke="#273039" stroke-width="2.7" stroke-linecap="round"/>
-      <path d="M40 100h9m10 0h8" stroke="${isBlackIce ? "#e4fbff" : isElectric ? "#ffe888" : "#ffdf9f"}" stroke-width="1" stroke-linecap="round" opacity=".8"/>
+      ${legsAndFeet}
     </svg>`;
   }
 
@@ -1367,8 +1408,12 @@
         ? "Black Ice finish"
         : charm.accessory === "electric-duck"
           ? "Electric duck"
+          : charm.accessory === "crimson-crown"
+            ? "Crimson Crown"
+            : charm.accessory === "mythical-crown"
+              ? "Mythical Crown"
           : escapeMarkup(charm.accessory || "Field charm");
-      return `<article class="charm-card ${owned ? "is-owned" : "is-locked"}${adminOnly ? " is-admin-exclusive" : ""} ${charm.accessory === "black-ice" ? "is-black-ice" : ""}${charm.accessory === "electric-duck" ? " is-electric-duck" : ""} rarity-${rarity.toLowerCase().replace(/[^a-z0-9-]/g, "")}">
+      return `<article class="charm-card ${owned ? "is-owned" : "is-locked"}${adminOnly ? " is-admin-exclusive" : ""} ${charm.accessory === "black-ice" ? "is-black-ice" : ""}${charm.accessory === "electric-duck" ? " is-electric-duck" : ""}${charm.accessory === "crimson-crown" ? " is-crimson-crown" : ""}${charm.accessory === "mythical-crown" ? " is-mythical-crown" : ""} rarity-${rarity.toLowerCase().replace(/[^a-z0-9-]/g, "")}">
         <div class="charm-card-art">${charmArtwork(charm, !owned)}${owned ? `<span class="charm-count">×${Number(charm.owned_count || 1)}</span>` : `<span class="charm-lock-mark" aria-label="${adminOnly ? "Admin exclusive" : "Not collected"}">${adminOnly ? "ADMIN ONLY" : "LOCKED"}</span>`}</div>
         <div class="charm-card-copy"><span class="charm-rarity">${rarity}</span><h5>${owned ? escapeMarkup(charm.name) : "Unknown contact"}</h5><p>${owned ? accessoryLabel : adminOnly ? "Must be granted by an admin." : "Open an Alpha Pack to discover this keepsake."}</p></div>
       </article>`;

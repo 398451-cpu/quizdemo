@@ -2562,6 +2562,7 @@ body {
 .rarity-mark-rare { background: #7fb5c8; }
 .rarity-mark-epic { background: #bd91ca; }
 .rarity-mark-legendary { background: #e9bd69; }
+.rarity-mark-mythical { background: #8fe5d4; box-shadow: 0 0 7px rgba(143, 229, 212, .55); }
 .alpha-odds-empty { padding-top: 14px; color: var(--alpha-muted); font-size: .75rem; }
 
 .charm-vault {
@@ -2672,6 +2673,25 @@ body {
 .is-electric-duck.is-owned .charm-card-art {
   background: radial-gradient(ellipse at 51% 70%, rgba(235, 190, 52, .2), transparent 61%), linear-gradient(145deg, rgba(62, 52, 27, .3), rgba(20, 27, 24, .18));
 }
+
+.is-crimson-crown.is-owned .charm-card-art {
+  background: radial-gradient(ellipse at 48% 69%, rgba(191, 55, 62, .24), transparent 62%), linear-gradient(145deg, rgba(62, 28, 33, .34), rgba(20, 25, 27, .2));
+}
+
+.is-mythical-crown.is-owned .charm-card-art {
+  background: radial-gradient(ellipse at 50% 69%, rgba(106, 200, 180, .2), transparent 60%), radial-gradient(ellipse at 50% 36%, rgba(216, 186, 117, .13), transparent 70%), linear-gradient(145deg, rgba(31, 50, 57, .44), rgba(24, 26, 35, .2));
+}
+
+.rarity-mythical.is-owned {
+  border-color: rgba(137, 218, 199, .5);
+  box-shadow: inset 0 1px rgba(225, 255, 243, .06), 0 8px 22px rgba(9, 21, 26, .28);
+}
+
+.rarity-mythical .charm-rarity { color: #a1ead7; }
+.rarity-mythical.is-owned .charm-card-copy h5 { color: #e9f5e9; }
+
+.duck-art-crimson { filter: drop-shadow(0 7px 5px rgba(83, 25, 35, .38)); }
+.duck-art-mythical { filter: drop-shadow(0 7px 6px rgba(84, 159, 143, .28)); }
 
 .is-admin-exclusive {
   border-color: rgba(203, 153, 89, .3);

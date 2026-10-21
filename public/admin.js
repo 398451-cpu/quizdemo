@@ -72,7 +72,7 @@
       ...duckyCharms.map((charm) => {
         const option = document.createElement("option");
         option.value = charm.id;
-        option.textContent = `${charm.name} — ${charm.rarity}${charm.admin_only ? " · ADMIN ONLY · electric duck" : ""}`;
+        option.textContent = `${charm.name} — ${charm.rarity}${charm.admin_only ? " · ADMIN ONLY" : ""}`;
         return option;
       }),
     );

@@ -94,6 +94,8 @@ const DUCKY_CHARM_DATA = [
   ["Black Ice: Fracture", "epic", "#13294a", "#b4f4ff", "black-ice"],
   ["Black Ice: Deep Freeze", "legendary", "#071324", "#66d9f2", "black-ice"],
   ["Volt Tail", "legendary", "#ffdc35", "#e64e58", "electric-duck", true],
+  ["Crimson Crown", "legendary", "#cf3443", "#e8c877", "crimson-crown"],
+  ["Mythic Sovereign", "mythical", "#61b7a9", "#dfc47d", "mythical-crown", true],
 ];
 
 const DUCKY_CHARMS = DUCKY_CHARM_DATA.map(([name, rarity, body_color, accent_color, accessory, admin_only = false], index) => ({
